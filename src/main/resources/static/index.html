@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Front Home Page</title>
+    <style>
+      /* Global Styles */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f4f4f4;
+        padding-top: 100px;
+      }
+
+      /* Navigation Bar */
+      nav.navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgb(70, 70, 70);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 30px;
+        flex-wrap: wrap;
+      }
+      .nav-left img {
+        height: 80px;
+        width: 100px;
+        object-fit: contain;
+      }
+      .nav-center {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .nav-center a {
+        text-decoration: none;
+        color: white;
+        font-size: 1rem;
+        padding: 10px 0;
+        border-radius: 8px;
+        width: 120px;
+        text-align: center;
+        display: inline-block;
+        background-color: transparent;
+      }
+      .nav-center a:hover {
+        background-color: #5380c9;
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 999;
+      }
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9em;
+        width: 120px;
+        text-align: center;
+      }
+      .dropdown-content a:hover {
+        background-color: #5380c9;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .search-box input {
+        height: 35px;
+        width: 200px;
+        border-radius: 10px;
+        padding: 5px 10px;
+        font-size: 0.9em;
+        border: 1px solid #ccc;
+      }
+      .login-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+    .login-btn:hover {
+      background-color: #ddd;
+    }
+
+      /* Hero Section */
+      .hero {
+        margin-top: 0; /* Account for nav height */
+        background: url("images/herosection.webp") no-repeat center center/cover;
+        color: #fff;
+        text-align: center;
+        padding: 120px 20px;
+        position: relative;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        text-align: justify;
+      }
+      .hero .cta-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+      }
+      .hero .cta-btns a {
+        background-color: #5380c9;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      .hero .cta-btns a:hover {
+        background-color: #426db0;
+      }
+
+      /* Features Overview Section */
+      .features {
+        background-color: #fff;
+        padding: 60px 20px;
+      }
+      .features h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2rem;
+      }
+      .feature-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+      .feature-item {
+        background-color: #f9f9f9;
+        flex: 1;
+        min-width: 250px;
+        max-width: 300px;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+      .feature-item:hover {
+        transform: translateY(-5px);
+      }
+      .feature-item img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+      }
+      .feature-item h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .feature-item p {
+        font-size: 0.9rem;
+      }
+
+      /* Main Content Section - Left Image & Right Dynamic Calendar */
+      .main-content {
+        display: flex;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+        gap: 20px;
+      }
+      .left-side,
+      .right-side {
+        flex: 1;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .left-side img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      /* Calendar Styles */
+      #calendar-container {
+        width: 100%;
+      }
+      .calendar-header {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .calendar-header button {
+        background-color: #5380c9;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .calendar-header span {
+        margin: 0 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      table.calendar {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.calendar th,
+      table.calendar td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 8px;
+        font-size: 0.9rem;
+        height: 50px;
+      }
+      table.calendar th {
+        background-color: #f2f2f2;
+      }
+      table.calendar td.today {
+        background-color: #97c4ec;
+        font-weight: bold;
+      }
+
+      /* Footer Styles */
+      footer.site-footer {
+        background-color: #333;
+        color: #f0f0f0;
+        padding: 30px 20px;
+        font-size: 1.1rem;
+      }
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .footer-section {
+        flex: 1;
+        min-width: 220px;
+        margin: 10px;
+      }
+      .footer-section h4 {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #555;
+        padding-bottom: 5px;
+      }
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .footer-section ul li {
+        margin: 8px 0;
+      }
+      .footer-section ul li a {
+        color: #bbb;
+        text-decoration: none;
+      }
+      .footer-section ul li a:hover {
+        color: #fff;
+      }
+      .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        border-top: 1px solid #555;
+        padding-top: 15px;
+        font-size: 0.8rem;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .nav-center,
+        .nav-right {
+          flex-direction: column;
+          align-items: flex-start;
+          width: 100%;
+          gap: 10px;
+        }
+        .dropdown-content {
+          position: relative;
+          top: auto;
+          left: auto;
+          box-shadow: none;
+          border-radius: 0;
+          background-color: transparent;
+        }
+        .dropdown-content a {
+          background-color: white;
+          border-radius: 8px;
+          margin: 5px 0;
+        }
+        .main-content {
+          flex-direction: column;
+        }
+        .footer-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        .footer-section {
+          margin: 20px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navigation">
+      <div class="nav-container">
+        <div class="nav-left">
+          <img src="images/bananacat.png" alt="Banana Cat" />
+        </div>
+        <div class="nav-center">
+          <a href="A2home.html">Home</a>
+          <div class="dropdown">
+            <a href="#">View ▾</a>
+            <div class="dropdown-content">
+              <a href="viewAccount.html">View Account</a>
+              <a href="viewProfile.html">View Profile</a>
+            </div>
+          </div>
+          <a href="CreateUserAccount.html">Create</a>
+        </div>
+        <div class="nav-right">
+          <div class="search-box">
+            <input type="search" placeholder="Search" />
+          </div>
+          <a class="login-btn" href="login.html">Log in</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Connecting You With Trusted Home Cleaners</h1>
+        <p>
+          Your trusted platform for connecting freelance home cleaners with
+          homeowners. Our mission is to bring reliability and quality to every
+          cleaning service.
+        </p>
+        <div class="cta-btns">
+          <a href="homeowners.html">Find a Cleaner</a>
+          <a href="cleaners.html">Join as Cleaner</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content: Left Side Image & Right Side Calendar -->
+    <section class="main-content">
+      <div class="left-side">
+        <!-- Replace with your desired image -->
+        <img src="images/cleaning.jpg" alt="Cleaning Service" />
+      </div>
+      <div class="right-side">
+        <div id="calendar-container">
+          <div class="calendar-header">
+            <button id="prevMonth">&lt;</button>
+            <span id="monthYear"></span>
+            <button id="nextMonth">&gt;</button>
+          </div>
+          <table class="calendar">
+            <thead>
+              <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-body">
+              <!-- Calendar cells will be generated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <h2>Our Key Features</h2>
+      <div class="feature-container">
+        <div class="feature-item">
+          <img src="images/userprofile.png" alt="User Profiles" />
+          <h3>User Profiles</h3>
+          <p>Manage different profiles for admins, cleaners, and homeowners.</p>
+        </div>
+        <div class="feature-item">
+          <img src="images/cleaningservices.png" alt="Manage Services" />
+          <h3>Manage Services</h3>
+          <p>Cleaners can update and manage their cleaning services easily.</p>
+        </div>
+        <div class="feature-item">
+          <img src="images/shortlist.png" alt="Search & Shortlist" />
+          <h3>Search & Shortlist</h3>
+          <p>Homeowners can search, view, and save potential cleaners.</p>
+        </div>
+        <div class="feature-item">
+          <img src="images/history.png" alt="Service History" />
+          <h3>History & Reports</h3>
+          <p>
+            Track interests, history and generate reports for better insight.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Branding & Mission -->
+        <div class="footer-section">
+          <h4>CleanerMatch</h4>
+          <p style="text-align: justify">
+            Your trusted platform for connecting freelance home cleaners with
+            homeowners. Our mission is to bring reliability and quality to every
+            cleaning service.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- For Users -->
+        <div class="footer-section">
+          <h4>For Users</h4>
+          <ul>
+            <li><a href="cleaners.html">For Cleaners</a></li>
+            <li><a href="homeowners.html">For Home Owners</a></li>
+            <li><a href="admin.html">For Admin</a></li>
+            <li><a href="management.html">Platform Management</a></li>
+          </ul>
+        </div>
+
+        <!-- Social Media -->
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 C2CBananaCat. All Rights Reserved.
+      </div>
+    </footer>
+
+    <!-- JavaScript for Dynamic Calendar -->
+    <script>
+      let currentDate = new Date();
+      let currentMonth = currentDate.getMonth(); // 0-indexed
+      let currentYear = currentDate.getFullYear();
+
+      function renderCalendar(month, year) {
+        const calendarBody = document.getElementById("calendar-body");
+        calendarBody.innerHTML = "";
+
+        // Get first day and number of days in month.
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Set header
+        document.getElementById("monthYear").innerText = new Date(
+          year,
+          month
+        ).toLocaleString("default", { month: "long", year: "numeric" });
+
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement("tr");
+
+          for (let j = 0; j < 7; j++) {
+            const cell = document.createElement("td");
+            if (i === 0 && j < firstDay) {
+              cell.innerHTML = "";
+            } else if (date > daysInMonth) {
+              cell.innerHTML = "";
+            } else {
+              cell.innerHTML = date;
+              if (
+                date === currentDate.getDate() &&
+                month === currentDate.getMonth() &&
+                year === currentDate.getFullYear()
+              ) {
+                cell.classList.add("today");
+              }
+              date++;
+            }
+            row.appendChild(cell);
+          }
+          calendarBody.appendChild(row);
+          if (date > daysInMonth) break;
+        }
+      }
+
+      document
+        .getElementById("prevMonth")
+        .addEventListener("click", function () {
+          currentMonth--;
+          if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+          }
+          renderCalendar(currentMonth, currentYear);
+        });
+
+      document
+        .getElementById("nextMonth")
+        .addEventListener("click", function () {
+          currentMonth++;
+          if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+          }
+          renderCalendar(currentMonth, currentYear);
+        });
+
+      window.addEventListener("DOMContentLoaded", function () {
+        renderCalendar(currentMonth, currentYear);
+      });
+    </script>
+  </body>
+</html>

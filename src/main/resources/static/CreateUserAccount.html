@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #50505e;
+      color: white;
+    }
+
+    .register-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .register-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .panel {
+      position: relative;
+      flex: 1 1 500px;
+      padding: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 400px;
+    }
+
+    .slideshow {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide-image {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide-image.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.5;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      opacity: 1;
+    }
+
+    .form-panel {
+      flex: 1 1 350px;
+      padding: 2rem;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .form-panel form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .name-inputs {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .name-inputs input {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    input, select {
+      padding: 10px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #1f1f27;
+      color: white;
+    }
+    
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath fill='white' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px 5px;
+      padding-right: 30px;
+    }
+    
+
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .bottom-actions {
+      transition: margin-top 0.4s ease;
+    }
+
+    /* Default spacing */
+    .bottom-actions {
+      margin-top: 1rem;
+    }
+
+    /* Extra space when address is hidden */
+    .bottom-actions.push-down {
+      margin-top: 3rem;
+    }
+
+    button[type="submit"] {
+      padding: 12px;
+      background: #7a5af8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button[type="submit"]:hover {
+      background: #684de5;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #444;
+    }
+
+    .divider span {
+      padding: 0 1rem;
+      color: #aaa;
+    }
+
+    #address {
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .register-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .panel, .form-panel {
+        width: 100%;
+        padding: 1.5rem;
+      }
+
+      .name-inputs {
+        flex-direction: column;
+      }
+
+      .social-buttons button {
+        flex: 1 1 100%;
+      }
+    }
+
+    
+  </style>
+</head>
+<body>
+
+<div class="register-page">
+  <div class="register-container">
+    <div class="panel">
+      <div class="slideshow">
+        <img src="images/createacc1.gif" class="slide-image active" alt="Slide 1">
+        <img src="images/createacc3.jpg" class="slide-image" alt="Slide 2">
+        <img src="images/createacc2.jpg" class="slide-image" alt="Slide 3">
+      </div>
+      <div class="dots">
+        <span class="dot active" onclick="setSlide(0)"></span>
+        <span class="dot" onclick="setSlide(1)"></span>
+        <span class="dot" onclick="setSlide(2)"></span>
+      </div>
+    </div>
+
+    <div class="form-panel">
+      <h2 id="form-title" style="font-size: 2em;">Create Account</h2>
+      <form id="user-form" onsubmit="handleFormSubmit(event)">
+        <div class="name-inputs">
+          <input type="text" id="fname" placeholder="First Name" required />
+          <input type="text" id="lname" placeholder="Last Name" required />
+        </div>
+        <input type="text" id="phoneNum" placeholder="Phone Number" required />
+        <input type="text" id="address" placeholder="Address" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+
+        <select id="userType" required>
+          <option value="" disabled selected>Select User Type</option>
+          <option value="homeowner">Home Owner</option>
+          <option value="cleaner">Cleaner</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <div class="bottom-actions">
+          <label>
+            <input type="checkbox" required />
+            I agree to the <a href="#" style="color: #7a5af8;">Terms & Conditions</a>
+          </label>
+          <br />
+          <button type="submit" id="form-button" style=" width: 100%;">Create Account</button>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  let formMode = 'signup';
+
+  function toggleFormMode() {
+    formMode = formMode === 'login' ? 'signup' : 'login';
+    updateForm();
+  }
+
+  function updateForm() {
+    const fname = document.getElementById('fname');
+    const lname = document.getElementById('lname');
+    const email = document.getElementById('email');
+    const formTitle = document.getElementById('form-title');
+    const formButton = document.getElementById('form-button');
+
+    if (formMode === 'login') {
+      fname.style.display = 'none';
+      lname.style.display = 'none';
+      email.style.display = 'none';
+      formTitle.textContent = 'Sign In';
+      formButton.textContent = 'Log In';
+    } else {
+      fname.style.display = 'block';
+      lname.style.display = 'block';
+      email.style.display = 'block';
+      formTitle.textContent = 'Create Account';
+      formButton.textContent = 'Create Account';
+    }
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const phone = document.getElementById('phoneNum').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const userType = document.getElementById('userType').value;
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{8}$/;
+
+    if (!nameRegex.test(fname) || !nameRegex.test(lname)) {
+      alert("Names must not contain numbers or special characters.");
+      return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+      alert("Phone number must be exactly 8 digits.");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      alert("Invalid email format.");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (localStorage.getItem(email)) {
+      alert("An account with this email already exists.");
+    } else {
+      const user = { fname, lname, email, password, phone, address, userType };
+      localStorage.setItem(email, JSON.stringify(user));
+      localStorage.setItem("loggedInUser", email);
+      alert("Registration successful!");
+      formMode = 'login';
+      updateForm();
+      document.getElementById('user-form').reset();
+    }
+  }
+
+  // Slideshow
+  const slides = document.querySelectorAll('.slide-image');
+  const dots = document.querySelectorAll('.dot');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+      dots[i].classList.toggle('active', i === index);
+    });
+  }
+
+  function setSlide(index) {
+    currentSlide = index;
+    showSlide(currentSlide);
+  }
+
+  function startSlideshow() {
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }, 4000);
+  }
+
+  // Hide address input when "Cleaner" is selected
+  document.getElementById("userType").addEventListener("change", function () {
+    const addressInput = document.getElementById("address");
+    if (this.value === "cleaner") {
+      addressInput.style.maxHeight = "0";
+      addressInput.style.opacity = "0";
+      addressInput.required = false;
+    } else {
+      addressInput.style.maxHeight = "100px";
+      addressInput.style.opacity = "1";
+      addressInput.required = true;
+    }
+  });
+
+  document.getElementById("userType").addEventListener("change", function () {
+  const addressInput = document.getElementById("address");
+  const bottomActions = document.querySelector(".bottom-actions");
+
+  if (this.value === "cleaner") {
+    addressInput.style.maxHeight = "0";
+    addressInput.style.opacity = "0";
+    addressInput.required = false;
+    bottomActions.classList.add("push-down");
+  } else {
+    addressInput.style.maxHeight = "100px";
+    addressInput.style.opacity = "1";
+    addressInput.required = true;
+    bottomActions.classList.remove("push-down");
+  }
+});
+
+  window.onload = () => {
+    showSlide(currentSlide);
+    startSlideshow();
+    document.getElementById('user-form').reset(); 
+  };
+  document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+  
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+  
+    const res = await fetch("http://localhost:8080/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    });
+  
+    if (res.ok) {
+      alert("Account created! Redirecting to login...");
+      window.location.href = "/login.html";
+    } else {
+      alert("Registration failed!");
+    }
+  });
+</script>
+
+</body>
+</html>
+
+  
