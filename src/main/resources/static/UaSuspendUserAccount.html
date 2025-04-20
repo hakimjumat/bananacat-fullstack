@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suspend User Account</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #333;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+    .nav-left img {
+      height: 60px;
+      width: auto;
+    }
+    .nav-center,
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .nav-center a,
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .nav-center a:hover,
+    .nav-right a:hover {
+      background-color: #5380c9;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .search-box input {
+      height: 30px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .logout-btn {
+      background-color: lightblue;
+      color: blue;
+      border: none;
+    }
+
+    .suspend-container {
+      max-width: 600px;
+      margin: 100px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      text-align: left;
+      margin: 20px 0;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #555;
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 6px;
+    }
+
+    .warning {
+      font-size: 1.1rem;
+      color: #9b1c1c;
+      background-color: #fde8e8;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-weight: bold;
+      display: none;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .action-buttons button,
+    .action-buttons a {
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      min-width: 120px;
+    }
+
+    .btn-suspend {
+      background-color: #f44336;
+      color: white;
+      border: none;
+    }
+
+    .btn-cancel {
+      background-color: #ccc;
+      color: #333;
+      border: none;
+    }
+
+    .message-success {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #03543F;
+      background-color: #DEF7EC;
+      padding: 10px 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .suspend-container {
+        margin: 60px 20px;
+        padding: 20px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+
+    footer.site-footer {
+      background-color: #333;
+      color: #f0f0f0;
+      padding: 40px 20px 20px;
+      font-size: 0.95rem;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-section {
+      flex: 1 1 220px;
+    }
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-section ul li {
+      margin: 8px 0;
+    }
+    .footer-section ul li a {
+      color: #bbb;
+      text-decoration: none;
+    }
+    .footer-section ul li a:hover {
+      color: #fff;
+    }
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+      font-size: 0.8rem;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="suspend-container">
+    <h2>Suspend User Account</h2>
+
+    <div class="info">
+      <p><strong>Email:</strong> user123@example.com</p>
+      <p><strong>Role:</strong> Admin</p>
+      <p><strong>Account Status:</strong> <span id="status-text">Inactive</span></p>
+    </div>
+
+    <div class="warning" id="inactive-warning">
+      This account is already inactive.
+    </div>
+
+    <form id="suspend-form" method="POST" action="/admin/suspend/user123@example.com">
+      <div class="action-buttons">
+        <button type="submit" class="btn-suspend">Yes, Suspend</button>
+        <a href="/admin/searchUser" class="btn-cancel">Cancel</a>
+      </div>
+    </form>
+
+    <div class="message-success" id="success-message">
+      Account has been successfully suspended.
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Simulate account status
+    const accStatus = 'Inactive'; // Change to 'Active' or 'Inactive'
+
+    const warningBox = document.getElementById("inactive-warning");
+    const form = document.getElementById("suspend-form");
+    const successBox = document.getElementById("success-message");
+
+    if (accStatus === 'Inactive') {
+      warningBox.style.display = 'block';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (accStatus === 'Inactive') {
+        const proceed = confirm("This account is already inactive. Are you sure you want to suspend again?");
+        if (!proceed) return;
+      }
+
+      // Simulate a successful suspension (AJAX or server logic here)
+      successBox.style.display = 'block';
+
+      // Optional: hide success after few seconds
+      setTimeout(() => {
+        successBox.style.display = 'none';
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

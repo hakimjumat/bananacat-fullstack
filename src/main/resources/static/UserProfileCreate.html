@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+      margin: 0;
+      padding-top: 100px;
+      background-color: rgb(84, 101, 108);
+    }
+
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgba(70, 70, 70, 0.9);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-left img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent;
+      transition: background-color 0.3s ease;
+    }
+    .nav-center a:hover, .dropdown:hover > a {
+      background-color:  #5380c9;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+      min-width: 150px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      display: block;
+      padding: 12px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+      white-space: nowrap;
+      text-align: left;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-color: white;
+      width: auto;
+    }
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+      color: white;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+      transition: background-color 0.3s ease;
+    }
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    .container {
+      padding: 20px;
+    }
+    .box {
+      border: 1px solid #ccc;
+      padding: 30px;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: #333;
+    }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 25px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 12px 10px;
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      cursor: pointer;
+      margin-right: -1px;
+      border-radius: 5px 5px 0 0;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      color: #555;
+    }
+     .tabs button:last-child {
+        margin-right: 0;
+     }
+
+    .tabs button:hover {
+        background-color: #eee;
+    }
+
+    .tab-btn.active {
+      background-color: white;
+      border-color: #ccc;
+      border-bottom: 2px solid #5380c9;
+      font-weight: bold;
+      color: #333;
+      position: relative;
+      top: 1px;
+    }
+
+    .tab-content {
+      padding-top: 20px;
+    }
+
+    .privileges-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    .privileges-table th, .privileges-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .privileges-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        color: #333;
+    }
+    .privileges-table td:nth-child(2),
+    .privileges-table td:nth-child(3) {
+        text-align: center;
+    }
+    .privileges-table input[type="checkbox"] {
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+    }
+
+    .visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          margin: -1px;
+          padding: 0;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          border: 0;
+    }
+
+  footer.site-footer {
+    background-color: #333;
+    color: #f0f0f0;
+    padding: 40px 20px;
+    font-size: 0.95rem;
+    margin-top: 40px;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .footer-section {
+    flex: 1 1 220px;
+    min-width: 200px;
+    margin: 10px 0;
+  }
+
+  .footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+    color: #fff;
+  }
+
+  .footer-section p {
+      color: #bbb;
+      line-height: 1.6;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin: 10px 0;
+  }
+
+  .footer-section ul li a {
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-section ul li a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #555;
+    padding-top: 20px;
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+
+  @media (max-width: 992px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+      }
+      .nav-left {
+          width: 100%;
+          margin-bottom: 10px;
+      }
+      .nav-center {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 0;
+      }
+      .nav-center a, .dropdown {
+        width: 100%;
+        padding-left: 0;
+        text-align: left;
+        border-bottom: 1px solid #555;
+        border-radius: 0;
+      }
+      .nav-center a:last-child, .dropdown:last-child {
+          border-bottom: none;
+      }
+      .nav-center a:hover, .dropdown:hover > a {
+          background-color: #5380c9;
+      }
+      .dropdown-content {
+          position: static;
+          display: none;
+          box-shadow: none;
+          border-radius: 0;
+          background-color: transparent;
+          padding-left: 15px;
+      }
+      .dropdown-content a {
+          color: #ccc;
+          padding: 8px 0;
+          width: 100%;
+          text-align: left;
+      }
+       .dropdown-content a:hover {
+          color: #fff;
+          background-color: transparent;
+       }
+       .dropdown:hover .dropdown-content {
+            display: block;
+       }
+      .nav-right {
+        flex-direction: row;
+        width: auto;
+        gap: 15px;
+        align-items: center;
+        margin-top: 10px;
+      }
+      body {
+        padding-top: 150px;
+      }
+      .container {
+        margin-top: 20px;
+      }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      padding-top: 180px;
+    }
+    .container {
+      padding: 15px;
+    }
+    .box {
+        padding: 20px;
+    }
+    .tabs {
+      flex-direction: column;
+      gap: 0;
+      border-bottom: none;
+    }
+    .tabs button {
+      width: 100%;
+      margin-right: 0;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+    }
+    .tab-btn.active {
+        border: 1px solid #5380c9;
+        border-bottom: 1px solid #5380c9;
+        top: 0;
+        background-color: #e7f0fe;
+    }
+    .privileges-table th, .privileges-table td {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer-section {
+      width: 100%;
+      margin: 15px 0;
+      min-width: auto;
+    }
+    .footer-bottom {
+      text-align: left;
+    }
+  }
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 200px;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+  .privileges-table {
+    font-size: 0.85rem;
+  }
+   .privileges-table th, .privileges-table td {
+        padding: 6px;
+   }
+  .nav-left img {
+    height: 50px;
+  }
+  .tab-btn {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+  .logout-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+   input[type="text"] {
+       padding: 10px;
+       font-size: 0.95rem;
+   }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat Logo" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  </header>
+
+  <main class="container">
+    <div class="box">
+      <h2>Create User Profile</h2>
+      <label for="roleName">Name of New Role</label>
+      <input type="text" id="roleName" placeholder="Enter role name" />
+
+      <p>Privileges:</p>
+      <div class="tabs">
+        <button type="button" class="tab-btn active" data-tab="create">Create/Add</button>
+        <button type="button" class="tab-btn" data-tab="view">View</button>
+        <button type="button" class="tab-btn" data-tab="update">Update</button>
+        <button type="button" class="tab-btn" data-tab="delete">Delete</button>
+        <button type="button" class="tab-btn" data-tab="search">Search</button>
+      </div>
+
+      <div id="create" class="tab-content">
+        <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Create Account</td>
+              <td><input type="checkbox" name="create_account_grant" /></td>
+              <td><input type="checkbox" name="create_account_deny" /></td>
+            </tr>
+            <tr>
+              <td>Create Role</td>
+              <td><input type="checkbox" name="create_role_grant" /></td>
+              <td><input type="checkbox" name="create_role_deny" /></td>
+            </tr>
+            <tr>
+              <td>Add Cleaning Services</td>
+              <td><input type="checkbox" name="add_services_grant" /></td>
+              <td><input type="checkbox" name="add_services_deny" /></td>
+            </tr>
+            <tr>
+              <td>Add to short list</td>
+              <td><input type="checkbox" name="add_shortlist_grant" /></td>
+              <td><input type="checkbox" name="add_shortlist_deny" /></td>
+            </tr>
+            <tr>
+              <td>Create New Service Category</td>
+              <td><input type="checkbox" name="create_category_grant" /></td>
+              <td><input type="checkbox" name="create_category_deny" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Create</button>
+        <button type="button" class="cancel" data-tab="view" style="width: 100px; height: 50px; margin-left: 590px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Cancel</button>
+      </div>
+
+      <div id="update" class="tab-content" style="display: none;">
+        <h3>Update</h3>
+        <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr>
+              <td>Create Account</td>
+              <td><input type="checkbox" name="update_account_grant"/></td>
+              <td><input type="checkbox" name="update_account_deny"/></td>
+            </tr>
+            <tr>
+              <td>Create Role</td>
+              <td><input type="checkbox" name="update_role_grant"/></td>
+              <td><input type="checkbox" name="update_role_deny"/></td>
+            </tr>
+            <tr>
+              <td>Add Cleaning Services</td>
+              <td><input type="checkbox" name="update_services_grant"/></td>
+              <td><input type="checkbox" name="update_services_deny"/></td>
+            </tr>
+            <tr>
+              <td>Add to Short List Items</td>
+              <td><input type="checkbox" name="update_shortlist_grant"/></td>
+              <td><input type="checkbox" name="update_shortlist_deny"/></td>
+            </tr>
+            <tr>
+              <td>Create New Service Category</td>
+              <td><input type="checkbox" name="update_category_grant"/></td>
+              <td><input type="checkbox" name="update_category_deny"/></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div id="view" class="tab-content" style="display: none;">
+        <h3>View Privileges</h3>
+         <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr>
+              <td>View Account List</td>
+              <td><input type="checkbox" name="view_account_list_grant"/></td>
+              <td><input type="checkbox" name="view_account_list_deny"/></td>
+            </tr>
+            <tr>
+              <td>View Role List</td>
+              <td><input type="checkbox" name="view_role_list_grant"/></td>
+              <td><input type="checkbox" name="view_role_list_deny"/></td>
+            </tr>
+            <tr>
+              <td>View Service Details</td>
+              <td><input type="checkbox" name="view_service_details_grant"/></td>
+              <td><input type="checkbox" name="view_service_details_deny"/></td>
+            </tr>
+            <tr>
+              <td>View Short List</td>
+              <td><input type="checkbox" name="view_shortlist_grant"/></td>
+              <td><input type="checkbox" name="view_shortlist_deny"/></td>
+            </tr>
+            <tr>
+              <td>View Service Categories</td>
+              <td><input type="checkbox" name="view_categories_grant"/></td>
+              <td><input type="checkbox" name="view_categories_deny"/></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div id="delete" class="tab-content" style="display: none;">
+        <h3>Delete Privileges</h3>
+         <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr>
+              <td>Delete Account</td>
+              <td><input type="checkbox" name="delete_account_grant"/></td>
+              <td><input type="checkbox" name="delete_account_deny"/></td>
+            </tr>
+            <tr>
+              <td>Delete Role</td>
+              <td><input type="checkbox" name="delete_role_grant"/></td>
+              <td><input type="checkbox" name="delete_role_deny"/></td>
+            </tr>
+            <tr>
+              <td>Delete Cleaning Service</td>
+              <td><input type="checkbox" name="delete_service_grant"/></td>
+              <td><input type="checkbox" name="delete_service_deny"/></td>
+            </tr>
+            <tr>
+              <td>Remove from Short List</td>
+              <td><input type="checkbox" name="delete_shortlist_grant"/></td>
+              <td><input type="checkbox" name="delete_shortlist_deny"/></td>
+            </tr>
+            <tr>
+              <td>Delete Service Category</td>
+              <td><input type="checkbox" name="delete_category_grant"/></td>
+              <td><input type="checkbox" name="delete_category_deny"/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="search" class="tab-content" style="display: none;">
+       <div class="search-results" style="margin-top: 20px;">
+
+       </div>
+        <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr>
+              <td>Search Account</td>
+              <td><input type="checkbox" name="search_account_grant"/></td>
+              <td><input type="checkbox" name="search_account_deny"/></td>
+            </tr>
+            <tr>
+              <td>Search Role</td>
+              <td><input type="checkbox" name="search_role_grant"/></td>
+              <td><input type="checkbox" name="search_role_deny"/></td>
+            </tr>
+            <tr>
+              <td>Search Cleaning Service</td>
+              <td><input type="checkbox" name="search_service_grant"/></td>
+              <td><input type="checkbox" name="search_service_deny"/></td>
+            </tr>
+            <tr>
+              <td>Search from Short List</td>
+              <td><input type="checkbox" name="search_shortlist_grant"/></td>
+              <td><input type="checkbox" name="search_shortlist_deny"/></td>
+            </tr>
+            <tr>
+              <td>Search Service Category</td>
+              <td><input type="checkbox" name="search_category_grant"/></td>
+              <td><input type="checkbox" name="search_category_deny"/></td>
+            </tr>
+
+          </tbody>
+        </table>
+
+     </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll(".tab-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        const tab = button.getAttribute("data-tab");
+
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(content => content.style.display = "none");
+
+        button.classList.add("active");
+        const activeTabContent = document.getElementById(tab);
+        if (activeTabContent) {
+            activeTabContent.style.display = "block";
+        }
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const firstTabButton = document.querySelector('.tab-btn');
+        const firstTabContent = document.querySelector('.tab-content');
+        if (firstTabButton && firstTabContent) {
+            firstTabButton.classList.add('active');
+            firstTabContent.style.display = 'block';
+        }
+        // Fix the missing checkbox names in the search tab
+        const searchTable = document.getElementById('search').querySelector('.privileges-table tbody');
+        if (searchTable) {
+            searchTable.rows[0].cells[1].querySelector('input').name = 'search_account_grant';
+            searchTable.rows[0].cells[2].querySelector('input').name = 'search_account_deny';
+            searchTable.rows[1].cells[1].querySelector('input').name = 'search_role_grant';
+            searchTable.rows[1].cells[2].querySelector('input').name = 'search_role_deny';
+            searchTable.rows[2].cells[1].querySelector('input').name = 'search_service_grant';
+            searchTable.rows[2].cells[2].querySelector('input').name = 'search_service_deny';
+            searchTable.rows[3].cells[1].querySelector('input').name = 'search_shortlist_grant';
+            searchTable.rows[3].cells[2].querySelector('input').name = 'search_shortlist_deny';
+            searchTable.rows[4].cells[1].querySelector('input').name = 'search_category_grant';
+            searchTable.rows[4].cells[2].querySelector('input').name = 'search_category_deny';
+        }
+    });
+  </script>
+
+</body>
+</html>

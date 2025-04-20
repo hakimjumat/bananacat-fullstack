@@ -12,7 +12,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
+      background-color: #cbd8f1;
       padding-top: 100px;
     }
     
@@ -368,21 +368,19 @@
         <img src="images/bananacat.png" alt="Banana Cat" />
       </div>
       <div class="nav-center">
-        <a href="A2home.html">Home</a>
+        <a href="UserAdminHome.html">Home</a>
         <div class="dropdown">
           <a href="#">View ▾</a>
           <div class="dropdown-content">
-            <a href="viewAccount.html">View Account</a>
-            <a href="viewProfile.html">View Profile</a>
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
           </div>
         </div>
-        <a href="CreateUserAccount.html">Create</a>
+        <a href="UaCreateUserAccount.html">Create</a>
       </div>
       <div class="nav-right">
-        <div class="search-box">
-          <input type="search" placeholder="Search" />
-        </div>
-        <a class="logout-btn" href="logout.html">Log out</a> 
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
       </div>
     </div>
   </nav>
@@ -513,17 +511,6 @@
       &copy; 2025 C2CBananaCat. All Rights Reserved.
     </div>
   </footer>
-  
-  <!-- Check for login authentication -->
-  <script>
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      window.location.href = "login.html"; // force login if not authenticated
-    } else {
-      console.log("Welcome back", user.name);
-      // Optional: display user info on page
-    }
-  </script>
   
   <!-- JavaScript for Dynamic Calendar -->
   <script>

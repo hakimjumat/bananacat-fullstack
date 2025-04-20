@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #4a5a5c;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left img {
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 0;
+      border-radius: 8px;
+      width: 120px;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .nav-center a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-box input {
+      height: 35px;
+      width: 200px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    .profile-container {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 1000px;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+      margin: 120px auto 40px auto; 
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ddd;
+    }
+
+    .upload-btn {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 2px 6px;
+      font-size: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .form-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 16px;
+      color: black;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .buttons button {
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .save-btn {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    #image-upload {
+      display: none;
+    }
+
+    footer.site-footer {
+      background-color: #333;
+      color: #f0f0f0;
+      padding: 30px 20px;
+      font-size: 1rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 220px;
+      margin: 10px;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin: 8px 0;
+    }
+
+    .footer-section ul li a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer-section ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-section {
+        grid-template-columns: 1fr;
+      }
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <div class="header">
+      <div class="avatar-wrapper">
+        <img src="images/userprofile.png" alt="Avatar" class="avatar" id="profile-pic" />
+        <label for="image-upload" class="upload-btn">Edit</label>
+        <input type="file" id="image-upload" accept="image/*">
+      </div>
+    </div>
+
+    <h2>User Profile</h2>
+    <form id="profile-form">
+      <div class="form-section">
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" value="Andrew" />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" value="Walker" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" value="555-237-2384" />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role">
+            <option value="homeowner" selected>Home Owner</option>
+            <option value="cleaner">Cleaner</option>
+            <option value="admin">Platform Manager</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" id="address-group" style="margin-top: 20px;"> 
+        <label for="address">Address</label>
+        <input type="text" id="address" value="123 Main Street" style="width: 100%;" />
+      </div>
+
+      <div class="form-group" id="email-group" style="margin-top: 20px;">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" value="andrew@email.com" />
+      </div>
+      
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    const roleSelect = document.getElementById('role');
+    const addressGroup = document.getElementById('address-group');
+    const imageUpload = document.getElementById('image-upload');
+    const profilePic = document.getElementById('profile-pic');
+    const form = document.getElementById('profile-form');
+    const deleteBtn = document.getElementById('delete-btn');
+
+    function toggleFields() {
+      addressGroup.style.display = roleSelect.value === 'homeowner' ? 'block' : 'none';
+    }
+
+    imageUpload.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        profilePic.src = URL.createObjectURL(file);
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+    });
+
+    deleteBtn.addEventListener('click', function () {
+      if (confirm('Are you sure you want to delete this profile?')) {
+        ['first-name', 'last-name', 'phone', 'email', 'address'].forEach(id => document.getElementById(id).value = '');
+        roleSelect.value = '';
+        profilePic.src = 'images/userprofile.png';
+        toggleFields();
+        alert('Profile deleted.');
+      }
+    });
+
+    roleSelect.addEventListener('change', toggleFields);
+    toggleFields();
+  </script>
+</body>
+</html>

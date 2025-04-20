@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update User Account</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #50505e;
+      padding: 0;
+    }
+
+    /* Navigation Bar */
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+    }
+
+    .nav-left img {
+      height: 50px;
+    }
+
+    .nav-center, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-center a, .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      color: #333;
+      display: block;
+      padding: 10px 15px;
+      font-size: 0.9em;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .search-box input {
+      height: 35px;
+      width: 180px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    /* Container and Form Styling */
+    .container {
+      max-width: 700px;
+      margin: 120px auto 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .buttons button {
+      flex: 1;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .update-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .cancel-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Footer Styles */
+    footer.site-footer {
+      background-color: #333;
+      color: #f0f0f0;
+      padding: 30px 20px;
+      font-size: 1rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 220px;
+      margin: 10px;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-section ul li {
+      margin: 8px 0;
+    }
+
+    .footer-section ul li a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer-section ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+      font-size: 0.8rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav-center, .nav-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .buttons button {
+        width: 100%;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-section {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Form Section -->
+  <div class="container">
+    <h2>Update User Account</h2>
+    <form id="update-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email"  />
+      </div>
+
+      <div class="form-group">
+        <label for="password">New Password</label>
+        <input type="password" id="password"  />
+      </div>
+
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" />
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Phone Number</label>
+        <input type="tel" id="contact" />
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role">
+          <option value="homeowner">Home Owner</option>
+          <option value="cleaner">Cleaner</option>
+          <option value="admin">Platform Manager</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Account Status</label>
+        <select id="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="update-btn">Update</button>
+        <button type="button" class="cancel-btn" onclick="cancelUpdate()">Cancel</button>
+      </div>
+      <div class="message" id="message"></div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- JS Validation -->
+  <script>
+    const form = document.getElementById('update-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (!validateEmail(email)) {
+        message.textContent = "New email does not fit required format.";
+        message.style.color = "red";
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        message.textContent = "Password must be at least 6 characters.";
+        message.style.color = "red";
+        return;
+      }
+
+      message.textContent = "User account updated successfully!";
+      message.style.color = "green";
+    });
+
+    function cancelUpdate() {
+      if (confirm("Cancel updating this account?")) {
+        form.reset();
+        message.textContent = "Update cancelled.";
+        message.style.color = "gray";
+      }
+    }
+
+    function validateEmail(email) {
+      const re = /^[^@]+@[^@]+\.[^@]+$/;
+      return re.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+  </script>
+</body>
+</html>

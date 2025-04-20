@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Admin Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    /* ===== NAVIGATION BAR ===== */
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #464646;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left img {
+      height: 50px;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .nav-center a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      min-width: 150px;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-box input {
+      height: 35px;
+      width: 180px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+    }
+
+    .logout-btn {
+      background: #f2f2f2;
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+    }
+
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .container {
+      display: flex;
+      height: calc(100vh - 80px);
+      margin-top: 100px;
+      margin-bottom: 50px;
+
+    }
+
+    .left-panel {
+        flex: 1;
+        background: url("images/login1.png") no-repeat center center;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        }
+
+        .welcome-message {
+        background: lightblue;
+        backdrop-filter: blur(8px);
+        border-radius: 16px;
+        padding: 30px 40px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        color: #333;
+        animation: fadeInUp 1s ease-out;
+        }
+
+        .welcome-message h2 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        }
+
+        .welcome-message p {
+        font-size: 1.1rem;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        color: #333;
+        }
+
+        @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        }
+
+    .right-panel {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      padding: 40px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .login-box label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .login-box input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    .login-box button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-box button:hover {
+      background: #0056b3;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer.site-footer {
+      background-color: #333;
+      color: #f0f0f0;
+      padding: 40px 20px 20px;
+      font-size: 0.95rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-section {
+      flex: 1 1 220px;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin: 8px 0;
+    }
+
+    .footer-section ul li a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer-section ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+      font-size: 0.8rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .left-panel {
+        height: 200px;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-center,
+      .nav-right {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: flex-start;
+        padding-top: 10px;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <div class="container">
+    <div class="left-panel">
+        <div class="welcome-message">
+            <h2>Welcome Back!</h2>
+            <p>Let's keep everything sparkling ✨</p>
+        </div>          
+    </div>
+    <div class="right-panel">
+      <div class="login-box">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <select id="userType" required
+          style="width: 100%; height: 40px; padding: 5px; font-size: 1em;">
+            <option value="" disabled selected>Select Role</option>
+            <option value="homeowner">Home Owner</option>
+            <option value="cleaner">Cleaner</option>
+            <option value="admin">Admin</option>
+          </select>
+  
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" required />
+
+          <label for="password">Password:</label>
+          <input type="password" id="password" required />
+
+          <button type="submit">Log In</button>
+          <div id="errorMessage" class="error"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('load', function () {
+        document.getElementById('userType').selectedIndex = 0;
+      });
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (email === "admin@example.com" && password === "password123") {
+        window.location.href = "admin_home.html";
+      } else {
+        document.getElementById("errorMessage").innerText = "Invalid login credentials. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>

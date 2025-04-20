@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search User Accounts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding-top: 100px;
+    }
+
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left img {
+      height: 60px;
+      width: auto;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background-color: transparent;
+    }
+
+    .nav-center a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+      color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background-color: #f2f2f2;
+      font-size: 0.9em;
+    }
+
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      text-align: center;
+      margin: 20px 10px;
+    }
+
+    .search-box input {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .searchdetails {
+      width: 95%;
+      max-width: 1000px;
+      margin: auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .searchdetails th, .searchdetails td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      font-size: 0.9em;
+    }
+
+    .searchdetails th {
+      background-color: #4b4b4b;
+      color: white;
+    }
+
+    .searchdetails tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .searchdetails td[colspan] {
+      text-align: center;
+      color: gray;
+      font-style: italic;
+    }
+
+    footer.site-footer {
+      background-color: #333;
+      color: #f0f0f0;
+      padding: 30px 20px;
+      font-size: 1rem;
+      margin-top: 100px;
+      width: 100%;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .footer-section {
+      flex: 1 1 220px;
+      margin: 10px;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin: 8px 0;
+    }
+
+    .footer-section ul li a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer-section ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      border-top: 1px solid #555;
+      padding-top: 15px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-center, .nav-right {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .searchdetails th, .searchdetails td {
+        padding: 8px;
+        font-size: 0.75em;
+      }
+      .footer-section {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">View ▾</a>
+          <div class="dropdown-content">
+            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UserProfile.html">View Profile</a>
+          </div>
+        </div>
+        <a href="UaCreateUserAccount.html">Create</a>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+  
+  <h1>Search User Accounts</h1>
+
+  <div class="search-box">
+    <input type="text" placeholder="Search by name or email..." id="searchInput" />
+  </div>
+
+  <table class="searchdetails">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Dynamic content -->
+    </tbody>
+  </table>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    const tableBody = document.getElementById("tableBody");
+    const searchInput = document.getElementById("searchInput");
+    let allUsers = [];
+
+    async function fetchUsers() {
+      try {
+        const response = await fetch("/api/users");
+        if (!response.ok) throw new Error("Failed to fetch users");
+        allUsers = await response.json();
+        renderTable(allUsers);
+      } catch (error) {
+        tableBody.innerHTML = `<tr><td colspan="6">Error loading user accounts.</td></tr>`;
+        console.error("Error:", error);
+      }
+    }
+
+    function renderTable(users) {
+      tableBody.innerHTML = "";
+      if (users.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6">No user accounts found.</td></tr>`;
+        return;
+      }
+      users.forEach(user => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${user.fname}</td>
+          <td>${user.lname}</td>
+          <td>${user.email}</td>
+          <td>${user.phone}</td>
+          <td>${user.address || "-"}</td>
+          <td>${user.userType}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = allUsers.filter(user =>
+        user.fname.toLowerCase().includes(query) ||
+        user.lname.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query)
+      );
+      renderTable(filtered);
+    });
+
+    window.addEventListener("load", fetchUsers);
+  </script>
+</body>
+</html>
