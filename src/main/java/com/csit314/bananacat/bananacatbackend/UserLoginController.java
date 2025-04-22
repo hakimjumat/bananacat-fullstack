@@ -1,9 +1,9 @@
 package com.csit314.bananacat.bananacatbackend;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 // import java.util.Map;
@@ -12,23 +12,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
-@RequestMapping("/api/auth")
+
 public class UserLoginController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
+    
+    public UserLoginController(UserService userService) {
+        this.userService = userService;
+    }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        User user = userService.login(loginDTO.getEmail());
 
-        if (user != null) {
-            user.setLoggedIn(true);
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    @PostMapping("/api/auth/login")//need to change path
+    public ResponseEntity<?> Login(@RequestBody LoginDTO loginDTO) {//depends on what format does frontend send, currently @RequestBody is for if frontend sends JSON 
+        String email = loginDTO.getEmail();
+        String password = loginDTO.getPassword();
+
+        User authenticated = userService.authenticate(email, password);
+        if (authenticated != null) {
+            return ResponseEntity.ok(authenticated);//return either String message or a token depends on frontend
         }
+        
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");//return either String message or a token depends on frontend
     }
 
 }
