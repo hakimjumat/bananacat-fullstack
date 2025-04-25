@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()  // allow access to all
             )
             .formLogin(form -> form
-                .loginPage("/loginpg.html")  // optional: treat this as your login page
+                .loginPage("/login.html")  // optional: treat this as your login page
                 .permitAll()
             )
             .csrf(csrf -> csrf.disable());  // disable CSRF for testing/dev (be careful in prod)

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Front Home Page</title>
+    <title>User Admin Home Page</title>
     <style>
       /* Global Styles */
       * {
@@ -99,18 +99,18 @@
         font-size: 0.9em;
         border: 1px solid #ccc;
       }
-      .login-btn {
-      text-decoration: none;
-      color: #333;
-      padding: 8px 15px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      font-size: 0.9em;
-      background-color: #f2f2f2;
-    }
-    .login-btn:hover {
-      background-color: #ddd;
-    }
+      .logout-btn {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 0.9em;
+        background-color: #f2f2f2;
+      }
+      .logout-btn:hover {
+        background-color: #ddd;
+      }
 
       /* Hero Section */
       .hero {
@@ -366,21 +366,21 @@
           <img src="images/bananacat.png" alt="Banana Cat" />
         </div>
         <div class="nav-center">
-          <a href="A2home.html">Home</a>
+          <a href="UserAdminHome.html">Home</a>
           <div class="dropdown">
             <a href="#">View ▾</a>
             <div class="dropdown-content">
-              <a href="viewAccount.html">View Account</a>
-              <a href="viewProfile.html">View Profile</a>
+              <a href="UaViewUserAccount.html">View Account</a>
+              <a href="UserProfile.html">View Profile</a>
             </div>
           </div>
-          <a href="CreateUserAccount.html">Create</a>
+          <a href="UaCreateUserAccount.html">Create</a>
         </div>
         <div class="nav-right">
           <div class="search-box">
             <input type="search" placeholder="Search" />
           </div>
-          <a class="login-btn" href="login.html">Log in</a>
+          <a class="logout-btn" href="login.html">Log in</a>
         </div>
       </div>
     </nav>

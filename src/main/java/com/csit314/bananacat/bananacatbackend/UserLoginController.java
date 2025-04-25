@@ -23,7 +23,7 @@ public class UserLoginController {
     }
 
 
-    @PostMapping("/api/auth/login")//need to change path
+    @PostMapping("/api/auth/login") 
     public ResponseEntity<?> Login(@RequestBody LoginDTO loginDTO) {//depends on what format does frontend send, currently @RequestBody is for if frontend sends JSON 
         String email = loginDTO.getEmail();
         String password = loginDTO.getPassword();

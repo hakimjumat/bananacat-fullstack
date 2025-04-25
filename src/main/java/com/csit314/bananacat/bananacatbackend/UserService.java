@@ -50,13 +50,12 @@ public class UserService {
         Optional<User> userOptional = usersRepository.findByEmail(email);
         
         if (userOptional.isPresent()) {
-            return userOptional.get();
-            // User user = userOptional.get();
+            User user = userOptional.get();
 
-            // if (password.equals(user.getPassword())) {
-            //     return user;
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
             }
-        // }
+        }
         return null;
     }
     public boolean create(String email, String password, UserProfile userprofile, String firstname, String lastname, Integer phonenumber, String address) {
@@ -84,7 +83,7 @@ public class UserService {
 
         User newuser = new User();
         newuser.setEmail(email);
-        newuser.setPassword(passwordEncoder.encode(password));
+        newuser.setPassword(passwordEncoder.encode(password));// database has to store a hashed pass
         newuser.setUserProfile(userprofile);
         newuser.setStatus(Status.ACTIVE);
         newuser.setFirstname(firstname);
