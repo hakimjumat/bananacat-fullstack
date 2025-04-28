@@ -357,7 +357,7 @@
     <div class="right-panel">
       <div class="login-box">
         <h2>Login</h2>
-        <form id="loginForm" onsubmit="handleLogin(event)" method="post">
+        <form id="loginForm">
           <select id="userType" required
           style="width: 100%; height: 40px; padding: 5px; font-size: 1em;">
             <option value="" disabled selected>Select Role</option>
@@ -424,60 +424,18 @@
     window.addEventListener('load', function () {
         document.getElementById('userType').selectedIndex = 0;
       });
-      async function handleLogin(event) {
-          event.preventDefault();
-      
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-      
-          try {
-            const response = await fetch("http://localhost:8080/api/auth/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-                
-              },
-              body: JSON.stringify({ email, password })
-            });
-      
-            if (response.ok) {
-              const userText = await response.text();
-              console.log("Raw response text:", userText); //for logging error, can delete
-              if (!userText) {
-                alert("Invalid email or password")
-              } else {
-                try {
-                  const user = JSON.parse(userText);
-                  console.log("User received:", user);
-                  const selectedProfile = document.getElementById("userType").value;
-                  if (selectedProfile.toUpperCase() === user.userProfile) {
-                    alert("Login successful! Welcome " + user.firstname);
-                    localStorage.setItem("user", JSON.stringify(user));
-                    if (selectedProfile.toUpperCase() == 'ADMIN') {
-                      window.location.href = "UserAdminHome.html";
-                    }
-                    // else if (selectedProfile.toUpperCase() == 'HOMEOWNER'){
-                    //   window.location.href = "HomeownerHome.html";
-                    // }
-                    // else if (selectedProfile.toUpperCase() == 'CLEANER'){
-                    //   window.location.href = "CleanerHome.html";
-                    // }
-                    
-                  }
-            
-                } catch (parseError) {
-                  console.error("Error parsing JSON:", parseError);
-                  alert("Unexpected response format.");
-                }
-              }
-            } else {
-              alert("Invalid credentials");
-            }
-          } catch (error) {
-            console.error("Login error:", error);
-            alert("Something went wrong!");
-          }
-        }
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (email === "admin@example.com" && password === "password123") {
+        window.location.href = "admin_home.html";
+      } else {
+        document.getElementById("errorMessage").innerText = "Invalid login credentials. Please try again.";
+      }
+    });
   </script>
 </body>
 </html>

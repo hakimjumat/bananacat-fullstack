@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()  // allow access to static files without login
             )
             .formLogin(form -> form
-                .loginPage("/Ualogin.html")  // optional: treat this as your login page
+                .loginPage("/loginpg.html")  // optional: treat this as your login page
                 .permitAll()
             )
             .csrf(csrf -> csrf.disable());  // disable CSRF for testing/dev (be careful in prod)
