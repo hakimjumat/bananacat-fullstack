@@ -157,14 +157,15 @@ public class UserAccountEntity {
     }
     
     @Transactional
-    public ResponseEntity<?> UpdateUserAccount(UserAccountRepository userrepository) {
-
+    public ResponseEntity<?> update(UserAccountRepository userrepository, PasswordEncoder passwordEncoder) {
+        System.out.println("Password to be updated: " + this.password);
         if (this.email == null || this.email.isBlank()) {
-            return ResponseEntity.ok("Email not provided");
+            return ResponseEntity.badRequest().body("Email is required to update the user account.");
         }
 
-        if ((this.userprofile != null && this.userprofile.isBlank()) || 
-            (this.firstname != null && this.firstname.isBlank()) || 
+        if ((this.phonenumber != null) || 
+            (this.firstname != null && this.firstname.isBlank()) ||
+            (this.address != null && this.address.isBlank()) || 
             (this.lastname != null && this.lastname.isBlank())) {
             return ResponseEntity.ok("Some fields are blank");
         }
@@ -194,11 +195,20 @@ public class UserAccountEntity {
             if (this.address != null) {
                 org.setAddress(this.address);
             }
+            if (this.userprofile != null && !this.userprofile.isBlank()) {
+                org.setUserprofile(this.userprofile);
+            }
+            if (this.status != null && !this.status.isBlank()) {
+                org.setStatus(this.status);
+            }
+            if (this.password != null && !this.password.isBlank()) {
+                org.setPassword(passwordEncoder.encode(this.password));
+            }
             
             userrepository.save(org);
-            return ResponseEntity.ok(org);
+            return ResponseEntity.ok("User account updated successfully.");
         } else {
-            return ResponseEntity.ok("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
     }
 
