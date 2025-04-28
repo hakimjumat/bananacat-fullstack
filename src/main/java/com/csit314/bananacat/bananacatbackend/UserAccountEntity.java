@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -75,32 +77,38 @@ public class UserAccountEntity {
         this.address = address;
     }
     
-    public ResponseEntity<?> Login(UserAccountRepository usersrepository, HttpSession session, PasswordEncoder passwordEncoder) {
-        if(this.email == null || this.password == null) {
-            return ResponseEntity.ok("Email or password empty");
+    public static ResponseEntity<?> login(UserAccountRepository usersrepository, HttpSession session, PasswordEncoder passwordEncoder, String email, String password) {
+        if (email == null || password == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Email or password cannot be empty");
         }
-
-        Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(this.email);
-
+    
+        Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
+    
         if (useroptional.isPresent()) {
             UserAccountEntity auth = useroptional.get();
-            if (passwordEncoder.matches(this.password, auth.getPassword())) {
-                session.setAttribute("useremail", this.email);
-                return (ResponseEntity.ok("Login successful"));
+            if (passwordEncoder.matches(password, auth.getPassword())) {
+                session.setAttribute("useremail", email);
+                return ResponseEntity.ok(auth); //  Return the full user object
             } else {
-                return ResponseEntity.ok("Wrong Password");
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("Wrong password");
             }
         } else {
-            return ResponseEntity.ok("User not found");
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("User not found");
         }
     }
-
-    public ResponseEntity<?> Logout(HttpSession session) {
+    
+    public ResponseEntity<?> logout(HttpSession session) {
         if (session.getAttribute("useremail") != null) {
             session.invalidate();
             return ResponseEntity.ok("Logout successful");
         } else {
-            return ResponseEntity.ok("User not logged in");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
         }
     }
 

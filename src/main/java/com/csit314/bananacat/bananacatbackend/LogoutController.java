@@ -16,6 +16,6 @@ public class LogoutController {
 
     @PostMapping("/api/auth/logout")
     public ResponseEntity<?> LogoutC(HttpSession session) {
-        return userEntity.Logout(session);
+        return userEntity.logout(session);
     }
 }

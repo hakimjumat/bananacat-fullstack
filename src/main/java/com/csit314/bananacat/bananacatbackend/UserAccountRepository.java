@@ -21,6 +21,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
 
     @Modifying
     @Transactional
-    @Query("UPDATE UserAccountEntity u SET u.userprofile = :newProfile WHERE u.userprofile = oldProfile")
+    @Query("UPDATE UserAccountEntity u SET u.userprofile = :newProfile WHERE u.userprofile = :oldProfile")
     void UpdateUserProfile(@Param("newProfile") String newProfile, @Param("oldProfile") String oldProfile);
 }
