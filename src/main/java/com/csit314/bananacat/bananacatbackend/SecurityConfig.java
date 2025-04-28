@@ -2,11 +2,10 @@ package com.csit314.bananacat.bananacatbackend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-
 
 @Configuration
 public class SecurityConfig {
@@ -15,10 +14,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()  // allow access to all
+                .anyRequest().permitAll()  // allow access to static files without login
             )
             .formLogin(form -> form
-                .loginPage("/login.html")  // optional: treat this as your login page
+                .loginPage("/loginpg.html")  // optional: treat this as your login page
                 .permitAll()
             )
             .csrf(csrf -> csrf.disable());  // disable CSRF for testing/dev (be careful in prod)
@@ -31,3 +30,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+

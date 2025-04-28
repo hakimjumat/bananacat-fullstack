@@ -482,34 +482,6 @@
 </footer>
 
 <script>
-  let formMode = 'signup';
-
-  function toggleFormMode() {
-    formMode = formMode === 'login' ? 'signup' : 'login';
-    updateForm();
-  }
-
-  function updateForm() {
-    const fname = document.getElementById('fname');
-    const lname = document.getElementById('lname');
-    const email = document.getElementById('email');
-    const formTitle = document.getElementById('form-title');
-    const formButton = document.getElementById('form-button');
-
-    if (formMode === 'login') {
-      fname.style.display = 'none';
-      lname.style.display = 'none';
-      email.style.display = 'none';
-      formTitle.textContent = 'Sign In';
-      formButton.textContent = 'Log In';
-    } else {
-      fname.style.display = 'block';
-      lname.style.display = 'block';
-      email.style.display = 'block';
-      formTitle.textContent = 'Create Account';
-      formButton.textContent = 'Create Account';
-    }
-  }
 
   function handleFormSubmit(e) {
     e.preventDefault();
