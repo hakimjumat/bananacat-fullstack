@@ -12,7 +12,6 @@ import java.util.Map;
 public class LoginController {
 
     private final UserAccountRepository usersrepository;
-    private HttpSession session;
     private final PasswordEncoder passwordEncoder;
 
     public LoginController (UserAccountRepository usersrepository, PasswordEncoder passwordEncoder) {
