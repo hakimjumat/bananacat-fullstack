@@ -162,18 +162,12 @@ public class UserAccountEntity {
         //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
         // }
 
-        // if (this.phonenumber == null || this.phonenumber <= 0) {
-        //     return ResponseEntity.ok().body("Phone number is required and must be a positive integer.");
-        // }
-        // if (this.firstname == null || this.firstname.isBlank()) {
-        //     return ResponseEntity.badRequest().body("First name is required.");
-        // }
-        // if (this.lastname == null || this.lastname.isBlank()) {
-        //     return ResponseEntity.badRequest().body("Last name is required.");
-        // }
-        // if (this.address == null || this.address.isBlank()) {
-        //     return ResponseEntity.badRequest().body("Address is required.");
-        // }
+        if ((this.phonenumber == null) || 
+            (this.firstname != null && this.firstname.isBlank()) ||
+            (this.address != null && this.address.isBlank()) || 
+            (this.lastname != null && this.lastname.isBlank())) {
+            return ResponseEntity.ok("Some fields are blank");
+        }
 
         if (this.userprofile.equals("Home Owner")) {
             if  (this.address.isBlank()) {
