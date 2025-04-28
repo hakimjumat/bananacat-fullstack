@@ -330,7 +330,7 @@
 
       <div class="form-group">
         <label for="contact">Phone Number</label>
-        <input type="tel" id="phonenumber" />
+        <input type="number" id="phonenumber" />
       </div>
 
       <div class="form-group">
@@ -414,6 +414,7 @@
         document.getElementById("phonenumber").value = selectedUser.phonenumber || "";
         document.getElementById("address").value = selectedUser.address || "";
         document.getElementById("userprofile").value = selectedUser.userprofile || "";
+        document.getElementById("status").value = selectedUser.status || "";
       }
     });
 
@@ -454,6 +455,8 @@
         userprofile,
         status
       };
+
+      payload.phonenumber = parseInt(payload.phonenumber, 10);
 
       try {
         // Send the API request to the backend
