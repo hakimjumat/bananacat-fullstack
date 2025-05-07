@@ -470,6 +470,7 @@
 
         if (response.ok) {
           console.log("Form submitted with payload:", payload);
+          console.log(JSON.stringify(payload));
           const userText = await response.text();
           console.log("Raw response text:", userText);
           message.textContent = "User account updated successfully!";

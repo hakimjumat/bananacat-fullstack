@@ -18,7 +18,6 @@ public class UserAccountEntity {
 
     @Id
     private String email;
-    @JsonIgnore
     private String password;
     private String userprofile;
     private String status;
@@ -161,7 +160,7 @@ public class UserAccountEntity {
         // if (this.email == null || this.email.isBlank()) {
         //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
         // }
-
+        System.out.println(getPassword());
         if ((this.phonenumber == null) || 
             (this.firstname != null && this.firstname.isBlank()) ||
             (this.address != null && this.address.isBlank()) || 
@@ -200,6 +199,7 @@ public class UserAccountEntity {
             if (this.status != null && !this.status.isBlank()) {
                 org.setStatus(this.status);
             }
+
             if (this.password != null && !this.password.isBlank()) {
                 org.setPassword(passwordEncoder.encode(this.password));
             }
