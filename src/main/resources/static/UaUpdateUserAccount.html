@@ -302,10 +302,10 @@
   <!-- Form Section -->
   <div class="container">
     <h2>Update User Account</h2>
-    <form id="update-form" >
+    <form id="update-form">
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" id="email" readonly />
+        <input type="email" id="email"  />
       </div>
 
       <div class="form-group">
@@ -315,12 +315,12 @@
 
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" id="firstname" />
+        <input type="text" id="firstName" />
       </div>
 
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastname" />
+        <input type="text" id="lastName" />
       </div>
 
       <div class="form-group">
@@ -330,24 +330,23 @@
 
       <div class="form-group">
         <label for="contact">Phone Number</label>
-        <input type="number" id="phonenumber" />
+        <input type="tel" id="contact" />
       </div>
 
       <div class="form-group">
-        <label for="profile">Role</label>
-        <select id="userprofile">
-          <option value="ADMIN">Admin</option>
-          <option value="HOMEOWNER">Home Owner</option>
-          <option value="CLEANER">Cleaner</option>
-          <option value="PLATFORMMANAGER">Platform Manager</option>
+        <label for="role">Role</label>
+        <select id="role">
+          <option value="homeowner">Home Owner</option>
+          <option value="cleaner">Cleaner</option>
+          <option value="admin">Platform Manager</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="status">Account Status</label>
         <select id="status">
-          <option value="ACTIVE">Active</option>
-          <option value="SUSPENDED">Suspended</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
         </select>
       </div>
 

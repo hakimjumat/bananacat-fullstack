@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cleaner History</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: #a6b9ee;
+      color: #333;
+      padding: 20px 40px;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+    a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 200px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .container {
+      padding: 30px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .history-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .history-card h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .history-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .status {
+      font-weight: bold;
+      color: green;
+    }
+    .date {
+      font-style: italic;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>Cleaner Service History</div>
+    <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+  </div>
+
+  <div class="section">
+    <div class="action-buttons">
+      <button class="btn" onclick="window.location.href='ViewCleanersHO.html'">View Cleaners</button>
+      <div class="dropdown">
+        <button class="btn" style="width: 200px;">
+            <a href="" style="text-decoration: none; color: white;">View History▾</a></button>
+        <div class="dropdown-content">
+          <a href="ViewHistoryHO.html" style="text-decoration: none; color: white;">Cleaner History</a>
+          <a href="ViewHOservicehistory.html" style="text-decoration: none; color: white;">Past Service History</a>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
+      <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
+      <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h2>Past Services by Cleaner</h2>
+    <div class="history-grid" id="historyGrid">
+      <!-- History items will be populated here -->
+    </div>
+  </div>
+
+  <script>
+    // Static preview data
+    const data = [
+      {
+        "serviceType": "Deep Cleaning",
+        "date": "2024-12-01",
+        "location": "123 Main St, NY",
+        "feedback": "Very thorough job, highly satisfied.",
+        "status": "Completed"
+      },
+      {
+        "serviceType": "Regular Cleaning",
+        "date": "2024-11-15",
+        "location": "45 Park Ave, NY",
+        "feedback": "On time and professional.",
+        "status": "Completed"
+      }
+    ];
+
+    const grid = document.getElementById('historyGrid');
+
+    data.forEach(service => {
+      const card = document.createElement('div');
+      card.className = 'history-card';
+      card.innerHTML = `
+        <h3>${service.serviceType}</h3>
+        <p class="date">${new Date(service.date).toLocaleDateString()}</p>
+        <p><strong>Location:</strong> ${service.location}</p>
+        <p><strong>Feedback:</strong> ${service.feedback}</p>
+        <p class="status">Status: ${service.status}</p>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+<!--
+  <script>
+    // Replace with your actual backend endpoint
+    const apiUrl = 'https://your-backend.com/api/history?cleanerId=123';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const grid = document.getElementById('historyGrid');
+        if (!data.length) {
+          grid.innerHTML = '<p>No past services found for this cleaner.</p>';
+          return;
+        }
+
+        data.forEach(service => {
+          const card = document.createElement('div');
+          card.className = 'history-card';
+          card.innerHTML = `
+            <h3>${service.serviceType}</h3>
+            <p class="date">${new Date(service.date).toLocaleDateString()}</p>
+            <p><strong>Location:</strong> ${service.location}</p>
+            <p><strong>Feedback:</strong> ${service.feedback}</p>
+            <p class="status">Status: ${service.status}</p>
+          `;
+          grid.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading history:', error);
+        document.getElementById('historyGrid').innerHTML = '<p>Error loading history data. Try again later.</p>';
+      });
+  </script>
+-->
+</body>
+</html>
