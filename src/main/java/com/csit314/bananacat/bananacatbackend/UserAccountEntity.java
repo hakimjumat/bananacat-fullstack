@@ -1,7 +1,6 @@
 package com.csit314.bananacat.bananacatbackend;
 
 import java.util.Optional;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -76,19 +75,15 @@ public class UserAccountEntity {
         this.address = address;
     }
     
-    public static ResponseEntity<?> login(UserAccountRepository usersrepository, HttpSession session, PasswordEncoder passwordEncoder, String email, String password) {
-        if (email == null || password == null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Email or password cannot be empty");
-        }
-    
+    public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
+
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
         Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
     
         if (useroptional.isPresent()) {
             UserAccountEntity auth = useroptional.get();
             if (passwordEncoder.matches(password, auth.getPassword())) {
-                session.setAttribute("useremail", email);
                 return ResponseEntity.ok(auth); //  Return the full user object
             } else {
                 return ResponseEntity
