@@ -1,7 +1,6 @@
 package com.csit314.bananacat.bananacatbackend;
 
 import java.util.Optional;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,7 +17,6 @@ public class UserAccountEntity {
 
     @Id
     private String email;
-    @JsonIgnore
     private String password;
     private String userprofile;
     private String status;
@@ -77,19 +75,15 @@ public class UserAccountEntity {
         this.address = address;
     }
     
-    public static ResponseEntity<?> login(UserAccountRepository usersrepository, HttpSession session, PasswordEncoder passwordEncoder, String email, String password) {
-        if (email == null || password == null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Email or password cannot be empty");
-        }
-    
+    public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
+
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
         Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
     
         if (useroptional.isPresent()) {
             UserAccountEntity auth = useroptional.get();
             if (passwordEncoder.matches(password, auth.getPassword())) {
-                session.setAttribute("useremail", email);
                 return ResponseEntity.ok(auth); //  Return the full user object
             } else {
                 return ResponseEntity
@@ -161,7 +155,7 @@ public class UserAccountEntity {
         // if (this.email == null || this.email.isBlank()) {
         //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
         // }
-
+        System.out.println(getPassword());
         if ((this.phonenumber == null) || 
             (this.firstname != null && this.firstname.isBlank()) ||
             (this.address != null && this.address.isBlank()) || 
@@ -200,6 +194,7 @@ public class UserAccountEntity {
             if (this.status != null && !this.status.isBlank()) {
                 org.setStatus(this.status);
             }
+
             if (this.password != null && !this.password.isBlank()) {
                 org.setPassword(passwordEncoder.encode(this.password));
             }
