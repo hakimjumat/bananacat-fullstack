@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Past Service History</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background: #a6b9ee;
+      color: #333;
+      padding: 20px 40px;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 200px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .history-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-item h3 {
+      margin: 0;
+      color: #2980b9;
+    }
+
+    .details {
+      margin-top: 8px;
+      color: #555;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>Past Service History</div>
+        <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+      </div>
+
+  <div class="section">
+    <div class="action-buttons">
+      <button class="btn" onclick="window.location.href='ViewCleanersHO.html'">View Cleaners</button>
+      <div class="dropdown">
+        <button class="btn" style="width: 200px;">
+            <a href="" style="text-decoration: none; color: white;">View History▾</a></button>
+        <div class="dropdown-content">
+          <a href="ViewHistoryHO.html" style="text-decoration: none; color: white;">Cleaner History</a>
+          <a href="ViewHOservicehistory.html" style="text-decoration: none; color: white;">Past Service History</a>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
+      <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
+      <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
+    </div>
+  </div>
+  <div class="container">
+    <h2>Past Cleaning Services</h2>
+    <div id="history-container"></div>
+  </div>
+
+  <script>
+    // Sample static data (simulate backend)
+    const historyData = [
+      {
+        cleaner: "Jessica Taylor",
+        serviceType: "Deep Cleaning",
+        date: "2024-12-01",
+        location: "123 Main St, NY",
+        notes: "Very thorough and efficient. Will book again."
+      },
+      {
+        cleaner: "David Smith",
+        serviceType: "Regular Cleaning",
+        date: "2024-11-15",
+        location: "45 Park Ave, NY",
+        notes: "Great attitude, came on time, highly recommended."
+      },
+      {
+        cleaner: "Linda Chen",
+        serviceType: "Move-Out Cleaning",
+        date: "2024-10-01",
+        location: "89 Market St, NY",
+        notes: "Left the apartment spotless! Very polite."
+      }
+    ];
+
+    const container = document.getElementById('history-container');
+
+    historyData.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      div.innerHTML = `
+        <h3>${item.serviceType} – ${item.date}</h3>
+        <div class="details">
+          <strong>Cleaner:</strong> ${item.cleaner}<br>
+          <strong>Location:</strong> ${item.location}<br>
+          <strong>Notes:</strong> ${item.notes}
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+<!--
+<script>
+    const userEmail = "homeowner1@example.com"; 
+
+    fetch(`http://localhost:5000/api/history/${userEmail}`)
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById("history-container");
+        container.innerHTML = "";
+
+        data.forEach(service => {
+          const div = document.createElement("div");
+          div.className = "history-card";
+          div.innerHTML = `
+            <strong>Date:</strong> ${service.date}<br>
+            <strong>Service Type:</strong> ${service.serviceType}<br>
+            <strong>Location:</strong> ${service.location}<br>
+            <strong>Cleaner:</strong> ${service.cleaner}<br>
+            <strong>Feedback:</strong> ${service.feedback}<br>
+            <strong>Status:</strong> ${service.status}
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById("history-container").innerText = "Failed to load history.";
+        console.error(err);
+      });
+  </script>
+-->
+</body>
+</html>

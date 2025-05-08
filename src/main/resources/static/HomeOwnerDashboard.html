@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cleaner Dashboard</title>
+  <title>Home Owner Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +46,7 @@
     }
 
     .hero {
-      background: url('images/cleanerdashboard.jpg') center/cover no-repeat;
+      background: url('images/HomeOwner.webp') center/cover no-repeat;
       color: white;
       padding: 100px 40px;
       height: 600px;
@@ -120,6 +120,8 @@
         width: 180px;
         height: auto;
         object-fit: contain;
+        border-top-left-radius: 35px;
+        border-bottom-right-radius: 35px;
     }
 
     .section {
@@ -145,7 +147,7 @@
     }
 
     .btn {
-      flex: 1 1 220px;
+      flex: 1 1 150px;
       background: #007bff;
       color: white;
       padding: 15px;
@@ -160,7 +162,30 @@
     .btn:hover {
       background: #0056b3;
     }
-
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 200px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
     .features {
       display: flex;
       gap: 40px;
@@ -372,74 +397,82 @@
 <body>
 
   <div class="header">
-    <h1>Cleaner Dashboard</h1>
+    <h1>HomeOwner Dashboard</h1>
     <span><button type="submit" class="logout-btn"><a href="logout.html" style="text-decoration: none;">Log Out</a></button></span>
   </div>
 
   <div class="hero">
     <div class="hero-content">
-      <h2>A Happy Home is a <br><strong style="color: #183ec6;">CLEAN HOME</strong></h2>
-      <p>Trusted, professional home cleaning services that shine every time.</p>
-    </div>
+        <h2>Welcome Home, <br><strong style="color: #96e70b;">We'll Make It Sparkle</strong></h2>
+        <p>Find trusted, verified cleaners to keep your home spotless and stress-free.</p>
+      </div>
   </div>
 
   <div class="section">
     <div class="action-buttons">
-      <button class="btn" onclick="window.location.href='CreateServiceCleaner.html'">Create New Service</button>
-      <button class="btn" onclick="window.location.href='ViewServiceCleaner.html'">View Services</button>
-      <button class="btn" onclick="window.location.href='ViewshortlistsCleaner.html'">View Service Shortlists</button>
-      <button class="btn" onclick="window.location.href='UpdateServiceCleaner.html'">Update Services</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Deactivate</button>
+      <button class="btn" onclick="window.location.href='ViewCleanersHO.html'">View Cleaners</button>
+      <div class="dropdown">
+        <button class="btn" style="width: 200px;">
+            <a href="" style="text-decoration: none; color: white;">View History▾</a></button>
+        <div class="dropdown-content">
+          <a href="ViewHistoryHO.html" style="text-decoration: none; color: white;">Cleaner History</a>
+          <a href="ViewHOservicehistory.html" style="text-decoration: none; color: white;">Past Service History</a>
+        </div>
+      </div>
+      
+      <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
+      <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
+      <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
+      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
     </div>
   </div>
 
-  <div class="brands">
-    <img src="images/cleaning1.jpg" alt="Kiwi Cleaning Logo" style="width: 300px; height: 150px;">
-    <img src="images/cleaning2.jpg" alt="Greenchild Cleaning Logo" style="width: 300px; height: 150px;">
-    <img src="images/cleaning3.webp" alt="Times Cleaning Services" style="width: 300px; height: 150px;">
-    <img src="images/cleaning4.jpeg" alt="Fleet Cleaners" style="width: 300px; height: 150px;">
-    <img src="images/cleaning5.png" alt="Cleaning Today Logo" style="width: 300px; height: 150px;">
-  </div>  
-
+  <div class="brands" style="width: 100%; gap: 20px;">
+    <div style="text-align: center;">
+      <img src="images/Easybooking.png" alt="Easy Booking" style="width: 250px; height: 150px;">
+      <p>Easy Booking</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/realtimetracking.jpg" alt="Real-Time Tracking" style="width: 250px; height: 150px;">
+      <p>Real-Time Tracking</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/verifiedcleaners.webp" alt="Verified Cleaners" style="width: 250px; height: 150px;">
+      <p>Verified Cleaners</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/plan.jpg" alt="Affordable Plans" style="width: 250px; height: 150px;">
+      <p>Affordable Plans</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/support.png" alt="Support Team" style="width: 250px; height: 150px;">
+      <p>Support Team</p>
+    </div>
+  </div>
+   
+  <br/><br/>
   <div class="section">
-    <h2>Superior Home Cleaning</h2>
+    <h2>Everything You Need for a Spotless Home</h2>
     <div class="features">
       <div class="feature">
-        <img src="images/cleaningservices.png" style="width: 70px; height: 70px;"/>
-        <h3>Trusted Professionals</h3>
-        <p>All cleaners are background checked and highly rated.</p>
+        <img src="https://img.icons8.com/ios-filled/50/booking.png" alt="Booking">
+        <h3>Book in Minutes</h3>
+        <p>Choose your service, date, and time—all with a few clicks.</p>
       </div>
       <div class="feature">
-        <img src="https://img.icons8.com/ios-filled/50/calendar.png"/>
-        <h3>Next-Day Availability</h3>
-        <p>Book today, clean tomorrow – simple and fast.</p>
+        <img src="https://img.icons8.com/ios-filled/50/group-foreground-selected.png" alt="Cleaner Profiles">
+        <h3>Browse Cleaners</h3>
+        <p>View profiles, ratings, and reviews to choose your ideal cleaner.</p>
       </div>
       <div class="feature">
-        <img src="https://img.icons8.com/ios-filled/50/checkmark--v1.png"/>
-        <h3>100% Satisfaction</h3>
-        <p>Your happiness is our priority. Or your money back.</p>
-      </div>
-    </div>
-
-    </div>
-
-  <div class="testimonials">
-    <h2>Testimonials</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        "These guys are amazing. Always on time and super thorough!"
-        <span>- Mark Lewis</span>
-      </div>
-      <div class="testimonial">
-        "They made my apartment look brand new again!"
-        <span>- Maria Nelson</span>
-      </div>
-      <div class="testimonial">
-        "Professional, friendly, and super easy to book!"
-        <span>- Susan Moore</span>
+        <img src="https://img.icons8.com/ios-filled/50/alarm.png" alt="Reminders">
+        <h3>Track Appointments</h3>
+        <p>Stay updated with reminders and real-time cleaner tracking.</p>
       </div>
     </div>
   </div>
+  
 
   <!-- Footer -->
 <footer class="site-footer">

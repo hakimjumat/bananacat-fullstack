@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Shortlist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: #a6b9ee;
+      color: #333;
+      padding: 20px 40px;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 200px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+    .container {
+      padding: 30px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .shortlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .shortlist-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .shortlist-card:hover {
+      transform: translateY(-5px);
+    }
+    .shortlist-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .shortlist-card h3 {
+      margin: 10px 0 5px 0;
+    }
+    .rating {
+      color: #f39c12;
+      margin-bottom: 10px;
+    }
+    .action-btns {
+      display: flex;
+      gap: 30px;
+      margin-top: 10px;
+    }
+    .action-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .action-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+    <div class="header">
+        <div>View Shortlist</div>
+        <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+      </div>
+    
+      <div class="section">
+        <div class="action-buttons">
+          <button class="btn" onclick="window.location.href='ViewCleanersHO.html'">View Cleaners</button>
+          <div class="dropdown">
+            <button class="btn" style="width: 200px;">
+                <a href="" style="text-decoration: none; color: white;">View History▾</a></button>
+            <div class="dropdown-content">
+              <a href="ViewHistoryHO.html" style="text-decoration: none; color: white;">Cleaner History</a>
+              <a href="ViewHOservicehistory.html" style="text-decoration: none; color: white;">Past Service History</a>
+            </div>
+          </div>
+          
+          <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
+          <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
+          <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
+          <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
+          <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
+        </div>
+      </div>
+  <div class="container">
+    <h2>Your Shortlist</h2>
+    <div class="shortlist-grid" id="shortlistGrid">
+        
+    </div>
+  </div>
+
+  <script>
+    // Static preview data for the shortlist
+    const shortlistData = [
+      {
+        "name": "Jessica Taylor",
+        "rating": "★★★★☆",
+        "image": "images/cleaner1.jpg",
+        "specialty": "Deep Cleaning & Eco-Friendly",
+        "id": 1
+      },
+      {
+        "name": "David Smith",
+        "rating": "★★★★★",
+        "image": "images/cleaner2.jpg",
+        "specialty": "Apartment & Small Homes",
+        "id": 2
+      },
+      {
+        "name": "Linda Chen",
+        "rating": "★★★★☆",
+        "image": "images/cleaner3.jpg",
+        "specialty": "Pet-Friendly & Bilingual",
+        "id": 3
+      }
+    ];
+
+    const grid = document.getElementById('shortlistGrid');
+
+    shortlistData.forEach(cleaner => {
+      const card = document.createElement('div');
+      card.className = 'shortlist-card';
+      card.innerHTML = `
+        <h3>${cleaner.name}</h3>
+        <div class="rating">${cleaner.rating}</div>
+        <p><strong>Specialty:</strong> ${cleaner.specialty}</p>
+        <div class="action-btns">
+          <button class="action-btn" onclick="window.location.href='UserProfile.html'">View Details</button>
+          <button class="action-btn">Remove from Shortlist</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
