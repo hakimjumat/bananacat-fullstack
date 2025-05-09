@@ -1,7 +1,6 @@
 package com.csit314.bananacat.bananacatbackend;
 
 import java.util.Optional;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,7 +17,6 @@ public class UserAccountEntity {
 
     @Id
     private String email;
-    @JsonIgnore
     private String password;
     private String userprofile;
     private String status;
@@ -77,19 +75,15 @@ public class UserAccountEntity {
         this.address = address;
     }
     
-    public static ResponseEntity<?> login(UserAccountRepository usersrepository, HttpSession session, PasswordEncoder passwordEncoder, String email, String password) {
-        if (email == null || password == null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Email or password cannot be empty");
-        }
-    
+    public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
+
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
         Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
     
         if (useroptional.isPresent()) {
             UserAccountEntity auth = useroptional.get();
             if (passwordEncoder.matches(password, auth.getPassword())) {
-                session.setAttribute("useremail", email);
                 return ResponseEntity.ok(auth); //  Return the full user object
             } else {
                 return ResponseEntity
@@ -161,7 +155,7 @@ public class UserAccountEntity {
         // if (this.email == null || this.email.isBlank()) {
         //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
         // }
-
+        System.out.println(getPassword());
         if ((this.phonenumber == null) || 
             (this.firstname != null && this.firstname.isBlank()) ||
             (this.address != null && this.address.isBlank()) || 
@@ -200,6 +194,7 @@ public class UserAccountEntity {
             if (this.status != null && !this.status.isBlank()) {
                 org.setStatus(this.status);
             }
+
             if (this.password != null && !this.password.isBlank()) {
                 org.setPassword(passwordEncoder.encode(this.password));
             }
@@ -236,4 +231,54 @@ public class UserAccountEntity {
     public ResponseEntity<?> ViewUserAccountList(UserAccountRepository usersrepository) {
         return ResponseEntity.ok(usersrepository.findAll());
     }
+
+    //user story #22
+    public ResponseEntity<?> ViewCleanersList() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        List<UserAccountEntity> CList = usersrepository.findCleaners("cleaners");
+        return ResponseEntity.ok(CList);
+    }
+
+    //user story #26
+    @Transactional
+    public ResponseEntity<?> UpdateAccountForHomeOwner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
+        if  (this.address.isBlank()) {
+            return ResponseEntity.ok("Home owner cannot have empty address");
+        }
+
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity org = userOptional.get();
+            if (this.firstname != null) {
+                org.setFirstname(this.firstname);
+            }
+            if (this.lastname != null) {
+                org.setLastname(this.lastname);
+            }
+            if (this.phonenumber != null) {
+                org.setPhonenumber(this.phonenumber);
+            }
+            if (this.address != null) {
+                org.setAddress(this.address);
+            }
+            usersrepository.save(org);
+            return ResponseEntity.ok(org);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User Story #28
+    public ResponseEntity<?> SearchCleaner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmailandProfile(this.email, "cleaner");
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(userOptional.get());
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
 }
+
