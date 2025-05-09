@@ -231,4 +231,54 @@ public class UserAccountEntity {
     public ResponseEntity<?> ViewUserAccountList(UserAccountRepository usersrepository) {
         return ResponseEntity.ok(usersrepository.findAll());
     }
+
+    //user story #22
+    public ResponseEntity<?> ViewCleanersList() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        List<UserAccountEntity> CList = usersrepository.findCleaners("cleaners");
+        return ResponseEntity.ok(CList);
+    }
+
+    //user story #26
+    @Transactional
+    public ResponseEntity<?> UpdateAccountForHomeOwner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
+        if  (this.address.isBlank()) {
+            return ResponseEntity.ok("Home owner cannot have empty address");
+        }
+
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity org = userOptional.get();
+            if (this.firstname != null) {
+                org.setFirstname(this.firstname);
+            }
+            if (this.lastname != null) {
+                org.setLastname(this.lastname);
+            }
+            if (this.phonenumber != null) {
+                org.setPhonenumber(this.phonenumber);
+            }
+            if (this.address != null) {
+                org.setAddress(this.address);
+            }
+            usersrepository.save(org);
+            return ResponseEntity.ok(org);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User Story #28
+    public ResponseEntity<?> SearchCleaner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmailandProfile(this.email, "cleaner");
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(userOptional.get());
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
 }
+
