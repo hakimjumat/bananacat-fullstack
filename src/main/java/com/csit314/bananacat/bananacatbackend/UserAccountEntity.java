@@ -24,6 +24,7 @@ public class UserAccountEntity {
     private String lastname;
     private Integer phonenumber;
     private String address;
+    private Integer NumberofPageView; //for User story #15, rmb to update db make it default 0, cannot be null after account creation cause of nullpointerexception
     
     public String getEmail() {
         return email;
@@ -49,6 +50,9 @@ public class UserAccountEntity {
     public String getAddress() {
         return address;
     }
+    public Integer getNumberofPageView() {
+        return NumberofPageView;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -73,6 +77,9 @@ public class UserAccountEntity {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public void increaseNumberofPageView() {
+        NumberofPageView++;
     }
     
     public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
@@ -279,6 +286,39 @@ public class UserAccountEntity {
         } else {
             return ResponseEntity.ok("User not found");
         }
+    }
+
+    //User Story not yet created
+    public ResponseEntity<?> ViewCleaner() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity result = userOptional.get();
+            result.increaseNumberofPageView();//record number of page view
+            usersrepository.save(result);//update db
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User story #15
+    public ResponseEntity<?> NumberofPageViews() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity result = userOptional.get();
+            return ResponseEntity.ok(result.getNumberofPageView());
+        } else {
+            return ResponseEntity.ok("not found");
+        }
+    }
+
+    //User story #16
+    public ResponseEntity<?> NumberofShortlist() {
+        shortlistRepository slRepository = shortlistRepositoryInjector.repo;
+        int result = slRepository.CountByEmail(this.email);
+        return ResponseEntity.ok(result);
     }
 }
 
