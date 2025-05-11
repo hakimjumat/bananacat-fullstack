@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import jakarta.transaction.Transactional;
-import java.util.*;
 
 public interface UserAccountRepository extends JpaRepository<UserAccountEntity, String>{
 
@@ -25,7 +24,4 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
     @Transactional
     @Query("UPDATE UserAccountEntity u SET u.userprofile = :newProfile WHERE u.userprofile = :oldProfile")
     void UpdateUserProfile(@Param("newProfile") String newProfile, @Param("oldProfile") String oldProfile);
-
-    @Query("SELECT u FROM UserAccountEntity u WHERE u.userprofile = :role")
-    List<UserAccountEntity> findCleaners(@Param("role") String role);
 }
