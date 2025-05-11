@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -235,17 +234,6 @@ public class UserAccountEntity {
         }
     }
 
-    public ResponseEntity<?> ViewUserAccountList(UserAccountRepository usersrepository) {
-        return ResponseEntity.ok(usersrepository.findAll());
-    }
-
-    //user story #22
-    public ResponseEntity<?> ViewCleanersList() {
-        UserAccountRepository usersrepository = RepositoryInjector.repo;
-        List<UserAccountEntity> CList = usersrepository.findCleaners("cleaners");
-        return ResponseEntity.ok(CList);
-    }
-
     //user story #26
     @Transactional
     public ResponseEntity<?> UpdateAccountForHomeOwner() {
@@ -277,6 +265,19 @@ public class UserAccountEntity {
         }
     }
 
+    //User Story #27
+    @Transactional
+    public boolean DeleteAccoountForHomeOwner() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (!(userOptional.isPresent())) {
+            return false;
+        } else {
+            usersrepository.deleteById(this.email); //not suspend, actual delete
+        }
+        return false;
+    }
+
     //User Story #28
     public ResponseEntity<?> SearchCleaner() {
         UserAccountRepository usersrepository = RepositoryInjector.repo;
@@ -288,7 +289,7 @@ public class UserAccountEntity {
         }
     }
 
-    //User Story not yet created
+    //User Story #22
     public ResponseEntity<?> ViewCleaner() {
         UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
