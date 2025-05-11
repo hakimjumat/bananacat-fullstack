@@ -44,12 +44,6 @@ public class CleaningServiceEntity {
         return true;
     }
 
-    //for viewing all cleaning service
-    public ResponseEntity<?> ViewCleaningServiceList(CleaningServiceRepository CSRepository) {
-        List<CleaningServiceEntity> CSlist = CSRepository.findByEmail(this.email);
-        return (ResponseEntity.ok(CSlist));
-    }
-
     //for viewing specific service
     public ResponseEntity<?> ViewCleaningService(CleaningServiceRepository CSRepository) {
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
