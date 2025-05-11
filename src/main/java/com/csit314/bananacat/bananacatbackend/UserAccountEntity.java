@@ -274,8 +274,8 @@ public class UserAccountEntity {
             return false;
         } else {
             usersrepository.deleteById(this.email); //not suspend, actual delete
+            return true;
         }
-        return false;
     }
 
     //User Story #28
