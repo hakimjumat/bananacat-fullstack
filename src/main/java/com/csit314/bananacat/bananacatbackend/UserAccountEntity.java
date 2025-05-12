@@ -83,7 +83,7 @@ public class UserAccountEntity {
     
     public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
 
-        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
 
         Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
     
@@ -237,7 +237,7 @@ public class UserAccountEntity {
     //user story #26
     @Transactional
     public ResponseEntity<?> UpdateAccountForHomeOwner() {
-        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
 
         if  (this.address.isBlank()) {
             return ResponseEntity.ok("Home owner cannot have empty address");
@@ -280,7 +280,7 @@ public class UserAccountEntity {
 
     //User Story #28
     public ResponseEntity<?> SearchCleaner() {
-        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmailandProfile(this.email, "cleaner");
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());

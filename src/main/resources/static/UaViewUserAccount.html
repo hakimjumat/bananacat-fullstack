@@ -252,11 +252,18 @@
         <div class="dropdown">
           <a href="#">View ▾</a>
           <div class="dropdown-content">
-            <a href="UaViewUserAccount.html">View Account</a>
+            <a href="UaSearchUserAccount.html">View Account</a>
             <a href="UserProfile.html">View Profile</a>
           </div>
         </div>
-        <a href="UaCreateUserAccount.html">Create</a>
+        <div class="dropdown">
+          <a href="#">Create ▾</a>
+          <div class="dropdown-content">
+            <a href="UaCreateUserAccount.html">Create Account</a>
+            <a href="UserProfileCreate.html">Create Profile</a>
+          </div>
+        </div>
+        
       </div>
       <div class="nav-right">
         
@@ -344,7 +351,7 @@
 
       try {
         // Make an API call to fetch the user account list
-        const response = await fetch("http://localhost:8080/v", {
+        const response = await fetch("http://localhost:8080/view", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
