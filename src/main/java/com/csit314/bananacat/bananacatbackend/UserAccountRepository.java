@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 public interface UserAccountRepository extends JpaRepository<UserAccountEntity, String>{
 
     Optional<UserAccountEntity> findByEmail(String email);
+    Optional<UserAccountEntity> findByEmailandProfile(String email, String userprofile);
 
     @Modifying
     @Transactional

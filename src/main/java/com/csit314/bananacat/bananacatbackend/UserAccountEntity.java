@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +23,7 @@ public class UserAccountEntity {
     private String lastname;
     private Integer phonenumber;
     private String address;
+    private Integer NumberofPageView; //for User story #15, rmb to update db make it default 0, cannot be null after account creation cause of nullpointerexception
     
     public String getEmail() {
         return email;
@@ -49,6 +49,9 @@ public class UserAccountEntity {
     public String getAddress() {
         return address;
     }
+    public Integer getNumberofPageView() {
+        return NumberofPageView;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -73,6 +76,9 @@ public class UserAccountEntity {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public void increaseNumberofPageView() {
+        NumberofPageView++;
     }
     
     public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
@@ -228,7 +234,92 @@ public class UserAccountEntity {
         }
     }
 
-    public ResponseEntity<?> ViewUserAccountList(UserAccountRepository usersrepository) {
-        return ResponseEntity.ok(usersrepository.findAll());
+    //user story #26
+    @Transactional
+    public ResponseEntity<?> UpdateAccountForHomeOwner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+
+        if  (this.address.isBlank()) {
+            return ResponseEntity.ok("Home owner cannot have empty address");
+        }
+
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity org = userOptional.get();
+            if (this.firstname != null) {
+                org.setFirstname(this.firstname);
+            }
+            if (this.lastname != null) {
+                org.setLastname(this.lastname);
+            }
+            if (this.phonenumber != null) {
+                org.setPhonenumber(this.phonenumber);
+            }
+            if (this.address != null) {
+                org.setAddress(this.address);
+            }
+            usersrepository.save(org);
+            return ResponseEntity.ok(org);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User Story #27
+    @Transactional
+    public boolean DeleteAccoountForHomeOwner() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (!(userOptional.isPresent())) {
+            return false;
+        } else {
+            usersrepository.deleteById(this.email); //not suspend, actual delete
+        }
+        return false;
+    }
+
+    //User Story #28
+    public ResponseEntity<?> SearchCleaner() {
+        UserAccountRepository usersrepository = RepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmailandProfile(this.email, "cleaner");
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(userOptional.get());
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User Story #22
+    public ResponseEntity<?> ViewCleaner() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity result = userOptional.get();
+            result.increaseNumberofPageView();//record number of page view
+            usersrepository.save(result);//update db
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
+    }
+
+    //User story #15
+    public ResponseEntity<?> NumberofPageViews() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        if (userOptional.isPresent()) {
+            UserAccountEntity result = userOptional.get();
+            return ResponseEntity.ok(result.getNumberofPageView());
+        } else {
+            return ResponseEntity.ok("not found");
+        }
+    }
+
+    //User story #16
+    public ResponseEntity<?> NumberofShortlist() {
+        shortlistRepository slRepository = shortlistRepositoryInjector.repo;
+        int result = slRepository.CountByEmail(this.email);
+        return ResponseEntity.ok(result);
     }
 }
+
