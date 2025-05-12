@@ -337,38 +337,77 @@
   </footer>
 
   <script>
-    // On page load, iterate through localStorage to find stored user accounts.
-    window.addEventListener("load", function(){
+    // On page load, fetch user accounts from the backend and populate the table.
+    window.addEventListener("load", async function () {
       const tableBody = document.getElementById("tableBody");
-      tableBody.innerHTML = ""; 
-      
-      // Loop through localStorage keys.
-      for(let i = 0; i < localStorage.length; i++){
-        const key = localStorage.key(i);
-        try {
-          const user = JSON.parse(localStorage.getItem(key));
-          // Check if we have a valid user record
-          if(user && user.fname) {
+      tableBody.innerHTML = ""; // Clear the table body
+
+      try {
+        // Make an API call to fetch the user account list
+        const response = await fetch("http://localhost:8080/v", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({}) // Send an empty object as the request body
+        });
+
+        if (response.ok) {
+          const userAccounts = await response.json(); // Parse the JSON response
+
+          // Check if there are any user accounts
+          if (userAccounts.length > 0) {
+            userAccounts.forEach((user) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${user.firstname}</td>
+                <td>${user.lastname}</td>
+                <td>${user.email}</td>
+                <td>${user.phonenumber || "-"}</td>
+                <td>${user.address || "-"}</td>
+                <td>${user.userprofile.toUpperCase()}</td>
+                <td>
+                  <button class="update-btn" data-email="${user.email}">Update</button>
+                  <button class="suspend-btn" data-email="${user.email}">Suspend</button>
+                </td>
+              `;
+              tableBody.appendChild(row);
+            });
+
+            // Add event listeners for Update and Suspend buttons
+            document.querySelectorAll(".update-btn").forEach((button) => {
+              button.addEventListener("click", function () {
+                const email = this.getAttribute("data-email");
+                const selectedUser = userAccounts.find((user) => user.email === email);
+                localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
+                window.location.href = "UaUpdateUserAccount.html";
+              });
+            });
+
+            document.querySelectorAll(".suspend-btn").forEach((button) => {
+              button.addEventListener("click", async function () {
+                const email = this.getAttribute("data-email");
+                const selectedUser = userAccounts.find((user) => user.email === email);
+                localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
+                window.location.href = "UaSuspendUserAccount.html";
+              });
+            });
+          } else {
+            // If no accounts were found, show a message
             const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${user.fname}</td>
-              <td>${user.lname}</td>
-              <td>${user.email}</td>
-              <td>${user.phone}</td>
-              <td>${user.address ? user.address : "-"}</td>
-              <td>${user.userType}</td>
-            `;
+            row.innerHTML = `<td colspan="7" style="text-align: center;">No user accounts found.</td>`;
             tableBody.appendChild(row);
           }
-        } catch(e) {
-          // Skip items that are not JSON or not user accounts.
+        } else {
+          console.error("Failed to fetch user accounts:", response.status);
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="7" style="text-align: center;">Failed to load user accounts.</td>`;
+          tableBody.appendChild(row);
         }
-      }
-      
-      // If no accounts were found, show a message.
-      if(tableBody.children.length === 0) {
+      } catch (error) {
+        console.error("Error fetching user accounts:", error);
         const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="6" style="text-align: center;">No user accounts found.</td>`;
+        row.innerHTML = `<td colspan="7" style="text-align: center;">An error occurred while loading user accounts.</td>`;
         tableBody.appendChild(row);
       }
     });

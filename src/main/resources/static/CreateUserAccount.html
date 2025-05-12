@@ -242,6 +242,7 @@
           <option value="homeowner">Home Owner</option>
           <option value="cleaner">Cleaner</option>
           <option value="admin">Admin</option>
+          <option value="platformmanager">Platform Manager</option>
         </select>
 
         <div class="bottom-actions">
@@ -323,17 +324,17 @@
       return;
     }
 
-    if (localStorage.getItem(email)) {
-      alert("An account with this email already exists.");
-    } else {
-      const user = { fname, lname, email, password, phone, address, userType };
-      localStorage.setItem(email, JSON.stringify(user));
-      localStorage.setItem("loggedInUser", email);
-      alert("Registration successful!");
-      formMode = 'login';
-      updateForm();
-      document.getElementById('user-form').reset();
-    }
+    // if (localStorage.getItem(email)) {
+    //   alert("An account with this email already exists.");
+    // } else {
+    //   const user = { fname, lname, email, password, phone, address, userType };
+    //   localStorage.setItem(email, JSON.stringify(user));
+    //   localStorage.setItem("loggedInUser", email);
+    //   alert("Registration successful!");
+    //   formMode = 'login';
+    //   updateForm();
+    //   document.getElementById('user-form').reset();
+    // }
   }
 
   // Slideshow

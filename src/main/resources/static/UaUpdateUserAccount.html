@@ -314,13 +314,13 @@
       </div>
 
       <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="text" id="firstName" />
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" />
       </div>
 
       <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" />
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" />
       </div>
 
       <div class="form-group">
@@ -329,13 +329,13 @@
       </div>
 
       <div class="form-group">
-        <label for="contact">Phone Number</label>
-        <input type="tel" id="contact" />
+        <label for="phonenumber">Phone Number</label>
+        <input type="tel" id="phonenumber" />
       </div>
 
       <div class="form-group">
         <label for="role">Role</label>
-        <select id="role">
+        <select id="userprofile">
           <option value="homeowner">Home Owner</option>
           <option value="cleaner">Cleaner</option>
           <option value="admin">Platform Manager</option>
@@ -346,7 +346,7 @@
         <label for="status">Account Status</label>
         <select id="status">
           <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option value="suspended">Suspended</option>
         </select>
       </div>
 
@@ -427,8 +427,8 @@
       const lastname = document.getElementById('lastname').value;
       const phonenumber = document.getElementById('phonenumber').value;
       const address = document.getElementById('address').value;
-      const userprofile = document.getElementById('userprofile').value;
-      const status = document.getElementById('status').value;
+      const userprofile = document.getElementById('userprofile').value.toUpperCase();
+      const status = document.getElementById('status').value.toUpperCase();
 
       // Validate form data
       if (!validateEmail(email)) {

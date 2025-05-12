@@ -189,11 +189,11 @@
             .then(res => res.json())
             .then(data => {
                 console.log("User logged out:", data);
-                localStorage.removeItem("user");
+                localStorage.removeItem("loggedinUser");
             })
             .catch(error => {
                 console.error("Logout error:", error);
-                localStorage.removeItem("user"); // Fallback cleanup
+                localStorage.removeItem("loggedinUser"); // Fallback cleanup
             });
                 
             // Countdown and redirect
@@ -205,7 +205,7 @@
                     clearInterval(countdown);
                     loadingIcon.className = "fa fa-sign-in";
                     document.getElementById("redirect-message").textContent = "Redirecting...";
-                    window.location.href = "login.html";
+                    window.location.href = "UaLogin.html";
                 }
             }, 1000);
         });

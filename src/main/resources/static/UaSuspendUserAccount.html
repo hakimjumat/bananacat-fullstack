@@ -250,26 +250,31 @@
   <div class="suspend-container">
     <h2>Suspend User Account</h2>
 
-    <div class="info">
-      <p><strong>Email:</strong> user123@example.com</p>
-      <p><strong>Role:</strong> Admin</p>
-      <p><strong>Account Status:</strong> <span id="status-text">Inactive</span></p>
+    <div class="emailinfo">
+      <p><strong>Email:</strong></p>
+    </div>
+    <div class="roleinfo">
+      <p><strong>Role:</strong></p>
+    </div>
+    <div class="statusinfo">
+      <p><strong>Account Status:</strong> <span id="status-text"></span></p>
     </div>
 
-    <div class="warning" id="inactive-warning">
-      This account is already inactive.
+    <div class="warning" id="suspended-warning">
+      This account is already suspended.
     </div>
-
-    <form id="suspend-form" method="POST" action="/admin/suspend/user123@example.com">
-      <div class="action-buttons">
-        <button type="submit" class="btn-suspend">Yes, Suspend</button>
-        <a href="/admin/searchUser" class="btn-cancel">Cancel</a>
-      </div>
-    </form>
 
     <div class="message-success" id="success-message">
       Account has been successfully suspended.
     </div>
+
+    <form id="suspend-form">
+      <div class="action-buttons">
+        <button type="submit" class="btn-suspend">Suspend</button>
+        <button type="button" class="btn-cancel" onclick="window.location.href='UaViewUserAccount.html'">Cancel</button>
+      </div>
+    </form>
+
   </div>
   <footer class="site-footer">
     <div class="footer-container">
@@ -312,32 +317,91 @@
   </footer>
 
   <script>
-    // Simulate account status
-    const accStatus = 'Inactive'; // Change to 'Active' or 'Inactive'
 
-    const warningBox = document.getElementById("inactive-warning");
+    const warningBox = document.getElementById("suspended-warning");
     const form = document.getElementById("suspend-form");
     const successBox = document.getElementById("success-message");
 
-    if (accStatus === 'Inactive') {
-      warningBox.style.display = 'block';
-    }
+    window.addEventListener("load", function () {
+      const selectedUser = JSON.parse(localStorage.getItem("selectedUser"));
+      if (selectedUser) {
+        // Fill in the email
+        const emailInfo = document.querySelector(".emailinfo p");
+        emailInfo.innerHTML = `<strong>Email:</strong> ${selectedUser.email}`;
 
-    form.addEventListener('submit', function (e) {
+        // Fill in the role
+        const roleInfo = document.querySelector(".roleinfo p");
+        roleInfo.innerHTML = `<strong>Role:</strong> ${selectedUser.userprofile}`;
+
+        // Fill in the account status
+        const statusText = document.getElementById("status-text");
+        statusText.textContent = selectedUser.status;
+
+        // Handle the warning box for suspended accounts
+        if (selectedUser.status && selectedUser.status.toUpperCase() === "SUSPENDED") {
+          warningBox.style.display = "block";
+        } else {
+          warningBox.style.display = "none";
+        }
+      }
+    });
+
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      if (accStatus === 'Inactive') {
-        const proceed = confirm("This account is already inactive. Are you sure you want to suspend again?");
+      const selectedUser = JSON.parse(localStorage.getItem("selectedUser"));
+      if (!selectedUser) {
+        alert("No user selected. Please try again.");
+        return;
+      }
+
+      if (selectedUser.status && selectedUser.status.toUpperCase() === "SUSPENDED") {
+        const proceed = confirm("This account is already suspended. Are you sure you want to suspend it again?");
         if (!proceed) return;
       }
 
-      // Simulate a successful suspension (AJAX or server logic here)
-      successBox.style.display = 'block';
+      const payload = {
+        email: selectedUser.email,
+        userprofile: selectedUser.userprofile,
+        status: selectedUser.status,
+      };
 
-      // Optional: hide success after few seconds
-      setTimeout(() => {
-        successBox.style.display = 'none';
-      }, 4000);
+      try {
+        // Send the API request to the backend
+        const response = await fetch("http://localhost:8080/suspend", {
+          method: "POST", // Use the correct HTTP method
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          const isSuspended = await response.json(); // Expecting a boolean response from the backend
+          if (isSuspended) {
+            // Show success message
+            successBox.style.display = "block";
+
+            // Update the status in the UI
+            const statusText = document.getElementById("status-text");
+            statusText.textContent = "SUSPENDED";
+
+            // Optionally, hide success message after a few seconds
+            setTimeout(() => {
+              successBox.style.display = "none";
+            }, 4000);
+          } else {
+            alert("Failed to suspend the user. Please try again.");
+          }
+        } else {
+          const error = await response.text();
+          console.error("Error response from server:", errorText);
+          alert("An error occurred while suspending the user. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error during suspension request:", error);
+        alert("An unexpected error occurred. Please try again.");
+      }
     });
   </script>
 </body>

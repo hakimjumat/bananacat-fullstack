@@ -17,7 +17,7 @@ public class CreateUserAccountController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/api/create")
     public boolean CreateUserAccount(@RequestBody UserAccountEntity createaccount) {
         return createaccount.CreateUserAccount(usersrepository, passwordEncoder); 
     }

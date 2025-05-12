@@ -178,14 +178,14 @@
     <div class="right-panel">
       <div class="login-box">
         <h2>Login</h2>
-        <form id="loginForm">
+        <form id="loginForm" onsubmit="handleLogin(event)" method="post">
           <select id="userType" required
           style="width: 100%; height: 40px; padding: 5px; font-size: 1em;">
-            <option value="" disabled selected><b>Select Role</b></option>
+            <option value="" disabled selected>Select Role</option>
             <option value="homeowner">Home Owner</option>
             <option value="cleaner">Cleaner</option>
             <option value="admin">Admin</option>
-            <option value="plaTform">Platform Manager</option>
+            <option value="platformmanager">Platform Manager</option>
           </select>
   
           <label for="email">Email Address:</label>
@@ -203,55 +203,70 @@
 
   
   <script>
+    localStorage.clear();
     window.addEventListener('load', function () {
         document.getElementById('userType').selectedIndex = 0;
       });
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      if (email === "admin@example.com" && password === "password123") {
-        window.location.href = "admin_home.html";
-      } else {
-        document.getElementById("errorMessage").innerText = "Invalid login credentials. Please try again.";
-      }
-    }); 
-
-    window.addEventListener('load', function () {
-    document.getElementById('userType').selectedIndex = 0;
-  });
-
-  document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const userType = document.getElementById("userType").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    // Dummy authentication for demonstration
-    if (email === "admin@example.com" && password === "password123") {
-      switch (userType) {
-        case "homeowner":
-          window.location.href = "HomeOwnerDashboard.html";
-          break;
-        case "cleaner":
-          window.location.href = "CleanerDashboard.html";
-          break;
-        case "admin":
-          window.location.href = "UserAdminHome.html";
-          break;
-        case "plaTform":
-          window.location.href = "PlatformManagerDashboard.html";
-          break;
-        default:
-          document.getElementById("errorMessage").innerText = "Please select a valid role.";
-      }
-    } else {
-      document.getElementById("errorMessage").innerText = "Invalid login credentials. Please try again.";
-    }
-  });
+    async function handleLogin(event) {
+        event.preventDefault();
+    
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+    
+        try {
+          const response = await fetch("http://localhost:8080/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+              
+            },
+            body: JSON.stringify({ email, password })
+          });
+    
+          if (response.ok) {
+            const userText = await response.text();
+            console.log("Raw response text:", userText); //for logging error, can delete
+            if (!userText) {
+              alert("Invalid email or password")
+            } else {
+              try {
+                const user = JSON.parse(userText);
+                console.log("User received:", user);
+                const selectedProfile = document.getElementById("userType").value;
+                if (selectedProfile.toUpperCase() === user.userprofile) {
+                  alert("Login successful! Welcome " + user.userprofile + " " + user.firstname);
+                  localStorage.setItem("loggedinUser", JSON.stringify(user));
+                  if (selectedProfile.toUpperCase() == 'ADMIN') {
+                    window.location.href = "UserAdminHome.html";
+                  }
+                  else if (selectedProfile.toUpperCase() == 'HOMEOWNER'){
+                    window.location.href = "HomeownerHome.html";
+                  }
+                  else if (selectedProfile.toUpperCase() == 'CLEANER'){
+                    window.location.href = "CleanerDashboard.html";
+                  }
+                  else if (selectedProfile.toUpperCase() == 'PLATFORMMANAGER'){
+                    window.location.href = "PlatformManagerHome.html";
+                  }
+                else {
+                  alert("Invalid profile selected. Please select the correct profile.");
+                }
+                  
+                }
+          
+              } catch (parseError) {
+                console.error("Error parsing JSON:", parseError);
+                alert("Unexpected response format.");
+              }
+            }
+          } else {
+            alert("Invalid credentials");
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+          alert("Something went wrong!");
+        }
+     }
   </script>
 </body>
 </html>
