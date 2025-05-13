@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 public class ViewCleanerController {
-    @PostMapping("path")
+    @PostMapping("/ViewCleaner")
     public ResponseEntity<?> ViewCleaner(@RequestBody UserAccountEntity UAentity) {
         return UAentity.ViewCleaner();
     }  

@@ -13,6 +13,18 @@ import java.lang.reflect.Field;
 public class UserProfileEntity {
     @Id
     private String name;
+    public Boolean privilege_to_create_account;
+    public Boolean privilege_to_create_profile;
+    public Boolean privilege_to_delete_profile;
+    public Boolean privilege_to_search_account;
+    public Boolean privilege_to_search_profile;
+    public Boolean privilege_to_suspend_account;
+    public Boolean privilege_to_update_account;
+    public Boolean privilege_to_update_profile;
+    public Boolean privilege_to_view_account;
+    public Boolean privilege_to_view_account_list;
+    public Boolean privilege_to_view_profile;
+    public Boolean privilege_to_view_profile_list;
 
     public String getName() {
         return name;
@@ -22,25 +34,14 @@ public class UserProfileEntity {
         this.name = name;
     }
 
-    public Boolean privilegeToCreateAccount;
-    public Boolean privilegeToViewAccountList;
-    public Boolean privilegeToViewAccount;
-    public Boolean privilegeToUpdateAccount;
-    public Boolean privilegeToSuspendAccount;
-    public Boolean privilegeToSearchAccount;
-    public Boolean privilegeToCreateProfile;
-    public Boolean privilegeToUpdateProfile;
-    public Boolean privilegeToViewProfileList;
-    public Boolean privilegeToViewProfile;
-    public Boolean privilegeToDeleteProfile;
-    public Boolean privilegeToSearchProfile;
+
 
     public boolean CreateUserProfile(UserProfileRepository profilerepository) {
         if (this.name == null) {
             return false;
         }
 
-        Optional<UserProfileEntity> userOptional = profilerepository.findByName(this.name);
+        Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
         if (userOptional.isPresent()) {
             return false;
         }
@@ -50,20 +51,20 @@ public class UserProfileEntity {
     }
 
     public ResponseEntity<?> ViewUserProfile(UserProfileRepository profileRepository) {
-
-        Optional<UserProfileEntity> userOptional = profileRepository.findByName(this.name);
-        if (userOptional.isPresent()) {
-            UserProfileEntity result = userOptional.get();
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.ok("Profile not found");
-        }
+        return ResponseEntity.ok(profileRepository.findAll());
+        // Optional<UserProfileEntity> userOptional = profileRepository.findByNameIgnoreCase(this.name);
+        // if (userOptional.isPresent()) {
+        //     UserProfileEntity result = userOptional.get();
+        //     return ResponseEntity.ok(result);
+        // } else {
+        //     return ResponseEntity.ok("Profile not found");
+        // }
     }
 
     @Transactional
     public ResponseEntity<?> UpdateUserProfile(UserProfileRepository profilerepository) throws IllegalAccessException{
 
-        Optional<UserProfileEntity> userOptional = profilerepository.findByName(this.name);
+        Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (!(userOptional.isPresent())) {
             return ResponseEntity.ok("Profile not found");
@@ -84,7 +85,7 @@ public class UserProfileEntity {
     @Transactional
     public boolean DeleteUserProfile(UserProfileRepository profilerepository, UserAccountRepository usersrepository) {
 
-        Optional<UserProfileEntity> userOptional = profilerepository.findByName(this.name);
+        Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (!(userOptional.isPresent())) {
             return false;
@@ -95,7 +96,7 @@ public class UserProfileEntity {
     }
 
     public ResponseEntity<?> SearchUserProfile(UserProfileRepository profilerepository) {
-        Optional<UserProfileEntity> userOptional = profilerepository.findByName(this.name);
+        Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(this.name);

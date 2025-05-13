@@ -223,15 +223,15 @@ public class UserAccountEntity {
     }
 
     public ResponseEntity<?> ViewUserAccount(UserAccountRepository usersrepository) {
+        return ResponseEntity.ok(usersrepository.findAll());
+        // Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
-        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
-
-        if (userOptional.isPresent()) {
-            UserAccountEntity result = userOptional.get();
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.ok("User not found");
-        }
+        // if (userOptional.isPresent()) {
+        //     UserAccountEntity result = userOptional.get();
+        //     return ResponseEntity.ok(result);
+        // } else {
+        //     return ResponseEntity.ok("User not found");
+        // }
     }
 
     //user story #26
@@ -281,7 +281,7 @@ public class UserAccountEntity {
     //User Story #28
     public ResponseEntity<?> SearchCleaner() {
         UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
-        Optional<UserAccountEntity> userOptional = usersrepository.findByEmailandProfile(this.email, "cleaner");
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmailAndUserprofile(this.email, "CLEANER");
         if (userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
         } else {

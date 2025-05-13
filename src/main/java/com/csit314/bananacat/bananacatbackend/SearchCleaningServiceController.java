@@ -14,7 +14,7 @@ public class SearchCleaningServiceController {
         this.CSRepository = CSRepository;
     }
 
-    @PostMapping("path")
+    @PostMapping("/SearchCleaningService")
     public ResponseEntity<?> SearchCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
         return CSEntity.SearchCleaningService(CSRepository);
     }

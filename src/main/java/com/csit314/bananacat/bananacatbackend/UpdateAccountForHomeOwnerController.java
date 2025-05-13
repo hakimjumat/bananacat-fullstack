@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class UpdateAccountForHomeOwnerController {
-    @PostMapping("path")
+    @PostMapping("/UpdateAccountForHomeOwner")
     public ResponseEntity<?> UpdateAccountForHomeOwner(@RequestBody UserAccountEntity UAentity) {
         return UAentity.UpdateAccountForHomeOwner();
     }

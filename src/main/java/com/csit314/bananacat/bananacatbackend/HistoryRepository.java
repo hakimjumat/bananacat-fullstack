@@ -11,7 +11,7 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long>{
 
     List<HistoryEntity> findByDate(LocalDate date);
 
-    List<HistoryEntity> findByAll(String CLemail, String HOemail, LocalDate date, String serviceName);
+    List<HistoryEntity> findByCLemailAndHOemailAndDateAndServiceName(String CLemail, String HOemail, LocalDate date, String serviceName);
 
     Optional<HistoryEntity> findById(Long Id);
 }

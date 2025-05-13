@@ -13,7 +13,7 @@ public class UpdateCleaningServiceController {
         this.CSRepository = CSRepository;
     }
 
-    @PostMapping("path")
+    @PostMapping("/UpdateCleaningService")
     public ResponseEntity<?> postMethodName(@RequestBody CleaningServiceEntity CSEntity) {
         return CSEntity.UpdateCleaningService(CSRepository);
     }

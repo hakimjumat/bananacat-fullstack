@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 public class ViewHistoryListController {
-    @PostMapping("path")
+    @PostMapping("/ViewHistoryList")
     public ResponseEntity<?> ViewHistoryList(@RequestBody HistoryEntity hEntity) {
         return hEntity.ViewHistoryList();
     }

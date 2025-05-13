@@ -15,7 +15,7 @@ public class SearchUserAccountController {
         this.usersrepository = usersrepository;
     }
 
-    @PostMapping("path")
+    @PostMapping("/SearchUserAccount")
     public ResponseEntity<?> SearchUserAccount(@RequestBody UserAccountEntity searchUser) {
         return (searchUser.SearchUserAccount(usersrepository));
     }

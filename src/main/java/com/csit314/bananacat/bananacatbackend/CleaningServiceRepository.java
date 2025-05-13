@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface CleaningServiceRepository extends JpaRepository<CleaningServiceEntity, Long>{
 
-    Optional<CleaningServiceEntity> findByEmailandName(String email, String name);
+    Optional<CleaningServiceEntity> findByEmailAndServiceName(String email, String name);
 }

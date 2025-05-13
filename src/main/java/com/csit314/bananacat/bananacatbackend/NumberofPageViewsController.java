@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class NumberofPageViewsController {
-    @PostMapping("path")
+    @PostMapping("/NumberofPageViews")
     public ResponseEntity<?> NumberofPageViews(@RequestBody UserAccountEntity UAentity) {
         return UAentity.NumberofPageViews();
     }

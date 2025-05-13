@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class DeleteAccoountForHomeOwnerController {
-    @PostMapping("path")
+    @PostMapping("/DeleteHomeOwner")
     public boolean DeleteAccoountForHomeOwner(@RequestBody UserAccountEntity UAentity) {
         return UAentity.DeleteAccoountForHomeOwner();
     }

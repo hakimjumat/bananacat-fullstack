@@ -14,7 +14,7 @@ public class ViewCleaningServiceController {
             this.CSRepository = CSRepository;
         }
 
-        @PostMapping("path")
+        @PostMapping("/ViewCleaningService")
         public ResponseEntity<?> ViewCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
             return CSEntity.ViewCleaningService(CSRepository);
         }

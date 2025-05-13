@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface UserProfileRepository extends JpaRepository<UserProfileEntity, String> {
 
-    Optional<UserProfileEntity> findByName(String name);
+    Optional<UserProfileEntity> findByNameIgnoreCase(String name);
 }

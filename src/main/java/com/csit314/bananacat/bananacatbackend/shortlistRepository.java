@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface shortlistRepository extends JpaRepository<shortlistEntity, Long> {
 
-    Optional<shortlistEntity> findBybothEmail(String HOemail, String CLemail);
+    Optional<shortlistEntity> findByHOemailAndCLemail(String HOemail, String CLemail);
 
     List<shortlistEntity> findByHOemail(String HOemail);
 

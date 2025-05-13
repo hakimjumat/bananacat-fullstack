@@ -13,7 +13,7 @@ public class DeleteCleaningServiceController {
         this.CSRepository = CSRepository;
     }
 
-    @PostMapping("path")
+    @PostMapping("/DeleteCleaningService")
     public boolean DeleteCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
         return CSEntity.DeleteCleaningService(CSRepository);
     }

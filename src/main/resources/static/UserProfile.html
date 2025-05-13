@@ -374,17 +374,18 @@
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${profile.name}</td>
-          <td>${user.privilege_to_create_account}</td>
-          <td>${user.privilege_to_create_profile}</td>
-          <td>${user.privilege_to_delete_profile}</td>
-          <td>${user.privilege_to_search_account}</td>
-          <td>${user.privilege_to_suspend_account}</td>
-          <td>${user.privilege_to_update_account}</td>
-          <td>${user.privilege_to_update_profile}</td>
-          <td>${user.privilege_to_view_account}</td>
-          <td>${user.privilege_to_view_account_list}</td>
-          <td>${user.privilege_to_view_profile}</td>
-          <td>${user.privilege_to_view_profile_list}</td>
+          <td>${profile.privilege_to_create_account}</td>
+          <td>${profile.privilege_to_create_profile}</td>
+          <td>${profile.privilege_to_delete_profile}</td>
+          <td>${profile.privilege_to_search_account}</td>
+          <td>${profile.privilege_to_search_profile}</td>
+          <td>${profile.privilege_to_suspend_account}</td>
+          <td>${profile.privilege_to_update_account}</td>
+          <td>${profile.privilege_to_update_profile}</td>
+          <td>${profile.privilege_to_view_account}</td>
+          <td>${profile.privilege_to_view_account_list}</td>
+          <td>${profile.privilege_to_view_profile}</td>
+          <td>${profile.privilege_to_view_profile_list}</td>
           
         `;
         tableBody.appendChild(row);

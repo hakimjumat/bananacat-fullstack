@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class SaveShortlistController {
-    @PostMapping("path")
+    @PostMapping("/SaveShortlist")
     public boolean SaveShortlist(@RequestBody shortlistEntity slEntity) {
         return slEntity.SaveShortlist();
     }

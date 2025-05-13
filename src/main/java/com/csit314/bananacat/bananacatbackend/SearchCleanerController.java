@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 public class SearchCleanerController {
-    @PostMapping("path")
+    @PostMapping("/SearchCleaner")
     public ResponseEntity<?> SearchCleaner(@RequestBody UserAccountEntity UAentity) {
         return UAentity.SearchCleaner();
     }

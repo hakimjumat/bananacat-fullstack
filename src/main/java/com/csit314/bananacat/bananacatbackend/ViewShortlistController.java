@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class ViewShortlistController {
-    @PostMapping("path")
+    @PostMapping("/ViewShortlist")
     public ResponseEntity<?> ViewShortlist(@RequestBody shortlistEntity slEntity) {
         return slEntity.ViewShortlist();
     }
