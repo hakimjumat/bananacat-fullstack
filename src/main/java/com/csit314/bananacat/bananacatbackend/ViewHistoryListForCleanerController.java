@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-public class ViewHistoryListController {
-    @PostMapping("/ViewHistoryList")
+public class ViewHistoryListForCleanerController {
+    @PostMapping("/ViewHistoryListForCleaner")
     public ResponseEntity<?> ViewHistoryListForCleaner(@RequestBody HistoryEntity hEntity) {
         return hEntity.ViewHistoryListForCleaner();
     }

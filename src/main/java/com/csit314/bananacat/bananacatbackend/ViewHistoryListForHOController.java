@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class ViewHistoryListForHOController {
-    @PostMapping("path")
+    @PostMapping("/ViewHistoryListForHO")
     public ResponseEntity<?> ViewHistoryListForHO(@RequestBody HistoryEntity hEntity) {
         return hEntity.ViewHistoryListForHO();
     }
