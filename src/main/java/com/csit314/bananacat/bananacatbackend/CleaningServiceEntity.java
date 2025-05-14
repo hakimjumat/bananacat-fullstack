@@ -20,6 +20,8 @@ public class CleaningServiceEntity {
     private String email;
     private String serviceName;
     private String tag;
+    private Integer price;
+    private String location;
 
     public Long getId() {
         return id;
@@ -65,6 +67,14 @@ public class CleaningServiceEntity {
             }
             if (tag != null) {
                 org.setTag(this.tag);
+            }
+
+            if (price != null) {
+                org.setPrice(this.price);
+            }
+
+            if (location != null) {
+                org.setLocation(this.location);
             }
             CSRepository.save(org);
             return ResponseEntity.ok(org);
