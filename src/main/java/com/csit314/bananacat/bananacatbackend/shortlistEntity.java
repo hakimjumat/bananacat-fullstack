@@ -58,4 +58,11 @@ public class shortlistEntity {
             return ResponseEntity.ok("not found");
         }
     }
+
+    //User story #16
+    public ResponseEntity<?> NumberofShortlist() {
+        shortlistRepository slRepository = shortlistRepositoryInjector.repo;
+        int result = slRepository.CountByEmailAndName(this.CLemail, this.name);
+        return ResponseEntity.ok(result);
+    }
 }
