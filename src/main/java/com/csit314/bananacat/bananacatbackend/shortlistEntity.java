@@ -17,11 +17,12 @@ public class shortlistEntity {
     private Long id;
     private String HOemail;
     private String CLemail;
+    private String name;//name of cleaning service
 
     //User story #24
     public boolean SaveShortlist() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
-        Optional<shortlistEntity> slOptional = slRepository.findBybothEmail(this.HOemail, this.CLemail);
+        Optional<shortlistEntity> slOptional = slRepository.findByHOemailAndCLemailAndName(this.HOemail, this.CLemail, this.name);
         if (slOptional.isPresent()) {
             return false;
         } else {
@@ -33,7 +34,7 @@ public class shortlistEntity {
     //User story #25
     public ResponseEntity<?> ViewShortlistIndividual() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
-        Optional<shortlistEntity> slOptional = slRepository.findBybothEmail(this.HOemail, this.CLemail);
+        Optional<shortlistEntity> slOptional = slRepository.findByHOemailAndCLemailAndName(this.HOemail, this.CLemail, this.name);
         if (slOptional.isPresent()) {
             return ResponseEntity.ok(slOptional.get());
         } else {
@@ -50,7 +51,7 @@ public class shortlistEntity {
     //User story #29
     public ResponseEntity<?> SearchShortlist() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
-        Optional<shortlistEntity> slOptional = slRepository.findBybothEmail(this.HOemail, this.CLemail);
+        Optional<shortlistEntity> slOptional = slRepository.findByHOemailAndCLemailAndName(this.HOemail, this.CLemail, this.name);
         if (slOptional.isPresent()) {
             return ResponseEntity.ok(slOptional.get());
         } else {
