@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class ViewHistoryListController {
     @PostMapping("path")
-    public ResponseEntity<?> ViewHistoryList(@RequestBody HistoryEntity hEntity) {
-        return hEntity.ViewHistoryList();
+    public ResponseEntity<?> ViewHistoryListForCleaner(@RequestBody HistoryEntity hEntity) {
+        return hEntity.ViewHistoryListForCleaner();
     }
     
 }
