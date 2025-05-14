@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name="useraccount")
@@ -81,16 +83,25 @@ public class UserAccountEntity {
         NumberofPageView++;
     }
     
-    public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password) {
+    public static ResponseEntity<?> login(PasswordEncoder passwordEncoder, String email, String password, String userprofile) {
 
         UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
+        UserProfileRepository userprofilerepository = UserProfileRepositoryInjector.repo;
 
         Optional<UserAccountEntity> useroptional = usersrepository.findByEmail(email);
+        Optional<UserProfileEntity> userprofileoptional = userprofilerepository.findByNameIgnoreCase(userprofile);
     
         if (useroptional.isPresent()) {
             UserAccountEntity auth = useroptional.get();
             if (passwordEncoder.matches(password, auth.getPassword())) {
-                return ResponseEntity.ok(auth); //  Return the full user object
+                Map<String, Object> response = new HashMap<>();
+                response.put("useraccountR", auth);
+                response.put("userprofileR", userprofileoptional.get());
+                return ResponseEntity.ok(response);
+
+
+
+                // return ResponseEntity.ok(auth); //  Return the full user object
             } else {
                 return ResponseEntity
                         .status(HttpStatus.UNAUTHORIZED)

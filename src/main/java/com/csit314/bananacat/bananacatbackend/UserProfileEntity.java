@@ -13,18 +13,15 @@ import java.lang.reflect.Field;
 public class UserProfileEntity {
     @Id
     private String name;
-    public Boolean privilege_to_create_account;
-    public Boolean privilege_to_create_profile;
-    public Boolean privilege_to_delete_profile;
-    public Boolean privilege_to_search_account;
-    public Boolean privilege_to_search_profile;
-    public Boolean privilege_to_suspend_account;
-    public Boolean privilege_to_update_account;
-    public Boolean privilege_to_update_profile;
-    public Boolean privilege_to_view_account;
-    public Boolean privilege_to_view_account_list;
-    public Boolean privilege_to_view_profile;
-    public Boolean privilege_to_view_profile_list;
+    public Boolean privilege_to_read_write_account;
+    public Boolean privilege_to_read_write_profile;
+    public Boolean privelege_to_read_write_cleaning_service;
+    public Boolean privilege_to_read_history;
+    public Boolean privilege_to_read_cleaners;
+    public Boolean privilege_to_read_write_shortlist;
+    public Boolean privilege_to_write_homeaccount;
+    public Boolean privilege_to_read_write_category;
+    public Boolean privilege_to_generate_report;
 
     public String getName() {
         return name;

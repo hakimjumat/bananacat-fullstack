@@ -212,6 +212,7 @@
     
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        const userprofile = document.getElementById("userType").value;
     
         try {
           const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -220,22 +221,25 @@
               "Content-Type": "application/json"
               
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password, userprofile }),
           });
     
           if (response.ok) {
-            const userText = await response.text();
+            const userText = await response.json();
             console.log("Raw response text:", userText); //for logging error, can delete
             if (!userText) {
               alert("Invalid email or password")
             } else {
               try {
-                const user = JSON.parse(userText);
-                console.log("User received:", user);
+                const user = userText.useraccountR;
+                const profile = userText.userprofileR;
+                console.log("User received:", JSON.stringify(user));
+                console.log("User profile received:", JSON.stringify(profile));
                 const selectedProfile = document.getElementById("userType").value;
                 if (selectedProfile.toUpperCase() === user.userprofile) {
                   alert("Login successful! Welcome " + user.userprofile + " " + user.firstname);
                   localStorage.setItem("loggedinUser", JSON.stringify(user));
+                  localStorage.setItem("loggedinProfile", JSON.stringify(profile));
                   if (selectedProfile.toUpperCase() == 'ADMIN') {
                     window.location.href = "UserAdminHome.html";
                   }

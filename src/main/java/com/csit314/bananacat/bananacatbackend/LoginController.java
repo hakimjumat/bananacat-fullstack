@@ -20,6 +20,7 @@ public class LoginController {
     public ResponseEntity<?> Login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
-        return UserAccountEntity.login(passwordEncoder, email, password);
+        String userprofile = loginData.get("userprofile");
+        return UserAccountEntity.login(passwordEncoder, email, password, userprofile);
     }
 }
