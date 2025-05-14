@@ -1,7 +1,5 @@
 package com.csit314.bananacat.bananacatbackend;
-
 import java.util.Optional;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import java.util.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-
 @Entity
 @Table(name="cleaningservice")
 public class CleaningServiceEntity {
@@ -20,44 +17,39 @@ public class CleaningServiceEntity {
     private String email;
     private String serviceName;
     private String tag;
+    private Integer price;
+    private String location;
 
     public Long getId() {
         return id;
     }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
-
     public void setTag(String tag) {
         this.tag = tag;
     }
-
     public boolean CreateCleaningService(CleaningServiceRepository CSRepository) {
         
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
-
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             return false;
         }
         CSRepository.save(this);
         return true;
     }
-
     //for viewing specific service
     public ResponseEntity<?> ViewCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
-
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
         if (!(CSoptional.isPresent())) {
             return ResponseEntity.ok("not found");
         } else {
             return ResponseEntity.ok(CSoptional.get());
         }
     }
-
     @Transactional
     public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             CleaningServiceEntity org = CSoptional.get();
             if (serviceName != null) {
@@ -66,16 +58,23 @@ public class CleaningServiceEntity {
             if (tag != null) {
                 org.setTag(this.tag);
             }
+
+            if (price != null) {
+                org.setPrice(this.price);
+            }
+
+            if (location != null) {
+                org.setLocation(this.location);
+            }
             CSRepository.save(org);
             return ResponseEntity.ok(org);
         } else {
             return ResponseEntity.ok("not found");
         }
     }
-
     @Transactional
     public boolean DeleteCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             CleaningServiceEntity CS = CSoptional.get();
             CSRepository.deleteById(CS.getId());
@@ -84,9 +83,8 @@ public class CleaningServiceEntity {
             return false;
         }
     }
-
     public ResponseEntity<?> SearchCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
         if(CSoptional.isPresent()) {
             return ResponseEntity.ok(CSoptional.get());
         } else {
