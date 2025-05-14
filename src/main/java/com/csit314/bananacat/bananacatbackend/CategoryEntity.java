@@ -77,4 +77,10 @@ public class CategoryEntity {
             return ResponseEntity.ok("not found");
         }
     }
+
+    //for cleaner creating cleaning service, this method will run on webpage load, to retrieve all the category from db
+    public ResponseEntity<?> CategoryDropDownList() {
+        CategoryRepository cRepository = CategoryRepositoryInjector.repo;
+        return ResponseEntity.ok(cRepository.findAll());
+    }
 }
