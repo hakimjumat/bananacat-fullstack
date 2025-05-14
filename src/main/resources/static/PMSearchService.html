@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Search Service Category</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: lightblue;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      font-size: 1.5em;
+    }
+
+    .header h1 {
+      font-size:2em;
+      color: #527df4;
+    }
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1.2em;
+      background-color: #7580fa;
+    }
+    .logout-btn:hover {
+      background-color: #6f7ba2;
+    }
+        .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 300px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 0;
+    }
+
+    form {
+            padding: 20px;
+            background-color: #fff;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px;
+        }
+
+    input, button {
+            width: 98%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+    button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+    button:hover {
+            background-color: #0056b3;
+        }
+
+    #result {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <div>Search Service Category</div>
+    <a href="PMDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+  </div>
+
+  <div class="section">
+        <div class="action-buttons">
+          <button class="btn" onclick="window.location.href='PMCreateService.html'">Create</button>
+          <button class="btn" onclick="window.location.href='PMSearchService.html'"> Search</button>
+          <div class="dropdown">
+            <button class="btn" style="width: 350px;">
+                <a href="" style="text-decoration: none; color: white;">Generate ▾</a></button>
+            <div class="dropdown-content">
+              <a href="PMViewDailyReport.html" style="text-decoration: none; color: white;">Daily Report</a>
+              <a href="PMViewWeeklyReport.html" style="text-decoration: none; color: white;">Weekly Report</a>
+              <a href="PMViewMonthlyReport.html" style="text-decoration: none; color: white;">Monthly Report</a>
+            </div>
+        </div>
+        </div>
+    </div>
+
+<div class="container">
+    <form id="searchForm">
+        <h2>Search Category</h2>
+        <label for="searchTerm">Category Name:</label>
+        <input type="text" id="searchTerm" name="term" required>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const term = document.getElementById('searchTerm').value;
+
+        fetch('/categories/search?term=' + encodeURIComponent(term))
+        .then(response => response.json())
+        .then(data => {
+            const resultDiv = document.getElementById('result');
+            if (data && data.id) {
+                resultDiv.innerHTML = `
+                    Found: ID = ${data.id}, Name = ${data.name}<br>
+                    <button id="viewButton">View</button>
+                `;
+
+                document.getElementById('viewButton').onclick = () => {
+                    window.location.href = `PMViewService.html?id=${data.id}&name=${encodeURIComponent(data.name)}&description=${encodeURIComponent(data.description)}`;
+                };
+            } else {
+                resultDiv.innerText = 'Category not found.';
+            }
+        })
+        .catch(error => {
+            document.getElementById('result').innerText = "Search failed.";
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+
+</body>
+</html>

@@ -147,7 +147,6 @@
     }
 
     .btn {
-      flex: 1 1 150px;
       background: #007bff;
       color: white;
       padding: 15px;
@@ -169,11 +168,12 @@
       display: none;
       position: absolute;
       background-color: #007bff;
-      min-width: 200px;
+      min-width: 300px;
       top: 100%;
       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
       border-radius: 8px;
       overflow: hidden;
+      margin-left: 200px;
     }
     .dropdown-content a {
       color: #333;
@@ -397,6 +397,7 @@
 <body>
 
   <div class="header">
+    <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
     <h1>HomeOwner Dashboard</h1>
     <span><button type="submit" class="logout-btn"><a href="logout.html" style="text-decoration: none;">Log Out</a></button></span>
   </div>
@@ -410,22 +411,16 @@
 
   <div class="section">
     <div class="action-buttons">
-      <button class="btn" onclick="window.location.href='ViewCleanersHO.html'">View Cleaners</button>
       <div class="dropdown">
-        <button class="btn" style="width: 200px;">
-            <a href="" style="text-decoration: none; color: white;">View History▾</a></button>
+        <button class="btn" style="width: 300px; margin-left: 200px;">
+            <a href="" style="text-decoration: none; color: white;">Search ▾</a></button>
         <div class="dropdown-content">
-          <a href="ViewHistoryHO.html" style="text-decoration: none; color: white;">Cleaner History</a>
-          <a href="ViewHOservicehistory.html" style="text-decoration: none; color: white;">Past Service History</a>
+          <a href="SearchCleanersHO.html" style="text-decoration: none; color: white;">Search Cleaners</a>
+          <a href="SearchShortlistsHO.html" style="text-decoration: none; color: white;">Search Shortlists</a>
+          <a href="SearchHistoryHO.html" style="text-decoration: none; color: white;">Search History</a>
         </div>
-      </div>
-      
-      <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
-      <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
-      <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
     </div>
+    <button class="btn" onclick="window.location.href='UpdateHO.html'" style="margin-left: 400px;">Account Information</button>
   </div>
 
   <div class="brands" style="width: 100%; gap: 20px;">
@@ -475,7 +470,7 @@
   
 
   <!-- Footer -->
-<footer class="site-footer">
+<footer class="site-footer" style="width: 100%;">
     <div class="footer-container">
       <!-- Branding & Mission -->
       <div class="footer-section">

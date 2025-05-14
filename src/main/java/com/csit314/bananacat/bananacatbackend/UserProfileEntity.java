@@ -15,7 +15,7 @@ public class UserProfileEntity {
     private String name;
     public Boolean privilege_to_read_write_account;
     public Boolean privilege_to_read_write_profile;
-    public Boolean privelege_to_read_write_cleaning_service;
+    public Boolean privilege_to_read_write_cleaning_service;
     public Boolean privilege_to_read_history;
     public Boolean privilege_to_read_cleaners;
     public Boolean privilege_to_read_write_shortlist;

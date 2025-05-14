@@ -156,10 +156,17 @@
           <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
           <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
           <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
-          <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
-          <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
+          <div class="dropdown">
+            <button class="btn" style="width: 200px;">
+                <a href="" style="text-decoration: none; color: white;">Search ▾</a></button>
+            <div class="dropdown-content">
+              <a href="SearchCleanersHO.html" style="text-decoration: none; color: white;">Search Cleaners</a>
+              <a href="SearchShortlistsHO.html" style="text-decoration: none; color: white;">Search Shortlists</a>
+              <a href="SearchHistoryHO.html" style="text-decoration: none; color: white;">Search History</a>
+            </div>
         </div>
       </div>
+    
   <div class="container">
     <h2>Your Shortlist</h2>
     <div class="shortlist-grid" id="shortlistGrid">
@@ -195,20 +202,28 @@
 
     const grid = document.getElementById('shortlistGrid');
 
-    shortlistData.forEach(cleaner => {
-      const card = document.createElement('div');
-      card.className = 'shortlist-card';
-      card.innerHTML = `
-        <h3>${cleaner.name}</h3>
-        <div class="rating">${cleaner.rating}</div>
-        <p><strong>Specialty:</strong> ${cleaner.specialty}</p>
-        <div class="action-btns">
-          <button class="action-btn" onclick="window.location.href='UserProfile.html'">View Details</button>
-          <button class="action-btn">Remove from Shortlist</button>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
+    shortlistData.forEach((cleaner, index) => {
+  const card = document.createElement('div');
+  card.className = 'shortlist-card';
+  card.innerHTML = `
+    <img src="${cleaner.image}" alt="${cleaner.name}" />
+    <h3>${cleaner.name}</h3>
+    <div class="rating">${cleaner.rating}</div>
+    <p><strong>Specialty:</strong> ${cleaner.specialty}</p>
+    <div class="action-btns">
+      <button class="action-btn" onclick="window.location.href='UserProfile.html'">View Details</button>
+      <button class="action-btn" onclick="removeFromShortlist(this)">Remove from Shortlist</button>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// Simple removal function
+function removeFromShortlist(button) {
+  const card = button.closest('.shortlist-card');
+  card.remove();
+}
+
   </script>
 
 </body>

@@ -62,7 +62,6 @@
 
     .action-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
       margin-top: 20px;
     }
@@ -96,25 +95,26 @@
 <body>
 
   <div class="header">
+    <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
     <div>Deactivate Cleaning Service</div>
-    <a class="back-link" href="ViewServiceCleaner.html">Back to Services</a>
+    <a href="CleanerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
   </div>
 
   <div class="section">
     <div class="action-buttons">
       <button class="btn" onclick="window.location.href='CreateServiceCleaner.html'">Create New Service</button>
+      <button class="btn" onclick="window.location.href='CleanerSearchHistory.html'">Search Cleaning History</button>
       <button class="btn" onclick="window.location.href='ViewServiceCleaner.html'">View Services</button>
-      <button class="btn" onclick="window.location.href='ViewshortlistsCleaner.html'">View Service Shortlists</button>
-      <button class="btn" onclick="window.location.href='UpdateServiceCleaner.html'">Update Services</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Deactivate</button>
     </div>
+  </div>
+
   </div>
   <div class="container">
     <h2>Are you sure you want to deactivate this service?</h2>
     <p>Service: <strong>Weekly Home Cleaning</strong></p>
     <p>Once deactivated, clients will not be able to see or book this service until you reactivate it.</p>
 
-    <button class="btn" onclick="deactivateService()">Deactivate Service</button>
+    <button class="btn" onclick="deactivateService()">Delete Service</button>
 
     <a class="back-link" href="ViewServiceCleaner.html">Cancel</a>
   </div>

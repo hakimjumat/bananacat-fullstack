@@ -139,11 +139,17 @@
       <button class="btn" onclick="window.location.href='ViewShortlistsHO.html'">View Shortlists</button>
       <button class="btn" onclick="window.location.href='UpdateHO.html'">Update Account</button>
       <button class="btn" onclick="window.location.href='DeleteHO.html'">Delete</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Cleaners</button>
-      <button class="btn" onclick="window.location.href='DeactivateCleaningService.html'">Search Shortlists</button>
+      <div class="dropdown">
+        <button class="btn" style="width: 200px;">
+            <a href="" style="text-decoration: none; color: white;">Search ▾</a></button>
+        <div class="dropdown-content">
+          <a href="SearchCleanersHO.html" style="text-decoration: none; color: white;">Search Cleaners</a>
+          <a href="SearchShortlistsHO.html" style="text-decoration: none; color: white;">Search Shortlists</a>
+          <a href="SearchHistoryHO.html" style="text-decoration: none; color: white;">Search History</a>
+        </div>
     </div>
   </div>
-  
+
   <div class="container">
     <h2>Past Services by Cleaner</h2>
     <div class="history-grid" id="historyGrid">

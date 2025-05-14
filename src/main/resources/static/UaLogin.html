@@ -213,7 +213,8 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const userprofile = document.getElementById("userType").value;
-    
+        console.log(JSON.stringify({ email, password, userprofile }));
+
         try {
           const response = await fetch("http://localhost:8080/api/auth/login", {
             method: "POST",
@@ -244,7 +245,7 @@
                     window.location.href = "UserAdminHome.html";
                   }
                   else if (selectedProfile.toUpperCase() == 'HOMEOWNER'){
-                    window.location.href = "HomeownerHome.html";
+                    window.location.href = "HomeownerDashBoard.html";
                   }
                   else if (selectedProfile.toUpperCase() == 'CLEANER'){
                     window.location.href = "CleanerDashboard.html";
