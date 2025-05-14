@@ -1,12 +1,16 @@
 package com.csit314.bananacat.bananacatbackend;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+
 @RestController
-public class NumberofShortlistController {
+public class DailyReportController {
     @PostMapping("path")
-    public ResponseEntity<?> NumberofShortlist(@RequestBody shortlistEntity slEntity) {
-        return slEntity.NumberofShortlist();
+    public ResponseEntity<?> DailyReport(@RequestBody HistoryEntity hEntity) {
+        return hEntity.DailyReport();
     }
+    
 }

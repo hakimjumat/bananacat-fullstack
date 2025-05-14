@@ -16,6 +16,7 @@ public class shortlistEntity {
     private String HOemail;
     private String CLemail;
     private String name;//name of cleaning service
+
     //User story #24
     public boolean SaveShortlist() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
