@@ -172,7 +172,6 @@ public class UserAccountEntity {
         // if (this.email == null || this.email.isBlank()) {
         //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
         // }
-        System.out.println(getPassword());
         if ((this.phonenumber == null) || 
             (this.firstname != null && this.firstname.isBlank()) ||
             (this.address != null && this.address.isBlank()) || 
@@ -190,31 +189,15 @@ public class UserAccountEntity {
 
         if (userOptional.isPresent()) {
             UserAccountEntity org = userOptional.get();
-            if (this.userprofile != null) {
-                org.setUserprofile(this.userprofile);
-            }
-            if (this.firstname != null) {
-                org.setFirstname(this.firstname);
-            }
-            if (this.lastname != null) {
-                org.setLastname(this.lastname);
-            }
-            if (this.phonenumber != null) {
-                org.setPhonenumber(this.phonenumber);
-            }
-            if (this.address != null) {
-                org.setAddress(this.address);
-            }
-            if (this.userprofile != null && !this.userprofile.isBlank()) {
-                org.setUserprofile(this.userprofile);
-            }
-            if (this.status != null && !this.status.isBlank()) {
-                org.setStatus(this.status);
-            }
-
-            if (this.password != null && !this.password.isBlank()) {
-                org.setPassword(passwordEncoder.encode(this.password));
-            }
+           
+            org.setUserprofile(this.userprofile);
+            org.setFirstname(this.firstname);
+            org.setLastname(this.lastname);
+            org.setPhonenumber(this.phonenumber);
+            org.setAddress(this.address);
+            org.setUserprofile(this.userprofile);
+            org.setStatus(this.status);
+            org.setPassword(passwordEncoder.encode(this.password));
             
             userrepository.save(org);
             return ResponseEntity.ok("User account updated successfully.");
