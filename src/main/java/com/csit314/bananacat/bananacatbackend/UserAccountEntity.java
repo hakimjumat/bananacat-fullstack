@@ -314,12 +314,5 @@ public class UserAccountEntity {
             return ResponseEntity.ok("not found");
         }
     }
-
-    //User story #16
-    public ResponseEntity<?> NumberofShortlist() {
-        shortlistRepository slRepository = shortlistRepositoryInjector.repo;
-        int result = slRepository.CountByEmail(this.email);
-        return ResponseEntity.ok(result);
-    }
 }
 
