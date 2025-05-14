@@ -24,6 +24,7 @@ public class UserAccountEntity {
     private Integer phonenumber;
     private String address;
     private Integer NumberofPageView; //for User story #15, rmb to update db make it default 0, cannot be null after account creation cause of nullpointerexception
+    private Integer ratings; //1 to 5, manual insert through psql, for display only
     
     public String getEmail() {
         return email;
