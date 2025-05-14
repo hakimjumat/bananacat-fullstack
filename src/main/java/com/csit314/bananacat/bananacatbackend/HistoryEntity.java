@@ -21,11 +21,22 @@ public class HistoryEntity {
     private String HOemail;
     private LocalDate date;
     private String serviceName; //match with cleaning service service name
+    private Integer price;
+    private Integer rating; //1 to 5
+    private String review;
+    private String duration;
 
-    //User Story #92, #23
+    //User Story #92
     public ResponseEntity<?> ViewHistoryList() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
         List<HistoryEntity> result = Hrepository.findByCLemail(this.CLemail);
+        return ResponseEntity.ok(result);
+    }
+
+    //User Story #23
+    public ResponseEntity<?> ViewHistoryListForHO() {
+        HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
+        List<HistoryEntity> result = Hrepository.findByHOemail(this.HOemail);
         return ResponseEntity.ok(result);
     }
 
@@ -34,5 +45,36 @@ public class HistoryEntity {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
         Optional<HistoryEntity> result = Hrepository.findById(this.id);
         return ResponseEntity.ok(result.get());
+    }
+
+    //daily report
+    public ResponseEntity<?> DailyReport() {
+        HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
+        List<HistoryEntity> result = Hrepository.findByCLemailAndDate(this.CLemail, this.date);
+        return ResponseEntity.ok(result);
+    }
+
+    //weekly report
+    public ResponseEntity<?> WeeklyReport() {
+        HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
+        List<HistoryEntity> result = Hrepository.findBySdateAndEdate(this.date.minusWeeks(1), this.date);
+        return ResponseEntity.ok(result);
+    }
+
+    //monthly report, watchout when json send over the data, makesure the the date includes the day as well so that the json can be accepted by the entity, can be any day, as long as the month is correct. ONLY APPLIES TO MONTHLY REPORT
+    public ResponseEntity<?> MonthlyReport() {
+        HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
+        YearMonth target = YearMonth.from(this.date);
+        LocalDate start = target.atDay(1);
+        LocalDate end = target.atEndOfMonth();
+        Object[] result = Hrepository.getMonthlyStats(start, end);
+
+        Integer TotalEarnings = ((Number) result[0]).intValue();
+        Long TotalService = ((Number) result[1]).longValue();
+
+        Map<String, Object> Fresult= new HashMap<>();
+        Fresult.put("Total Service", TotalService);
+        Fresult.put("Total Earnings", TotalEarnings);
+        return ResponseEntity.ok(Fresult);
     }
 }
