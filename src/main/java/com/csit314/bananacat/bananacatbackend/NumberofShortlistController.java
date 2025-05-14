@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class NumberofShortlistController {
     @PostMapping("path")
-    public ResponseEntity<?> NumberofShortlist(@RequestBody CleaningServiceEntity csEntity) {
-        return csEntity.NumberofShortlist();
+    public ResponseEntity<?> NumberofShortlist(@RequestBody shortlistEntity slEntity) {
+        return slEntity.NumberofShortlist();
     }
 }
