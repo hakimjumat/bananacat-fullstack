@@ -41,6 +41,11 @@ public class CategoryEntity {
         }
     }
 
+    public ResponseEntity<?> ViewCategoryList() {
+        CategoryRepository cRepository = CategoryRepositoryInjector.repo;
+        return ResponseEntity.ok(cRepository.findAll());
+    }
+
     //User Story #36
     public ResponseEntity<?> UpdateCategory() {
         CategoryRepository cRepository = CategoryRepositoryInjector.repo;
