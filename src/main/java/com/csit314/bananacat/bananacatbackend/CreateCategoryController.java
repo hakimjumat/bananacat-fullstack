@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class CreateCategoryController {
-    @PostMapping("path")
+    @PostMapping("/CreateCategory")
     public boolean CreateCategory(@RequestBody CategoryEntity cEntity) {
         return cEntity.CreateCategory();
     }

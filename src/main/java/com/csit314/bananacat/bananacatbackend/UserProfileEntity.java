@@ -48,14 +48,14 @@ public class UserProfileEntity {
     }
 
     public ResponseEntity<?> ViewUserProfile(UserProfileRepository profileRepository) {
-        return ResponseEntity.ok(profileRepository.findAll());
-        // Optional<UserProfileEntity> userOptional = profileRepository.findByNameIgnoreCase(this.name);
-        // if (userOptional.isPresent()) {
-        //     UserProfileEntity result = userOptional.get();
-        //     return ResponseEntity.ok(result);
-        // } else {
-        //     return ResponseEntity.ok("Profile not found");
-        // }
+        // return ResponseEntity.ok(profileRepository.findAll());
+        Optional<UserProfileEntity> userOptional = profileRepository.findByNameIgnoreCase(this.name);
+        if (userOptional.isPresent()) {
+            UserProfileEntity result = userOptional.get();
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.ok("Profile not found");
+        }
     }
 
     @Transactional

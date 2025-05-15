@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class GenerateDailyReportController {
-    @PostMapping("path")
+    @PostMapping("/GenerateDailyReport")
     public ResponseEntity<?> GenerateDailyReport(@RequestBody DailyReportEntity drEntity) {
         return drEntity.GenerateDailyReport();
     }

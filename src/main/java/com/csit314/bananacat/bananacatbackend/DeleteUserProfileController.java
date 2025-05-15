@@ -16,7 +16,7 @@ public class DeleteUserProfileController {
         this.usersrepository = usersrepository;
     }
 
-    @PostMapping("/deleteUserProfile") 
+    @PostMapping("/DeleteUserProfile") 
     public boolean DeleteUserProfile(@RequestBody UserProfileEntity deleteentity) {
         return (deleteentity.DeleteUserProfile(profilerepository, usersrepository));
     }

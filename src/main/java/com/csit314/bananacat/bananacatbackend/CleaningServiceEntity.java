@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name="cleaningservice")
@@ -52,7 +53,7 @@ public class CleaningServiceEntity {
 
     //for viewing specific service, this method is for homeowner
     public ResponseEntity<?> ViewCleaningServiceforHomeOwner(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
 
         if (!(CSoptional.isPresent())) {
             return ResponseEntity.ok("not found");
@@ -73,7 +74,7 @@ public class CleaningServiceEntity {
 
     public ResponseEntity<?> ViewCleaningServiceforCleaner() {
         CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
-        Optional<CleaningServiceEntity> result = CSRepository.findByEmailandName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> result = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
         if (!(result.isPresent())) {
             return ResponseEntity.ok("not found");
         } else {
@@ -123,6 +124,15 @@ public class CleaningServiceEntity {
             return ResponseEntity.ok(CSoptional.get());
         } else {
             return ResponseEntity.ok("not found");
+        }
+    }
+
+    // Method to increase the number of views
+    public void IncreaseNumberOfViews() {
+        if (this.NumberOfView == null) {
+            this.NumberOfView = 1;
+        } else {
+            this.NumberOfView += 1;
         }
     }
 }

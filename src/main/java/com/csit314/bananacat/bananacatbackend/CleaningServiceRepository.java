@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CleaningServiceRepository extends JpaRepository<CleaningServiceEntity, Long>{
 
-    Optional<CleaningServiceEntity> findByEmailandName(String email, String name);
+    Optional<CleaningServiceEntity> findByEmailAndServiceName(String email, String serviceName);
     List<CleaningServiceEntity> findByEmail(String email);
 }
