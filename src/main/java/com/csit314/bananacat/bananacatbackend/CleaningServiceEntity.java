@@ -21,6 +21,7 @@ public class CleaningServiceEntity {
     private String tag;
     private Integer price;
     private String location;
+    private Integer NumberOfView; //for User story #15, rmb to update db make it default 0, cannot be null after cleaning service creation cause of nullpointerexception
 
     public Long getId() {
         return id;
@@ -45,13 +46,16 @@ public class CleaningServiceEntity {
         return true;
     }
 
-    //for viewing specific service
-    public ResponseEntity<?> ViewCleaningService(CleaningServiceRepository CSRepository) {
+    //for viewing specific service, this method is for homeowner
+    public ResponseEntity<?> ViewCleaningServiceforHomeOwner(CleaningServiceRepository CSRepository) {
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
 
         if (!(CSoptional.isPresent())) {
             return ResponseEntity.ok("not found");
         } else {
+            CleaningServiceEntity result = CSoptional.get();
+            result.IncreaseNumberOfViews();
+            CSRepository.save(result);
             return ResponseEntity.ok(CSoptional.get());
         }
     }
