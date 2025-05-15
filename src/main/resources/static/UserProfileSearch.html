@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9fb;
+    }
+
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+
+    .nav-left img {
+      height: 80px;
+      width: 100px;
+      object-fit: contain;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 0;
+      border-radius: 8px;
+      width: 180px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent;
+    }
+
+    .nav-center a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+      width: 180px;
+      text-align: center;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 160px auto 40px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 60%;
+      max-width: 400px;
+      font-size: 14px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #5380c9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #406ab0;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">Role ▾</a>
+          <div class="dropdown-content">
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="#">User ▾</a>
+          <div class="dropdown-content">
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Search User Role</h2>
+    <input type="text" id="searchInput" placeholder="Type: Home Owner, Cleaner, Platform Management..." />
+    
+    <button onclick="searchRole()">Search</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <script>
+    function searchRole() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const error = document.getElementById("errorMsg");
+
+      let role = null;
+
+      if (input.includes("home")) {
+        role = "HOMEOWNER";
+      } else if (input.includes("clean")) {
+        role = "CLEANER";
+      } else if (input.includes("platform") || input.includes("manage")) {
+        role = "PLATFORMMANAGEMENT";
+      }
+
+      if (role) {
+        return role;
+      } else {
+        error.textContent = "Role not recognized. Try 'Home Owner', 'Cleaner', or 'Platform Management'.";
+      }
+    }
+
+    // Optional: Allow Enter key to trigger search
+    document.getElementById("searchInput").addEventListener("keydown", async function(e) {
+      const error = document.getElementById("errorMsg");
+      if (e.key === "Enter") {
+        inputRole = searchRole();
+        try {
+          const response = await fetch("http://localhost:8080/searchP", {
+            method: "POST", // Use the correct HTTP method
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({name : inputRole})
+          });
+
+          if (response.ok) {
+            console.log("Form submitted with payload:",{name : inputRole});
+            console.log(JSON.stringify({name: inputRole}));
+            const searchResult = await response.json();
+            localStorage.setItem("selectedProfile", JSON.stringify(searchResult));
+            window.location.href = "UserProfileView.html"; 
+          } else {
+            const errorMessage = await response.text();
+            error.textContent = `Error: ${errorMessage}`;
+            error.style.color = "red";
+          }
+        } catch (err) {
+          console.error("Error searching profile:", err);
+          error.textContent = "An error occurred while searching for profile.";
+          error.style.color = "red";
+        }
+
+      }
+    });
+  </script>
+</body>
+</html>

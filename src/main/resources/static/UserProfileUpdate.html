@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+      margin: 0;
+      padding-top: 100px;
+      background-color: rgb(84, 101, 108);
+    }
+
+    /* Navigation Bar */
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+    .nav-left img {
+      height: 80px;
+      width: 100px;
+      object-fit: contain;
+    }
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 0;
+      border-radius: 8px;
+      width: 180px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent;
+    }
+    .nav-center a:hover {
+      background-color:  #5380c9;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+      width: 180px;
+      text-align: center;
+    }
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .search-box input {
+      height: 35px;
+      width: 200px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+    }
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    .container {
+      padding: 20px;
+    }
+    .box {
+      border: 1px solid #ccc;
+      padding: 30px;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: #333;
+    }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 25px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 12px 10px;
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      cursor: pointer;
+      margin-right: -1px;
+      border-radius: 5px 5px 0 0;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      color: #555;
+    }
+     .tabs button:last-child {
+        margin-right: 0;
+     }
+
+    .tabs button:hover {
+        background-color: #eee;
+    }
+
+    .tab-btn.active {
+      background-color: white;
+      border-color: #ccc;
+      border-bottom: 2px solid #5380c9;
+      font-weight: bold;
+      color: #333;
+      position: relative;
+      top: 1px;
+    }
+
+    .tab-content {
+      padding-top: 20px;
+    }
+
+    .privileges-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    .privileges-table th, .privileges-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .privileges-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        color: #333;
+    }
+    .privileges-table td:nth-child(2),
+    .privileges-table td:nth-child(3) {
+        text-align: center;
+    }
+    .privileges-table input[type="checkbox"] {
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+    }
+
+    .visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          margin: -1px;
+          padding: 0;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          border: 0;
+    }
+
+  footer.site-footer {
+    background-color: #333;
+    color: #f0f0f0;
+    padding: 40px 20px;
+    font-size: 0.95rem;
+    margin-top: 40px;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .footer-section {
+    flex: 1 1 220px;
+    min-width: 200px;
+    margin: 10px 0;
+  }
+
+  .footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+    color: #fff;
+  }
+
+  .footer-section p {
+      color: #bbb;
+      line-height: 1.6;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin: 10px 0;
+  }
+
+  .footer-section ul li a {
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-section ul li a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #555;
+    padding-top: 20px;
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+
+  @media (max-width: 992px) {
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+      }
+      .nav-left {
+          width: 100%;
+          margin-bottom: 10px;
+      }
+      .nav-center {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 0;
+      }
+      .nav-center a, .dropdown {
+        width: 100%;
+        padding-left: 0;
+        text-align: left;
+        border-bottom: 1px solid #555;
+        border-radius: 0;
+      }
+      .nav-center a:last-child, .dropdown:last-child {
+          border-bottom: none;
+      }
+      .nav-center a:hover, .dropdown:hover > a {
+          background-color: #5380c9;
+      }
+      .dropdown-content {
+          position: static;
+          display: none;
+          box-shadow: none;
+          border-radius: 0;
+          background-color: transparent;
+          padding-left: 15px;
+      }
+      .dropdown-content a {
+          color: #ccc;
+          padding: 8px 0;
+          width: 100%;
+          text-align: left;
+      }
+       .dropdown-content a:hover {
+          color: #fff;
+          background-color: transparent;
+       }
+       .dropdown:hover .dropdown-content {
+            display: block;
+       }
+      .nav-right {
+        flex-direction: row;
+        width: auto;
+        gap: 15px;
+        align-items: center;
+        margin-top: 10px;
+      }
+      body {
+        padding-top: 150px;
+      }
+      .container {
+        margin-top: 20px;
+      }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      padding-top: 180px;
+    }
+    .container {
+      padding: 15px;
+    }
+    .box {
+        padding: 20px;
+    }
+    .tabs {
+      flex-direction: column;
+      gap: 0;
+      border-bottom: none;
+    }
+    .tabs button {
+      width: 100%;
+      margin-right: 0;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+    }
+    .tab-btn.active {
+        border: 1px solid #5380c9;
+        border-bottom: 1px solid #5380c9;
+        top: 0;
+        background-color: #e7f0fe;
+    }
+    .privileges-table th, .privileges-table td {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer-section {
+      width: 100%;
+      margin: 15px 0;
+      min-width: auto;
+    }
+    .footer-bottom {
+      text-align: left;
+    }
+  }
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 200px;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+  .privileges-table {
+    font-size: 0.85rem;
+  }
+   .privileges-table th, .privileges-table td {
+        padding: 6px;
+   }
+  .nav-left img {
+    height: 50px;
+  }
+  .tab-btn {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+  .logout-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+   input[type="text"] {
+       padding: 10px;
+       font-size: 0.95rem;
+   }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">Role ▾</a>
+          <div class="dropdown-content">
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="#">User ▾</a>
+          <div class="dropdown-content">
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="box">
+      <h2>Update User Profile</h2>
+      <label for="roleName">Name of Role</label>
+      <input type="text" id="roleName" placeholder="Enter role name"/>
+
+      
+
+      <div id="create" class="tab-content">
+        <table class="privileges-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Grant</th>
+              <th>Deny</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Read/Write Account</td>
+              <td><input type="checkbox" name="read_write_account_grant" /></td>
+              <td><input type="checkbox" name="read_write_account_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Profile</td>
+              <td><input type="checkbox" name="read_write_profile_grant" /></td>
+              <td><input type="checkbox" name="read_write_profile_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Cleaning Services</td>
+              <td><input type="checkbox" name="read_write_cleaning_service_grant" /></td>
+              <td><input type="checkbox" name="read_write_cleaning_service_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read History</td>
+              <td><input type="checkbox" name="read_history_grant" /></td>
+              <td><input type="checkbox" name="read_history_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read Cleaners</td>
+              <td><input type="checkbox" name="read_cleaners_grant" /></td>
+              <td><input type="checkbox" name="read_cleaners_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Shortlists</td>
+              <td><input type="checkbox" name="read_write_shortlist_grant" /></td>
+              <td><input type="checkbox" name="read_write_shortlist_deny" /></td>
+            </tr>
+            <tr>
+              <td>Write Home Account</td>
+              <td><input type="checkbox" name="write_homeaccount_grant" /></td>
+              <td><input type="checkbox" name="write_homeaccount_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Category</td>
+              <td><input type="checkbox" name="read_write_category_grant" /></td>
+              <td><input type="checkbox" name="read_write_category_deny" /></td>
+            </tr>
+            <tr>
+              <td>Generate Report</td>
+              <td><input type="checkbox" name="generate_report_grant" /></td>
+              <td><input type="checkbox" name="generate_report_deny" /></td>
+            </tr>
+            <tr>
+              <td>For number of shortlist</td>
+              <td><input type="checkbox" name="for_numberof_shortlist_grant" /></td>
+              <td><input type="checkbox" name="for_numberof_shortlist_deny" /></td>
+            </tr>
+            <tr>
+              <td>For number of shortlist</td>
+              <td><input type="checkbox" name="read_hohistory_grant" /></td>
+              <td><input type="checkbox" name="read_hohistory_deny" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Update</button>
+        <button type="button" class="cancel" data-tab="view" style="width: 100px; height: 50px; margin-left: 590px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Cancel</button>
+      </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>CleanerMatch</h4>
+        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html">FAQs</a></li>
+          <li><a href="terms.html">Terms & Conditions</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>For Users</h4>
+        <ul>
+          <li><a href="cleaners.html">For Cleaners</a></li>
+          <li><a href="homeowners.html">For Home Owners</a></li>
+          <li><a href="admin.html">For Admin</a></li>
+          <li><a href="management.html">Platform Management</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 C2CBananaCat. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 1. Retrieve and parse the profile object
+      const storedProfile = localStorage.getItem("selectedProfile");
+      if (!storedProfile) return;
+      const profile = JSON.parse(storedProfile);
+
+      // 2. Set the role name
+      document.getElementById("roleName").value = profile.name || "";
+
+      // 3. Map privilege fields to checkbox names
+      const privilegeMap = [
+        { field: "privilege_to_read_write_account", grant: "read_write_account_grant", deny: "read_write_account_deny" },
+        { field: "privilege_to_read_write_profile", grant: "read_write_profile_grant", deny: "read_write_profile_deny" },
+        { field: "privilege_to_read_write_cleaning_service", grant: "read_write_cleaning_service_grant", deny: "read_write_cleaning_service_deny" },
+        { field: "privilege_to_read_history", grant: "read_history_grant", deny: "read_history_deny" },
+        { field: "privilege_to_read_cleaners", grant: "read_cleaners_grant", deny: "read_cleaners_deny" },
+        { field: "privilege_to_read_write_shortlist", grant: "read_write_shortlist_grant", deny: "read_write_shortlist_deny", row: 5 },
+        { field: "privilege_to_write_homeaccount", grant: "write_homeaccount_grant", deny: "write_homeaccount_deny", row: 6 },
+        { field: "privilege_to_read_write_category", grant: "read_write_category_grant", deny: "read_write_category_deny", row: 7 },
+        { field: "privilege_to_generate_report", grant: "generate_report_grant", deny: "generate_report_deny", row: 8 },
+        { field: "privilege_for_numberof_shortlist", grant: "for_numberof_shortlist_grant", deny: "for_numberof_shortlist_deny", row: 9 },
+        { field: "privilege_to_read_hohistory", grant: "read_hohistory_grant", deny: "read_hohistory_deny", row: 10 }
+        // Add more mappings if needed
+      ];
+
+      // 4. Set checkboxes based on profile privileges
+      privilegeMap.forEach((priv) => {
+        const grantCheckbox = document.getElementsByName(priv.grant)[0];
+        const denyCheckbox = document.getElementsByName(priv.deny)[0];
+        if (grantCheckbox && denyCheckbox) {
+          if (profile[priv.field] === true) {
+            grantCheckbox.checked = true;
+            denyCheckbox.checked = false;
+          } else if (profile[priv.field] === false) {
+            grantCheckbox.checked = false;
+            denyCheckbox.checked = true;
+          } else {
+            grantCheckbox.checked = false;
+            denyCheckbox.checked = false;
+          }
+        }
+      });
+
+      // 5. On Update, read checkboxes and update the profile object
+      document.querySelector("button.create").addEventListener("click", async function () {
+        privilegeMap.forEach((priv, idx) => {
+          const rowIdx = priv.row !== undefined ? priv.row : idx;
+          const grantCheckbox = document.getElementsByName(priv.grant)[rowIdx];
+          const denyCheckbox = document.getElementsByName(priv.deny)[rowIdx];
+          if (grantCheckbox && denyCheckbox) {
+            if (grantCheckbox.checked) {
+              profile[priv.field] = true;
+            } else if (denyCheckbox.checked) {
+              profile[priv.field] = false;
+            } else {
+              profile[priv.field] = null;
+            }
+          }
+        });
+
+        // 6. Send updated profile to backend
+        const response = await fetch("http://localhost:8080/updateP", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(profile)
+        });
+
+        if (response.ok) {
+          alert("Profile updated successfully!");
+          // Optionally redirect or update UI
+          localStorage.removeItem("selectedProfile"); // Clear the stored profile
+          window.location.href = "UserProfileSearch.html"; // Redirect to search page
+        } else {
+          alert("Failed to update profile.");
+        }
+      });
+    });
+</script>
+
+</body>
+</html>

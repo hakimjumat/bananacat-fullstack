@@ -1,775 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create User Profile</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      box-sizing: border-box;
-      margin: 0; /* Added to prevent default body margin */
-      padding-top: 100px; /* Ensure content doesn't hide under fixed nav */
-      background-color: rgb(84, 101, 108);
-    }
-
-    /* Navigation Bar */
-    nav.navigation {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      background-color: rgba(70, 70, 70, 0.9); /* Slightly transparent */
-      backdrop-filter: blur(5px); /* Adjusted blur */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
-    }
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 30px;
-      flex-wrap: wrap;
-      max-width: 1200px; /* Added max-width for larger screens */
-      margin: 0 auto; /* Center nav container */
-    }
-    .nav-left img {
-      height: 60px; /* Adjusted height */
-      width: auto;  /* Let width adjust based on height */
-      object-fit: contain;
-      display: block; /* Prevents potential spacing issues */
-    }
-    .nav-center {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .nav-center a {
-      text-decoration: none;
-      color: white;
-      font-size: 1rem;
-      padding: 10px 15px; /* Adjusted padding */
-      border-radius: 8px;
-      text-align: center;
-      display: inline-block;
-      background-color: transparent;
-      transition: background-color 0.3s ease; /* Smooth transition */
-    }
-    .nav-center a:hover, .dropdown:hover > a { /* Apply hover to dropdown link too */
-      background-color:  #5380c9;
-    }
-    .dropdown {
-      position: relative;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-      z-index: 999;
-      min-width: 150px; /* Ensure enough width */
-      overflow: hidden; /* Prevents content overflow */
-    }
-    .dropdown-content a {
-      display: block;
-      padding: 12px 15px; /* Adjusted padding */
-      text-decoration: none;
-      color: #333;
-      font-size: 0.9em;
-      white-space: nowrap; /* Prevent wrapping */
-      text-align: left; /* Align text left */
-      transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
-      background-color: white; /* Ensure background is white */
-      width: auto; /* Let width be determined by content */
-    }
-    .dropdown-content a:hover {
-      background-color: #5380c9;
-      color: white; /* Change text color on hover */
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    /* Removed search box as it wasn't in the nav in the original */
-    .logout-btn {
-      text-decoration: none;
-      color: #333;
-      padding: 8px 15px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      font-size: 0.9em;
-      background-color: #f2f2f2;
-      transition: background-color 0.3s ease; /* Smooth transition */
-    }
-    .logout-btn:hover {
-      background-color: #ddd;
-    }
-
-    .container {
-      padding: 20px;
-    }
-    .box {
-      border: 1px solid #ccc;
-      padding: 30px; /* Increased padding */
-      max-width: 800px;
-      margin: 20px auto; /* Added top/bottom margin */
-      background-color: #fff; /* Added background */
-      border-radius: 8px; /* Added rounded corners */
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Added subtle shadow */
-    }
-    h2 {
-      text-align: center;
-      margin-top: 0; /* Remove default top margin */
-      margin-bottom: 25px; /* Increased bottom margin */
-      color: #333; /* Darker heading color */
-    }
-    label { /* Style for the label */
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #555;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 12px; /* Increased padding */
-      margin-bottom: 25px; /* Increased margin */
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box; /* Include padding in width */
-      font-size: 1rem; /* Slightly larger font */
-    }
-    .tabs {
-      display: flex;
-      justify-content: space-between; /* Distribute space */
-      margin-bottom: 20px; /* Increased margin */
-      border-bottom: 1px solid #ccc; /* Add line below tabs */
-    }
-    .tabs button {
-      flex: 1; /* Make buttons share space */
-      padding: 12px 10px; /* Adjusted padding */
-      background-color: #f8f8f8; /* Lighter background */
-      border: 1px solid #ccc;
-      border-bottom: none; /* Remove bottom border */
-      cursor: pointer;
-      margin-right: -1px; /* Overlap borders */
-      border-radius: 5px 5px 0 0; /* Rounded top corners */
-      font-size: 0.95rem; /* Slightly larger font */
-      transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
-      color: #555; /* Default text color */
-    }
-     .tabs button:last-child {
-        margin-right: 0;
-     }
-
-    .tabs button:hover {
-        background-color: #eee; /* Hover background */
-    }
-
-    .tab-btn.active {
-      background-color: white; /* Active tab background */
-      border-color: #ccc; /* Match border color */
-      border-bottom: 2px solid #5380c9; /* Highlight active tab */
-      font-weight: bold;
-      color: #333; /* Darker text for active tab */
-      position: relative; /* Needed for bottom border positioning */
-      top: 1px; /* Align with bottom border */
-    }
-
-    .tab-content {
-      padding-top: 20px; /* Add space above table */
-    }
-
-    .privileges-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px; /* Space above table */
-    }
-    .privileges-table th, .privileges-table td {
-      border: 1px solid #ddd; /* Lighter border */
-      padding: 12px; /* Increased padding */
-      text-align: left;
-      vertical-align: middle; /* Align checkbox vertically */
-    }
-    .privileges-table th {
-        background-color: #f2f2f2; /* Header background */
-        font-weight: bold;
-        color: #333;
-    }
-    .privileges-table td:nth-child(2),
-    .privileges-table td:nth-child(3) {
-        text-align: center; /* Center checkboxes */
-    }
-    .privileges-table input[type="checkbox"] {
-        cursor: pointer;
-        width: 18px; /* Larger checkbox */
-        height: 18px; /* Larger checkbox */
-    }
-
-    .visually-hidden {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          margin: -1px;
-          padding: 0;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          border: 0;
-    }
-
-    /* Footer Styles */
-  footer.site-footer {
-    background-color: #333;
-    color: #f0f0f0;
-    padding: 40px 20px; /* Increased padding */
-    font-size: 0.95rem; /* Adjusted font size */
-    margin-top: 40px; /* Space above footer */
-  }
-
-  .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px; /* Add gap between columns */
-  }
-
-  .footer-section {
-    flex: 1 1 220px;
-    min-width: 200px; /* Adjusted min-width */
-    margin: 10px 0; /* Adjusted margin */
-  }
-
-  .footer-section h4 {
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    border-bottom: 1px solid #555;
-    padding-bottom: 8px; /* Increased padding */
-    color: #fff; /* Brighter heading */
-  }
-
-  .footer-section p {
-      color: #bbb; /* Lighter paragraph text */
-      line-height: 1.6; /* Improved readability */
-  }
-
-  .footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .footer-section ul li {
-    margin: 10px 0; /* Increased spacing */
-  }
-
-  .footer-section ul li a {
-    color: #bbb;
-    text-decoration: none;
-    transition: color 0.3s ease; /* Smooth transition */
-  }
-
-  .footer-section ul li a:hover {
-    color: #fff;
-    text-decoration: underline; /* Add underline on hover */
-  }
-
-  .footer-bottom {
-    text-align: center;
-    margin-top: 30px;
-    border-top: 1px solid #555;
-    padding-top: 20px; /* Increased padding */
-    font-size: 0.85rem; /* Adjusted font size */
-    color: #aaa; /* Lighter text color */
-  }
-
-  /* Mobile styles */
-  @media (max-width: 992px) { /* Adjusted breakpoint for nav */
-      .nav-container {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 20px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User Profile</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-      .nav-left {
-          width: 100%;
-          margin-bottom: 10px; /* Space below logo */
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      header {
+        background-color: #5380c9;
+        color: #fff;
+        padding: 10px 0;
+      }
+
+      /* Navigation Bar */
+      nav.navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgb(70, 70, 70);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 30px;
+        flex-wrap: wrap;
+      }
+      .nav-left img {
+        height: 80px;
+        width: 100px;
+        object-fit: contain;
       }
       .nav-center {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        gap: 0; /* Remove gap for column layout */
+        display: flex;
+        align-items: center;
+        gap: 50px;
       }
-      .nav-center a, .dropdown {
-        width: 100%;
-        padding-left: 0;
-        text-align: left;
-        border-bottom: 1px solid #555; /* Separator lines */
-        border-radius: 0;
+      .nav-center a {
+        text-decoration: none;
+        color: white;
+        font-size: 1rem;
+        padding: 10px 0;
+        border-radius: 8px;
+        width: 180px;
+        text-align: center;
+        display: inline-block;
+        background-color: transparent;
       }
-      .nav-center a:last-child, .dropdown:last-child {
-          border-bottom: none;
+      .nav-center a:hover {
+        background-color: #5380c9;
       }
-      .nav-center a:hover, .dropdown:hover > a {
-          background-color: #5380c9;
+      .dropdown {
+        position: relative;
       }
       .dropdown-content {
-          position: static; /* Make dropdown content flow naturally */
-          display: none; /* Initially hidden */
-          box-shadow: none;
-          border-radius: 0;
-          background-color: transparent; /* Inherit background */
-          padding-left: 15px; /* Indent dropdown items */
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 999;
       }
       .dropdown-content a {
-          color: #ccc; /* Lighter color for sub-items */
-          padding: 8px 0;
-          width: 100%;
-          text-align: left;
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9em;
+        width: 180px;
+        text-align: center;
       }
-       .dropdown-content a:hover {
-          color: #fff;
-          background-color: transparent; /* No background change needed */
-       }
-       .dropdown:hover .dropdown-content {
-            display: block; /* Show on hover */
-       }
+      .dropdown-content a:hover {
+        background-color: #5380c9;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
       .nav-right {
-        flex-direction: row; /* Keep logout side-by-side if space allows */
-        width: auto; /* Don't take full width */
-        gap: 15px;
+        display: flex;
         align-items: center;
-        margin-top: 10px; /* Space above logout */
+        gap: 15px;
       }
-      body {
-        padding-top: 150px; /* Increase padding for taller mobile nav */
+      .search-box input {
+        height: 35px;
+        width: 200px;
+        border-radius: 10px;
+        padding: 5px 10px;
+        font-size: 0.9em;
+        border: 1px solid #ccc;
+      }
+      .logout-btn {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 0.9em;
+        background-color: #f2f2f2;
+      }
+      .logout-btn:hover {
+        background-color: #ddd;
       }
       .container {
-        margin-top: 20px; /* Adjust top margin */
-      }
-  }
-
-  @media (max-width: 768px) {
-    body {
-      padding-top: 180px; /* Further adjust if nav wraps significantly */
-    }
-    .container {
-      padding: 15px;
-    }
-    .box {
+        max-width: 800px;
+        margin: 30px auto;
         padding: 20px;
-    }
-    .tabs {
-      flex-direction: column;
-      gap: 0; /* Remove gap */
-      border-bottom: none; /* Remove bottom border */
-    }
-    .tabs button {
-      width: 100%;
-      margin-right: 0; /* Remove right margin */
-      border-radius: 5px; /* Round all corners */
-      margin-bottom: 5px; /* Space between buttons */
-      border: 1px solid #ccc; /* Add back full border */
-    }
-    .tab-btn.active {
-        border: 1px solid #5380c9; /* Highlight active border */
-        border-bottom: 1px solid #5380c9; /* Ensure bottom border matches */
-        top: 0; /* Reset top positioning */
-        background-color: #e7f0fe; /* Lighter blue background for active */
-    }
-    .privileges-table th, .privileges-table td {
-      font-size: 0.9rem;
-      padding: 8px;
-    }
-    .footer-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .footer-section {
-      width: 100%;
-      margin: 15px 0;
-      min-width: auto; /* Reset min-width */
-    }
-    .footer-bottom {
-      text-align: left;
-    }
-  }
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 150px;
+      }
 
-@media (max-width: 480px) {
-  body {
-    padding-top: 200px; /* Adjust again if needed */
-  }
-  h2 {
-    font-size: 1.2rem;
-  }
-  .privileges-table {
-    font-size: 0.85rem;
-  }
-   .privileges-table th, .privileges-table td {
-        padding: 6px;
-   }
-  .nav-left img {
-    height: 50px;
-  }
-  .tab-btn {
-    font-size: 0.9rem;
-    padding: 10px; /* Adjust padding */
-  }
-  .logout-btn {
-    font-size: 0.85rem; /* Slightly larger */
-    padding: 8px 12px; /* Adjust padding */
-  }
-   input[type="text"] {
-       padding: 10px;
-       font-size: 0.95rem;
-   }
-}
+      h2 {
+        margin-bottom: 20px;
+      }
 
-  </style>
-</head>
-<body>
-  <header>
+      .privileges-section p {
+        font-weight: bold;
+      }
+
+      .privileges div {
+        padding: 8px 10px;
+        background-color: #f9f9f9;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #5380c9;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #406ab0;
+      }
+    </style>
+  </head>
+  <body>
     <!-- Navigation Bar -->
-  <nav class="navigation">
-    <div class="nav-container">
-      <div class="nav-left">
-        <!-- Make sure the image path is correct -->
-        <img src="images/bananacat.png" alt="Banana Cat Logo" />
-      </div>
-      <div class="nav-center">
-        <a href="A2home.html">Home</a>
-        <div class="dropdown">
-          <a href="#">View ▾</a> <!-- Consider making this non-clickable if it only reveals dropdown -->
-          <div class="dropdown-content">
-            <a href="viewAccount.html">View Account</a>
-            <a href="viewProfile.html">View Profile</a>
+    <nav class="navigation">
+      <div class="nav-container">
+        <div class="nav-left">
+          <img src="images/bananacat.png" alt="Banana Cat" />
+        </div>
+        <div class="nav-center">
+          <a href="UserAdminHome.html">Home</a>
+          <div class="dropdown">
+            <a href="#">Role ▾</a>
+            <div class="dropdown-content">
+              <a href="UserProfileCreate.html">Create</a>
+              <a href="UserProfileSearch.html">Search</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#">User ▾</a>
+            <div class="dropdown-content">
+              <a href="UaCreateUserAccount.html">Create</a>
+              <a href="UaSearchUserAccount.html">Search</a>
+            </div>
           </div>
         </div>
-        <a href="CreateUserAccount.html">Create</a>
+        <div class="nav-right">
+          <a class="logout-btn" href="logout.html">Log out</a>
+        </div>
       </div>
-      <div class="nav-right">
-        <a class="logout-btn" href="logout.html">Log out</a>
+    </nav>
+
+    <main class="container">
+      <h2 id="roleTitle">User Role</h2>
+
+      <section class="privileges-section">
+        <p>Privileges:</p>
+        <div class="privileges" id="privilegeList">
+          <!-- Privileges load dynamically -->
+        </div>
+      </section>
+
+      <div class="action-buttons">
+        <button id="updateUserBtn">
+          <a
+            href="UserProfileUpdate.html"
+            style="text-decoration: none; color: white"
+            >Update Role</a
+          >
+        </button>
+        <button id="deleteUserBtn" style="margin-left: 500px">
+          <a
+            href="UserProfileDelete.html"
+            style="text-decoration: none; color: white"
+            >Delete Role</a
+          >
+        </button>
       </div>
-    </div>
-  </nav>
-  </header>
+    </main>
 
-  <main class="container"> <!-- Wrap main content in main tag -->
-    <div class="box">
-      <h2>Create User Profile</h2>
-      <label for="roleName">Name of New Role</label> <!-- Added for attribute -->
-      <input type="text" id="roleName" placeholder="Enter role name" />
+    <script>
+      // ...existing code...
+      window.addEventListener("load", async function () {
+        try {
+          const selectedProfile = localStorage.getItem("selectedProfile");
+          // Make an API call to fetch the user account list
+          const response = await fetch("http://localhost:8080/viewP", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: selectedProfile // Send the stored profile as the request body
+          });
 
-      <p>Privileges:</p>
-      <div class="tabs">
-        <button type="button" class="tab-btn active" data-tab="create">Create/Add</button>
-        <button type="button" class="tab-btn" data-tab="view">View</button>
-        <button type="button" class="tab-btn" data-tab="update">Update</button>
-        <button type="button" class="tab-btn" data-tab="delete">Delete</button>
-        <button type="button" class="tab-btn" data-tab="search">Search</button>
-      </div>
+          if (response.ok) {
+            const viewProfile = await response.json(); // Parse the JSON response
+            // Retrieve and parse the stored profile object
 
-      <!-- Create/Add Section -->
-      <div id="create" class="tab-content">
-        <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Create Account</td>
-              <td><input type="checkbox" name="create_account_grant" /></td>
-              <td><input type="checkbox" name="create_account_deny" /></td>
-            </tr>
-            <tr>
-              <td>Create Role</td>
-              <td><input type="checkbox" name="create_role_grant" /></td>
-              <td><input type="checkbox" name="create_role_deny" /></td>
-            </tr>
-            <tr>
-              <td>Add Cleaning Services</td>
-              <td><input type="checkbox" name="add_services_grant" /></td>
-              <td><input type="checkbox" name="add_services_deny" /></td>
-            </tr>
-            <tr>
-              <td>Add to short list</td>
-              <td><input type="checkbox" name="add_shortlist_grant" /></td>
-              <td><input type="checkbox" name="add_shortlist_deny" /></td>
-            </tr>
-            <tr>
-              <td>Create New Service Category</td>
-              <td><input type="checkbox" name="create_category_grant" /></td>
-              <td><input type="checkbox" name="create_category_deny" /></td>
-            </tr>
-          </tbody>
-        </table>
+            if (viewProfile) {
+              const profile = viewProfile;
 
-        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Create</button>
-        <button type="button" class="cancel" data-tab="view" style="width: 100px; height: 50px; margin-left: 590px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Cancel</button>
-      </div>
+              // Display profile fields (customize as needed)
+              const container = document.getElementById("privilegeList");
+              container.innerHTML = ""; // Clear previous content
 
-      <!-- Update Section - FIXED -->
-      <div id="update" class="tab-content" style="display: none;">
-        <h3>Update</h3> 
-        <table class="privileges-table"> 
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Create Account</td>
-              <td><input type="checkbox" name="update_account_grant"/></td>
-              <td><input type="checkbox" name="update_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Create Role</td>
-              <td><input type="checkbox" name="update_role_grant"/></td>
-              <td><input type="checkbox" name="update_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Add Cleaning Services</td>
-              <td><input type="checkbox" name="update_services_grant"/></td>
-              <td><input type="checkbox" name="update_services_deny"/></td>
-            </tr>
-            <tr>
-              <td>Add to Short List Items</td>
-              <td><input type="checkbox" name="update_shortlist_grant"/></td>
-              <td><input type="checkbox" name="update_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Create New Service Category</td>
-              <td><input type="checkbox" name="update_category_grant"/></td>
-              <td><input type="checkbox" name="update_category_deny"/></td>
-            </tr>
-           
-          </tbody>
-        </table>
-      </div>
+              // Example: Display all key-value pairs
+              for (const [key, value] of Object.entries(profile)) {
+                container.innerHTML += `<div><strong>${key}:</strong> ${value}</div>`;
+              }
 
-      <!-- View Section -->
-      <div id="view" class="tab-content" style="display: none;">
-        <h3>View Privileges</h3>
-         <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>View Account List</td>
-              <td><input type="checkbox" name="view_account_list_grant"/></td>
-              <td><input type="checkbox" name="view_account_list_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Role List</td>
-              <td><input type="checkbox" name="view_role_list_grant"/></td>
-              <td><input type="checkbox" name="view_role_list_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Service Details</td>
-              <td><input type="checkbox" name="view_service_details_grant"/></td>
-              <td><input type="checkbox" name="view_service_details_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Short List</td>
-              <td><input type="checkbox" name="view_shortlist_grant"/></td>
-              <td><input type="checkbox" name="view_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Service Categories</td>
-              <td><input type="checkbox" name="view_categories_grant"/></td>
-              <td><input type="checkbox" name="view_categories_deny"/></td>
-            </tr>
-             
-          </tbody>
-        </table>
-      </div>
+              // Optionally, update the role title if your object has a role/name field
+              if (profile.name) {
+                document.getElementById("roleTitle").innerText = profile.name;
+              }
 
-      <!-- Delete Section -->
-      <div id="delete" class="tab-content" style="display: none;">
-        <h3>Delete Privileges</h3>
-         <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Delete Account</td>
-              <td><input type="checkbox" name="delete_account_grant"/></td>
-              <td><input type="checkbox" name="delete_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Role</td>
-              <td><input type="checkbox" name="delete_role_grant"/></td>
-              <td><input type="checkbox" name="delete_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Cleaning Service</td>
-              <td><input type="checkbox" name="delete_service_grant"/></td>
-              <td><input type="checkbox" name="delete_service_deny"/></td>
-            </tr>
-            <tr>
-              <td>Remove from Short List</td>
-              <td><input type="checkbox" name="delete_shortlist_grant"/></td>
-              <td><input type="checkbox" name="delete_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Service Category</td>
-              <td><input type="checkbox" name="delete_category_grant"/></td>
-              <td><input type="checkbox" name="delete_category_deny"/></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Search Section -->
-      <div id="search" class="tab-content" style="display: none;">
-       <div class="search-results" style="margin-top: 20px;">
-            
-       </div>
-        <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Search Account</td>
-              <td><input type="checkbox" name="delete_account_grant"/></td>
-              <td><input type="checkbox" name="delete_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Role</td>
-              <td><input type="checkbox" name="delete_role_grant"/></td>
-              <td><input type="checkbox" name="delete_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Cleaning Service</td>
-              <td><input type="checkbox" name="delete_service_grant"/></td>
-              <td><input type="checkbox" name="delete_service_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search from Short List</td>
-              <td><input type="checkbox" name="delete_shortlist_grant"/></td>
-              <td><input type="checkbox" name="delete_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Service Category</td>
-              <td><input type="checkbox" name="delete_category_grant"/></td>
-              <td><input type="checkbox" name="delete_category_deny"/></td>
-            </tr>
-
-          </tbody>
-        </table>
-        
-     </div>
-     
-  </main>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <!-- Branding & Mission -->
-      <div class="footer-section">
-        <h4>CleanerMatch</h4>
-        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="faq.html">FAQs</a></li>
-          <li><a href="terms.html">Terms & Conditions</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-        </ul>
-      </div>
-
-      <!-- For Users -->
-      <div class="footer-section">
-        <h4>For Users</h4>
-        <ul>
-          <li><a href="cleaners.html">For Cleaners</a></li>
-          <li><a href="homeowners.html">For Home Owners</a></li>
-          <li><a href="admin.html">For Admin</a></li>
-          <li><a href="management.html">Platform Management</a></li>
-        </ul>
-      </div>
-
-      <!-- Social Media -->
-      <div class="footer-section">
-        <h4>Follow Us</h4>
-        <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 C2CBananaCat. All Rights Reserved.
-    </div>
-  </footer>
-
-  <script>
-    // Tab switching logic
-    document.querySelectorAll(".tab-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        const tab = button.getAttribute("data-tab");
-
-        // Remove active class from all buttons
-        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-
-        // Hide all tab contents
-        document.querySelectorAll(".tab-content").forEach(content => content.style.display = "none");
-
-        // Activate current tab button
-        button.classList.add("active");
-        // Show the corresponding tab content
-        const activeTabContent = document.getElementById(tab);
-        if (activeTabContent) {
-            activeTabContent.style.display = "block";
+              
+            } else {
+              // Fallback if nothing is stored
+              document.getElementById("privilegeList").innerHTML = "<div>No profile data found.</div>";
+            }
+          }
+        } catch (error) {
+          document.getElementById("privilegeList").innerHTML = "<div>Error loading profile data.</div>";
         }
       });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const firstTabButton = document.querySelector('.tab-btn');
-        const firstTabContent = document.querySelector('.tab-content');
-        if (firstTabButton && firstTabContent) {
-            firstTabButton.classList.add('active');
-            firstTabContent.style.display = 'block';
-        }
-    });
-  </script>
-
-</body>
+    </script>
+  </body>
 </html>

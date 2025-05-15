@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete User Profile</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(218, 240, 248);
+        }
+
+    main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 80px; /* Adjust for nav height */
+        }
+
+    /* Navigation Bar */
+    nav.navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+    }
+    .nav-left img {
+      height: 80px;
+      width: 100px;
+      object-fit: contain;
+    }
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+    .nav-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 0;
+      border-radius: 8px;
+      width: 180px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent;
+    }
+    .nav-center a:hover {
+      background-color:  #5380c9;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+    }
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+      width: 180px;
+      text-align: center;
+    }
+    .dropdown-content a:hover {
+      background-color: #5380c9;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .search-box input {
+      height: 35px;
+      width: 200px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+    }
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
+    .container {
+      border: 1px solid #000;
+      padding: 20px;
+      width: 500px;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+      justify-content: center;
+      background-color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+    }
+    .form-group input{
+        height: 30px;
+    }
+    .error-message {
+      text-align: center;
+      color: red;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: 1px solid #000;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: white;
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+  <nav class="navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="images/bananacat.png" alt="Banana Cat" />
+      </div>
+      <div class="nav-center">
+        <a href="UserAdminHome.html">Home</a>
+        <div class="dropdown">
+          <a href="#">Role ▾</a>
+          <div class="dropdown-content">
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="#">User ▾</a>
+          <div class="dropdown-content">
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-right">
+        
+        <a class="logout-btn" href="logout.html">Log out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+<div class="container">
+  <h2>Delete User Profile</h2>
+
+  <div class="form-group">
+    <label for="role">Role:</label>
+    <input type="text" id="roleInput" name="role" style="width: 100%; margin-top: 8px;" />
+  </div>
+
+
+  <div class="error-message" id="errorMessage" style="display: none;">Error Message</div>
+
+<div class="button-group">
+    <button type="button" id="deleteBtn">Delete</button>
+    <button type="button">Cancel</button>
+</div>
+
+</div>
+</main>
+<script>
+  document.getElementById('deleteBtn').addEventListener('click', function () {
+ 
+    const roleValue = ""; 
+    
+    const errorDiv = document.getElementById('errorMessage');
+    
+    if (!roleValue) {
+      errorDiv.textContent = "Cannot delete profile. Role information is missing.";
+      errorDiv.style.display = "block";
+    } else {
+      errorDiv.style.display = "none";
+      // Proceed with delete logic
+      alert("User profile deleted successfully."); 
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -61,8 +61,7 @@ public class UserProfileEntity {
     }
 
     @Transactional
-    public ResponseEntity<?> UpdateUserProfile(UserProfileRepository profilerepository) throws IllegalAccessException{
-
+    public ResponseEntity<?> UpdateUserProfile(UserProfileRepository profilerepository) throws IllegalAccessException {
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (!(userOptional.isPresent())) {
@@ -71,11 +70,9 @@ public class UserProfileEntity {
         UserProfileEntity org = userOptional.get();
         for (Field f : this.getClass().getDeclaredFields()) {
             f.setAccessible(true);
+            if (f.getName().equals("name")) continue; // Don't update the primary key
             Object value = f.get(this);
-
-            if (value != null) {
-                f.set(org, value);
-            }
+            f.set(org, value); // Set value, even if null
         }
         profilerepository.save(org);
         return ResponseEntity.ok(org);
@@ -98,7 +95,9 @@ public class UserProfileEntity {
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.ok(this.name);
+            UserProfileEntity result = userOptional.get();
+            System.out.println("Searching for: " + result);
+            return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.ok("Profile not found");
         }
