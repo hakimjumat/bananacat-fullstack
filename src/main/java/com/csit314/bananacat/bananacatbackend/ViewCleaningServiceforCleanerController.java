@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class ViewCleaningServiceforCleanerController {
-    @PostMapping("path")
+    @PostMapping("/ViewCleaningServiceforCleaner")
     public ResponseEntity<?> ViewCleaningServiceforCleaner(@RequestBody CleaningServiceEntity csEntity) {
         return csEntity.ViewCleaningServiceforCleaner();
     }

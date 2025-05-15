@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class UpdateCategoryController {
-    @PostMapping("path")
+    @PostMapping("/UpdateCategory")
     public ResponseEntity<?> UpdateCategory(@RequestBody CategoryEntity cEntity) {
         return cEntity.UpdateCategory();
     } 

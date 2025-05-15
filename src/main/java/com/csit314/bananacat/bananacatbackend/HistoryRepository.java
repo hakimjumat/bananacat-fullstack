@@ -18,7 +18,7 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long>{
 
     List<HistoryEntity> findByCLemailAndDate(String CLemail, LocalDate date);
 
-    List<HistoryEntity> findBySdateAndEdate(LocalDate Sdate, LocalDate Edate);
+    List<HistoryEntity> findByDateBetween(LocalDate start, LocalDate end);
 
     @Query("SELECT SUM(h.price) AS totalPrice, COUNT(h) AS count FROM HistoryEntity h WHERE h.date BETWEEN :start AND :end")
     Object[] getMonthlyStats(@Param("start") LocalDate start, @Param("end") LocalDate end);

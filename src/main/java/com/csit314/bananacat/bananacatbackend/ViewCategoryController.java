@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class ViewCategoryController {
-    @PostMapping("path")
+    @PostMapping("/ViewCategory")
     public ResponseEntity<?> ViewCategory(@RequestBody CategoryEntity cEntity) {
         return cEntity.ViewCategory();
     }

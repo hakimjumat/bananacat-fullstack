@@ -56,7 +56,9 @@ public class HistoryEntity {
     //weekly report
     public ResponseEntity<?> WeeklyReport() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
-        List<HistoryEntity> result = Hrepository.findBySdateAndEdate(this.date.minusWeeks(1), this.date);
+        LocalDate sdate = this.date.minusWeeks(1);
+        LocalDate edate = this.date;
+        List<HistoryEntity> result = Hrepository.findByDateBetween(sdate, edate);
         return ResponseEntity.ok(result);
     }
 
