@@ -46,12 +46,8 @@ public class shortlistEntity {
     //User story #29
     public ResponseEntity<?> SearchShortlist() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
-        Optional<shortlistEntity> slOptional = slRepository.findByHOemailAndCLemailAndName(this.HOemail, this.CLemail, this.name);
-        if (slOptional.isPresent()) {
-            return ResponseEntity.ok(slOptional.get());
-        } else {
-            return ResponseEntity.ok("not found");
-        }
+        List<shortlistEntity> slOptional = slRepository.findByHOemailAndName(this.HOemail, this.name);
+        return ResponseEntity.ok(slOptional);
     }
 
     //User story #16

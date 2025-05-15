@@ -10,6 +10,8 @@ public interface shortlistRepository extends JpaRepository<shortlistEntity, Long
 
     List<shortlistEntity> findByHOemail(String HOemail);
 
+    List<shortlistEntity> findByHOemailAndName(String HOemail, String name);
+
     @Query("SELECT COUNT(s) FROM shortlistEntity s WHERE s.CLemail = :email AND s.name = :name" )
     int CountByEmailAndName (@Param("email") String email, @Param("name") String name);
 }
