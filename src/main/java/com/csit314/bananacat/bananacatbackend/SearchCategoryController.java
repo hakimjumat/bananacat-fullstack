@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class SearchCategoryController {
-    @PostMapping("path")
+    @PostMapping("/SearchCategory")
     public ResponseEntity<?> SearchCategory(@RequestBody CategoryEntity cEntity) {
         return cEntity.SearchCategory();
     }

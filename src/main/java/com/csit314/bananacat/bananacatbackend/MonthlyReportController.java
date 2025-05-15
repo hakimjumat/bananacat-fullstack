@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class MonthlyReportController {
-    @PostMapping("path")
+    @PostMapping("/MonthlyReport")
     public ResponseEntity<?> MonthlyReport(@RequestBody HistoryEntity hEntity) {
         return hEntity.MonthlyReport();
     }

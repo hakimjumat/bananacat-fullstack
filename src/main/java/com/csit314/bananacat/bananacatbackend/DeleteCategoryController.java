@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class DeleteCategoryController {
-    @PostMapping("path")
+    @PostMapping("/DeleteCategory")
     public boolean DeleteCategory(@RequestBody CategoryEntity cEntity) {
         return cEntity.DeleteCategory();
     }

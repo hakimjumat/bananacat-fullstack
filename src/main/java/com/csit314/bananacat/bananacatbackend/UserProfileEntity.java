@@ -22,6 +22,8 @@ public class UserProfileEntity {
     public Boolean privilege_to_write_homeaccount;
     public Boolean privilege_to_read_write_category;
     public Boolean privilege_to_generate_report;
+    public Boolean privilege_for_NumberofShortlist;
+    public Boolean privilege_to_read_HOHistory;
 
     public String getName() {
         return name;
