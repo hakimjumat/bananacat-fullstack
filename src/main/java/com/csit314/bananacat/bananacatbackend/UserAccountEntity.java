@@ -255,7 +255,7 @@ public class UserAccountEntity {
 
     //User Story #27
     @Transactional
-    public boolean DeleteAccoountForHomeOwner() {
+    public boolean DeleteAccountForHomeOwner() {
         UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
         if (!(userOptional.isPresent())) {
