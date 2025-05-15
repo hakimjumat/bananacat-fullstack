@@ -20,6 +20,7 @@ public class CleaningServiceEntity {
     private String tag;
     private BigDecimal price;
     private String location;
+    private Integer NumberOfView; //for User story #15, rmb to update db make it default 0, cannot be null after cleaning service creation cause of nullpointerexception
 
     public Long getId() {
         return id;
@@ -48,15 +49,38 @@ public class CleaningServiceEntity {
         CSRepository.save(this);
         return true;
     }
-    //for viewing specific service
-    public ResponseEntity<?> ViewCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
+
+    //for viewing specific service, this method is for homeowner
+    public ResponseEntity<?> ViewCleaningServiceforHomeOwner(CleaningServiceRepository CSRepository) {
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
+
         if (!(CSoptional.isPresent())) {
             return ResponseEntity.ok("not found");
         } else {
+            CleaningServiceEntity result = CSoptional.get();
+            result.IncreaseNumberOfViews();
+            CSRepository.save(result);
             return ResponseEntity.ok(CSoptional.get());
         }
     }
+
+    //for viewing list of service, thie method for both homeowner and cleaner, but dont display view for homeowner
+    public ResponseEntity<?> ViewCleaningServiceList() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
+        List<CleaningServiceEntity> result = CSRepository.findByEmail(this.email);
+        return ResponseEntity.ok(result);
+    }
+
+    public ResponseEntity<?> ViewCleaningServiceforCleaner() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
+        Optional<CleaningServiceEntity> result = CSRepository.findByEmailandName(this.email, this.serviceName);
+        if (!(result.isPresent())) {
+            return ResponseEntity.ok("not found");
+        } else {
+            return ResponseEntity.ok(result.get());
+        }
+    }
+
     @Transactional
     public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
