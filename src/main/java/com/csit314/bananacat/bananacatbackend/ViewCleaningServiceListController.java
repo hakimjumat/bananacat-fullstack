@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-public class NumberofPageViewsController {
-    @PostMapping("/NumberofPageViews")
-    public ResponseEntity<?> NumberofPageViews(@RequestBody UserAccountEntity UAentity) {
-        return UAentity.NumberofPageViews();
+public class ViewCleaningServiceListController {
+    @PostMapping("path")
+    public ResponseEntity<?> ViewCleaningServiceList(@RequestBody CleaningServiceEntity csEntity) {
+        return csEntity.ViewCleaningServiceList();
     }
     
 }
