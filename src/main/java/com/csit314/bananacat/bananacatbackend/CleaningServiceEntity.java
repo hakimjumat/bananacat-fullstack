@@ -60,6 +60,13 @@ public class CleaningServiceEntity {
         }
     }
 
+    //for viewing list of service, thie method for both homeowner and cleaner, but dont display view for homeowner
+    public ResponseEntity<?> ViewCleaningServiceList() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
+        List<CleaningServiceEntity> result = CSRepository.findByEmail(this.email);
+        return ResponseEntity.ok(result);
+    }
+
     @Transactional
     public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
