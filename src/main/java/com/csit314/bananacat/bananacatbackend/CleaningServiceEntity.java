@@ -67,6 +67,16 @@ public class CleaningServiceEntity {
         return ResponseEntity.ok(result);
     }
 
+    public ResponseEntity<?> ViewCleaningServiceforCleaner() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
+        Optional<CleaningServiceEntity> result = CSRepository.findByEmailandName(this.email, this.serviceName);
+        if (!(result.isPresent())) {
+            return ResponseEntity.ok("not found");
+        } else {
+            return ResponseEntity.ok(result.get());
+        }
+    }
+
     @Transactional
     public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailandName(this.email, this.serviceName);
