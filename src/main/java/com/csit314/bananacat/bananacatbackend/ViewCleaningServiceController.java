@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-public class ViewCleaningServiceController {
+public class ViewCleaningServiceForHomeOwnerController {
         private final CleaningServiceRepository CSRepository;
 
-        public ViewCleaningServiceController(CleaningServiceRepository CSRepository) {
+        public ViewCleaningServiceForHomeOwnerController(CleaningServiceRepository CSRepository) {
             this.CSRepository = CSRepository;
         }
 
         @PostMapping("path")
-        public ResponseEntity<?> ViewCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
-            return CSEntity.ViewCleaningService(CSRepository);
+        public ResponseEntity<?> ViewCleaningServiceforHomeOwner(@RequestBody CleaningServiceEntity CSEntity) {
+            return CSEntity.ViewCleaningServiceforHomeOwner(CSRepository);
         }
         
 }
