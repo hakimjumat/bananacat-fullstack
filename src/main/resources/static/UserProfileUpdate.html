@@ -464,7 +464,7 @@
     <div class="box">
       <h2>Update User Profile</h2>
       <label for="roleName">Name of Role</label>
-      <input type="text" id="roleName" placeholder="Enter role name"/>
+      <input type="text" id="roleName" placeholder="Enter role name" disabled/>
 
       
 
@@ -529,7 +529,7 @@
               <td><input type="checkbox" name="for_numberof_shortlist_deny" /></td>
             </tr>
             <tr>
-              <td>For number of shortlist</td>
+              <td>Read HomeOwner History</td>
               <td><input type="checkbox" name="read_hohistory_grant" /></td>
               <td><input type="checkbox" name="read_hohistory_deny" /></td>
             </tr>
@@ -606,8 +606,8 @@
         { field: "privilege_to_write_homeaccount", grant: "write_homeaccount_grant", deny: "write_homeaccount_deny", row: 6 },
         { field: "privilege_to_read_write_category", grant: "read_write_category_grant", deny: "read_write_category_deny", row: 7 },
         { field: "privilege_to_generate_report", grant: "generate_report_grant", deny: "generate_report_deny", row: 8 },
-        { field: "privilege_for_numberof_shortlist", grant: "for_numberof_shortlist_grant", deny: "for_numberof_shortlist_deny", row: 9 },
-        { field: "privilege_to_read_hohistory", grant: "read_hohistory_grant", deny: "read_hohistory_deny", row: 10 }
+        { field: "privilege_for_NumberofShortlist", grant: "for_numberof_shortlist_grant", deny: "for_numberof_shortlist_deny", row: 9 },
+        { field: "privilege_to_read_HOHistory", grant: "read_hohistory_grant", deny: "read_hohistory_deny", row: 10 }
         // Add more mappings if needed
       ];
 
@@ -628,13 +628,16 @@
           }
         }
       });
+      
+      document.querySelector("button.cancel").addEventListener("click", function () {
+        window.location.href = "UserProfileDelete.html";
+      });
 
       // 5. On Update, read checkboxes and update the profile object
       document.querySelector("button.create").addEventListener("click", async function () {
-        privilegeMap.forEach((priv, idx) => {
-          const rowIdx = priv.row !== undefined ? priv.row : idx;
-          const grantCheckbox = document.getElementsByName(priv.grant)[rowIdx];
-          const denyCheckbox = document.getElementsByName(priv.deny)[rowIdx];
+        privilegeMap.forEach((priv) => {
+          const grantCheckbox = document.getElementsByName(priv.grant)[0];
+          const denyCheckbox = document.getElementsByName(priv.deny)[0];
           if (grantCheckbox && denyCheckbox) {
             if (grantCheckbox.checked) {
               profile[priv.field] = true;
@@ -647,6 +650,7 @@
         });
 
         // 6. Send updated profile to backend
+        console.log("Updated Profile:", JSON.stringify(profile));
         const response = await fetch("http://localhost:8080/updateP", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

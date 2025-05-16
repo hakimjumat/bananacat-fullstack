@@ -208,7 +208,7 @@
 
   <div class="form-group">
     <label for="role">Role:</label>
-    <input type="text" id="roleInput" name="role" style="width: 100%; margin-top: 8px;" />
+    <input type="text" id="roleInput" name="role" style="width: 100%; margin-top: 8px;" disabled/>
   </div>
 
 
@@ -222,21 +222,53 @@
 </div>
 </main>
 <script>
-  document.getElementById('deleteBtn').addEventListener('click', function () {
- 
-    const roleValue = ""; 
-    
+  document.addEventListener('DOMContentLoaded', function () {
+  // 1. Retrieve and parse the profile object
+  const storedProfile = localStorage.getItem("selectedProfile");
+  if (!storedProfile) return;
+  const profile = JSON.parse(storedProfile);
+
+  // 2. Set the role name
+  document.getElementById("roleInput").value = profile.name || "";
+
+  // 3. Delete button logic
+  document.getElementById('deleteBtn').addEventListener('click', async function () {
     const errorDiv = document.getElementById('errorMessage');
-    
-    if (!roleValue) {
+    if (!profile.name) {
       errorDiv.textContent = "Cannot delete profile. Role information is missing.";
       errorDiv.style.display = "block";
-    } else {
-      errorDiv.style.display = "none";
-      // Proceed with delete logic
-      alert("User profile deleted successfully."); 
+      return;
+    }
+    errorDiv.style.display = "none";
+
+    // Send delete request to backend
+    try {
+      const response = await fetch("http://localhost:8080/DeleteUserProfile", {
+        method: "POST", // or "DELETE" if your backend supports it
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile)
+      });
+
+      if (response.ok) {
+        alert("User profile deleted successfully.");
+        localStorage.removeItem("selectedProfile");
+        window.location.href = "UserProfileSearch.html"; // Redirect as needed
+      } else {
+        const errorMsg = await response.text();
+        errorDiv.textContent = "Delete failed: " + errorMsg;
+        errorDiv.style.display = "block";
+      }
+    } catch (err) {
+      errorDiv.textContent = "Delete failed: " + err;
+      errorDiv.style.display = "block";
     }
   });
+
+  // Optional: Cancel button logic
+  document.querySelector('.button-group button[type="button"]:not(#deleteBtn)').addEventListener('click', function () {
+    window.location.href = "UserProfileView.html";
+  });
+});
 </script>
 
 </body>

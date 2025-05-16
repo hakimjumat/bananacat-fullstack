@@ -465,18 +465,11 @@
 
   <main class="container">
     <div class="box">
-      <h2>Create User Profile</h2>
-      <label for="roleName">Name of New Role</label>
-      <input type="text" id="roleName" placeholder="Enter role name" />
+      <h2>Update User Profile</h2>
+      <label for="roleName">Name of Role</label>
+      <input type="text" id="roleName" placeholder="Enter role name"/>
 
-      <p>Privileges:</p>
-      <div class="tabs">
-        <button type="button" class="tab-btn active" data-tab="create">Create/Add</button>
-        <button type="button" class="tab-btn" data-tab="view">View</button>
-        <button type="button" class="tab-btn" data-tab="update">Update</button>
-        <button type="button" class="tab-btn" data-tab="delete">Delete</button>
-        <button type="button" class="tab-btn" data-tab="search">Search</button>
-      </div>
+      
 
       <div id="create" class="tab-content">
         <table class="privileges-table">
@@ -489,202 +482,66 @@
           </thead>
           <tbody>
             <tr>
-              <td>Create Account</td>
-              <td><input type="checkbox" name="create_account_grant" /></td>
-              <td><input type="checkbox" name="create_account_deny" /></td>
+              <td>Read/Write Account</td>
+              <td><input type="checkbox" name="read_write_account_grant" /></td>
+              <td><input type="checkbox" name="read_write_account_deny" /></td>
             </tr>
             <tr>
-              <td>Create Role</td>
-              <td><input type="checkbox" name="create_role_grant" /></td>
-              <td><input type="checkbox" name="create_role_deny" /></td>
+              <td>Read/Write Profile</td>
+              <td><input type="checkbox" name="read_write_profile_grant" /></td>
+              <td><input type="checkbox" name="read_write_profile_deny" /></td>
             </tr>
             <tr>
-              <td>Add Cleaning Services</td>
-              <td><input type="checkbox" name="add_services_grant" /></td>
-              <td><input type="checkbox" name="add_services_deny" /></td>
+              <td>Read/Write Cleaning Services</td>
+              <td><input type="checkbox" name="read_write_cleaning_service_grant" /></td>
+              <td><input type="checkbox" name="read_write_cleaning_service_deny" /></td>
             </tr>
             <tr>
-              <td>Add to short list</td>
-              <td><input type="checkbox" name="add_shortlist_grant" /></td>
-              <td><input type="checkbox" name="add_shortlist_deny" /></td>
+              <td>Read History</td>
+              <td><input type="checkbox" name="read_history_grant" /></td>
+              <td><input type="checkbox" name="read_history_deny" /></td>
             </tr>
             <tr>
-              <td>Create New Service Category</td>
-              <td><input type="checkbox" name="create_category_grant" /></td>
-              <td><input type="checkbox" name="create_category_deny" /></td>
+              <td>Read Cleaners</td>
+              <td><input type="checkbox" name="read_cleaners_grant" /></td>
+              <td><input type="checkbox" name="read_cleaners_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Shortlists</td>
+              <td><input type="checkbox" name="read_write_shortlist_grant" /></td>
+              <td><input type="checkbox" name="read_write_shortlist_deny" /></td>
+            </tr>
+            <tr>
+              <td>Write Home Account</td>
+              <td><input type="checkbox" name="write_homeaccount_grant" /></td>
+              <td><input type="checkbox" name="write_homeaccount_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read/Write Category</td>
+              <td><input type="checkbox" name="read_write_category_grant" /></td>
+              <td><input type="checkbox" name="read_write_category_deny" /></td>
+            </tr>
+            <tr>
+              <td>Generate Report</td>
+              <td><input type="checkbox" name="generate_report_grant" /></td>
+              <td><input type="checkbox" name="generate_report_deny" /></td>
+            </tr>
+            <tr>
+              <td>For number of shortlist</td>
+              <td><input type="checkbox" name="for_numberof_shortlist_grant" /></td>
+              <td><input type="checkbox" name="for_numberof_shortlist_deny" /></td>
+            </tr>
+            <tr>
+              <td>Read HomeOwner History</td>
+              <td><input type="checkbox" name="read_hohistory_grant" /></td>
+              <td><input type="checkbox" name="read_hohistory_deny" /></td>
             </tr>
           </tbody>
         </table>
 
-        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Create</button>
+        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Update</button>
         <button type="button" class="cancel" data-tab="view" style="width: 100px; height: 50px; margin-left: 590px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Cancel</button>
       </div>
-
-      <div id="update" class="tab-content" style="display: none;">
-        <h3>Update</h3>
-        <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Create Account</td>
-              <td><input type="checkbox" name="update_account_grant"/></td>
-              <td><input type="checkbox" name="update_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Create Role</td>
-              <td><input type="checkbox" name="update_role_grant"/></td>
-              <td><input type="checkbox" name="update_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Add Cleaning Services</td>
-              <td><input type="checkbox" name="update_services_grant"/></td>
-              <td><input type="checkbox" name="update_services_deny"/></td>
-            </tr>
-            <tr>
-              <td>Add to Short List Items</td>
-              <td><input type="checkbox" name="update_shortlist_grant"/></td>
-              <td><input type="checkbox" name="update_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Create New Service Category</td>
-              <td><input type="checkbox" name="update_category_grant"/></td>
-              <td><input type="checkbox" name="update_category_deny"/></td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-      <div id="view" class="tab-content" style="display: none;">
-        <h3>View Privileges</h3>
-         <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>View Account List</td>
-              <td><input type="checkbox" name="view_account_list_grant"/></td>
-              <td><input type="checkbox" name="view_account_list_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Role List</td>
-              <td><input type="checkbox" name="view_role_list_grant"/></td>
-              <td><input type="checkbox" name="view_role_list_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Service Details</td>
-              <td><input type="checkbox" name="view_service_details_grant"/></td>
-              <td><input type="checkbox" name="view_service_details_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Short List</td>
-              <td><input type="checkbox" name="view_shortlist_grant"/></td>
-              <td><input type="checkbox" name="view_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>View Service Categories</td>
-              <td><input type="checkbox" name="view_categories_grant"/></td>
-              <td><input type="checkbox" name="view_categories_deny"/></td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-      <div id="delete" class="tab-content" style="display: none;">
-        <h3>Delete Privileges</h3>
-         <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Delete Account</td>
-              <td><input type="checkbox" name="delete_account_grant"/></td>
-              <td><input type="checkbox" name="delete_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Role</td>
-              <td><input type="checkbox" name="delete_role_grant"/></td>
-              <td><input type="checkbox" name="delete_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Cleaning Service</td>
-              <td><input type="checkbox" name="delete_service_grant"/></td>
-              <td><input type="checkbox" name="delete_service_deny"/></td>
-            </tr>
-            <tr>
-              <td>Remove from Short List</td>
-              <td><input type="checkbox" name="delete_shortlist_grant"/></td>
-              <td><input type="checkbox" name="delete_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Delete Service Category</td>
-              <td><input type="checkbox" name="delete_category_grant"/></td>
-              <td><input type="checkbox" name="delete_category_deny"/></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="search" class="tab-content" style="display: none;">
-       <div class="search-results" style="margin-top: 20px;">
-
-       </div>
-        <table class="privileges-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Grant</th>
-              <th>Deny</th>
-            </tr>
-          </thead>
-          <tbody>
-             <tr>
-              <td>Search Account</td>
-              <td><input type="checkbox" name="search_account_grant"/></td>
-              <td><input type="checkbox" name="search_account_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Role</td>
-              <td><input type="checkbox" name="search_role_grant"/></td>
-              <td><input type="checkbox" name="search_role_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Cleaning Service</td>
-              <td><input type="checkbox" name="search_service_grant"/></td>
-              <td><input type="checkbox" name="search_service_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search from Short List</td>
-              <td><input type="checkbox" name="search_shortlist_grant"/></td>
-              <td><input type="checkbox" name="search_shortlist_deny"/></td>
-            </tr>
-            <tr>
-              <td>Search Service Category</td>
-              <td><input type="checkbox" name="search_category_grant"/></td>
-              <td><input type="checkbox" name="search_category_deny"/></td>
-            </tr>
-
-          </tbody>
-        </table>
-
-     </div>
 
   </main>
 
@@ -732,43 +589,64 @@
   </footer>
 
   <script>
-    document.querySelectorAll(".tab-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        const tab = button.getAttribute("data-tab");
+    document.addEventListener('DOMContentLoaded', function () {
+  // 1. Map privilege fields to checkbox names (use the same mapping as your update page)
+  const privilegeMap = [
+    { field: "privilege_to_read_write_account", grant: "read_write_account_grant", deny: "read_write_account_deny" },
+    { field: "privilege_to_read_write_profile", grant: "read_write_profile_grant", deny: "read_write_profile_deny" },
+    { field: "privilege_to_read_write_cleaning_service", grant: "read_write_cleaning_service_grant", deny: "read_write_cleaning_service_deny" },
+    { field: "privilege_to_read_history", grant: "read_history_grant", deny: "read_history_deny" },
+    { field: "privilege_to_read_cleaners", grant: "read_cleaners_grant", deny: "read_cleaners_deny" },
+    { field: "privilege_to_read_write_shortlist", grant: "read_write_shortlist_grant", deny: "read_write_shortlist_deny" },
+    { field: "privilege_to_write_homeaccount", grant: "write_homeaccount_grant", deny: "write_homeaccount_deny" },
+    { field: "privilege_to_read_write_category", grant: "read_write_category_grant", deny: "read_write_category_deny" },
+    { field: "privilege_to_generate_report", grant: "generate_report_grant", deny: "generate_report_deny" },
+    { field: "privilege_for_NumberofShortlist", grant: "for_numberof_shortlist_grant", deny: "for_numberof_shortlist_deny" },
+    { field: "privilege_to_read_HOHistory", grant: "read_hohistory_grant", deny: "read_hohistory_deny" }
+  ];
 
-        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(content => content.style.display = "none");
+  // 2. On Create, read form and build the profile object
+  document.querySelector("button.create").addEventListener("click", async function () {
+    const profile = {};
+    // Get role name
+    profile.name = document.getElementById("roleName").value.trim();
 
-        button.classList.add("active");
-        const activeTabContent = document.getElementById(tab);
-        if (activeTabContent) {
-            activeTabContent.style.display = "block";
+    // Map checkboxes to privilege fields
+    privilegeMap.forEach((priv) => {
+      const grantCheckbox = document.getElementsByName(priv.grant)[0];
+      const denyCheckbox = document.getElementsByName(priv.deny)[0];
+      if (grantCheckbox && denyCheckbox) {
+        if (grantCheckbox.checked) {
+          profile[priv.field] = true;
+        } else if (denyCheckbox.checked) {
+          profile[priv.field] = false;
+        } else {
+          profile[priv.field] = null;
         }
-      });
+      }
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const firstTabButton = document.querySelector('.tab-btn');
-        const firstTabContent = document.querySelector('.tab-content');
-        if (firstTabButton && firstTabContent) {
-            firstTabButton.classList.add('active');
-            firstTabContent.style.display = 'block';
-        }
-        // Fix the missing checkbox names in the search tab
-        const searchTable = document.getElementById('search').querySelector('.privileges-table tbody');
-        if (searchTable) {
-            searchTable.rows[0].cells[1].querySelector('input').name = 'search_account_grant';
-            searchTable.rows[0].cells[2].querySelector('input').name = 'search_account_deny';
-            searchTable.rows[1].cells[1].querySelector('input').name = 'search_role_grant';
-            searchTable.rows[1].cells[2].querySelector('input').name = 'search_role_deny';
-            searchTable.rows[2].cells[1].querySelector('input').name = 'search_service_grant';
-            searchTable.rows[2].cells[2].querySelector('input').name = 'search_service_deny';
-            searchTable.rows[3].cells[1].querySelector('input').name = 'search_shortlist_grant';
-            searchTable.rows[3].cells[2].querySelector('input').name = 'search_shortlist_deny';
-            searchTable.rows[4].cells[1].querySelector('input').name = 'search_category_grant';
-            searchTable.rows[4].cells[2].querySelector('input').name = 'search_category_deny';
-        }
+    // 3. Send created profile to backend
+    console.log("Created Profile:", JSON.stringify(profile));
+    const response = await fetch("http://localhost:8080/createP", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(profile)
     });
+
+    if (response.ok) {
+      alert("Profile created successfully!");
+      window.location.href = "UserProfileSearch.html"; // Redirect as needed
+    } else {
+      alert("Failed to create profile.");
+    }
+  });
+
+  // 4. Cancel button logic (optional)
+  document.querySelector("button.cancel").addEventListener("click", function () {
+    window.location.href = "UserAdminHome.html";
+  });
+});
   </script>
 
 </body>
