@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <title>Search Service Category</title>
     <style>
-        html, body {
+      html, body {
             height: 100%;
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
         }
-        .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: lightblue;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      font-size: 1.5em;
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: lightblue;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        font-size: 1.5em;
     }
 
     .header h1 {
@@ -183,11 +183,23 @@
 
         const term = document.getElementById('searchTerm').value;
 
-        fetch('/categories/search?term=' + encodeURIComponent(term))
+        fetch('/SearchCategory', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: term }) // Send name as JSON
+        })
         .then(response => response.json())
         .then(data => {
             const resultDiv = document.getElementById('result');
-            if (data && data.id) {
+
+            // Handle "not found" text response from backend
+            if (typeof data === 'string' && data === 'not found') {
+                resultDiv.innerText = 'Category not found.';
+            }
+            // Handle valid object response
+            else if (data && data.id) {
                 resultDiv.innerHTML = `
                     Found: ID = ${data.id}, Name = ${data.name}<br>
                     <button id="viewButton">View</button>
@@ -197,7 +209,7 @@
                     window.location.href = `PMViewService.html?id=${data.id}&name=${encodeURIComponent(data.name)}&description=${encodeURIComponent(data.description)}`;
                 };
             } else {
-                resultDiv.innerText = 'Category not found.';
+                resultDiv.innerText = 'Unexpected response.';
             }
         })
         .catch(error => {
@@ -206,7 +218,6 @@
         });
     });
 </script>
-
 
 </body>
 </html>

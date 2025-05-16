@@ -248,7 +248,7 @@
   </div>
 
   <div id="listContainer" class="container">
-    <div class="title">Service Categories</div>
+    <div class="title" style="text-align: center;">Service Categories</div>
     <ul id="categoryList" class="category-list"></ul>
     <p id="errorMessage" class="error"></p>
   </div>
@@ -271,108 +271,50 @@
   </div>
 </div>
 
-<!--
-  <script>
-  let selectedCategoryId = null;
-
-  async function loadCategories() {
-    try {
-      const response = await fetch('http://localhost:8080/api/categories');
-      if (!response.ok) throw new Error('Failed to fetch categories');
-
-      const data = await response.json();
-      const list = document.getElementById('categoryList');
-      list.innerHTML = '';
-
-      data.forEach(cat => {
-        const item = document.createElement('li');
-        item.className = 'category-item';
-        item.innerHTML = `
-          <div class="category-name">${cat.name}</div>
-          <div class="category-description">${cat.description}</div>
-        `;
-        item.onclick = () => viewCategory(cat);
-        list.appendChild(item);
-      });
-
-      // Ensure service details are hidden initially
-      document.getElementById('serviceDetails').style.display = 'none';
-      document.getElementById('listContainer').style.display = 'block';
-    } catch (err) {
-      document.getElementById('errorMessage').textContent = err.message;
-    }
-  }
-
-  function viewCategory(category) {
-    selectedCategoryId = category.id;
-    document.getElementById('serviceName').textContent = category.name;
-    document.getElementById('serviceDescription').textContent = category.description;
-
-    document.getElementById('serviceDetails').style.display = 'flex';
-    document.getElementById('listContainer').style.display = 'none';
-  }
-
-  function goBack() {
-    document.getElementById('serviceDetails').style.display = 'none';
-    document.getElementById('listContainer').style.display = 'block';
-  }
-
-  function updateCategory() {
-    if (!selectedCategoryId) return;
-    window.location.href = `PMUpdateService.html?id=${selectedCategoryId}`;
-  }
-
-  function deleteCategory() {
-    if (!selectedCategoryId) return;
-    window.location.href = `PMDeleteService.html?id=${selectedCategoryId}`;
-  }
-
-  // Call on load
-  loadCategories();
-</script>
-
-<div id="listContainer" class="container">
-  <div class="title">Service Categories</div>
-  <ul id="categoryList" class="category-list"></ul>
-  <p id="errorMessage" class="error"></p>
-</div>
-
-<div id="serviceDetails" class="service-details" style="display: none;">
- 
-</div>
-
--->
-
-  <script>
+<script>
     let selectedCategoryId = null;
-
-    const sampleCategories = [
-        { id: 1, name: 'Cleaning', description: 'Home and office cleaning services.' },
-        { id: 2, name: 'Plumbing', description: 'All kinds of plumbing work.' },
-        { id: 3, name: 'Electrical', description: 'Household electrical installation and repair.' },
-        { id: 4, name: 'Gardening', description: 'Lawn mowing, tree trimming, and garden care.' },
-        { id: 5, name: 'Pest Control', description: 'Safe and eco-friendly pest control services.' }
-    ];
+    let selectedCategoryName = '';
+    let selectedCategoryDescription = '';
 
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 
-    function loadCategories() {
+    async function fetchCategoryByName(name) {
+        const response = await fetch('/ViewCategory', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name }) // Send name in request body
+        });
+
+        const data = await response.json();
+        if (typeof data === 'string' && data === 'not found') {
+            return null;
+        }
+        return data;
+    }
+
+    async function loadCategories() {
+        const categoryNames = ['Cleaning', 'Plumbing', 'Electrical', 'Gardening', 'Pest Control']; // Replace or generate dynamically
         const list = document.getElementById('categoryList');
         list.innerHTML = '';
 
-        sampleCategories.forEach(cat => {
-            const item = document.createElement('li');
-            item.className = 'category-item';
-            item.innerHTML = `
-                <div class="category-name">${cat.name}</div>
-                <div class="category-description">${cat.description}</div>
-            `;
-            item.onclick = () => viewCategory(cat);
-            list.appendChild(item);
-        });
+        for (const name of categoryNames) {
+            const category = await fetchCategoryByName(name);
+            if (category) {
+                const item = document.createElement('li');
+                item.className = 'category-item';
+                item.innerHTML = `
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-description">${category.description}</div>
+                `;
+                item.onclick = () => viewCategory(category);
+                list.appendChild(item);
+            }
+        }
 
         // Auto-view if data passed via URL
         const id = getQueryParam('id');

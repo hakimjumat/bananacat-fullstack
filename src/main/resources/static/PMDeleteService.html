@@ -169,60 +169,57 @@
 
     <div class="container">
         <form id="deleteForm">
-            <h2>Delete Category</h2>
-            <label for="deleteCategoryId">Category Name:</label>
-            <input type="text" id="deleteCategoryId" name="id" required readonly>
-
+            <label for="deleteCategoryName">Category Name:</label>
+            <input type="text" id="deleteCategoryName" required />
             <button type="submit">Delete Category</button>
         </form>
+            <div id="message"></div>
 
-        <div id="message"></div>
     </div>
 
     <script>
-    window.onload = function () {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
+        // Autofill the category name from the URL parameter `name`
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get("name"); // use 'name' instead of 'id'
 
-        if (id) {
-            document.getElementById("deleteCategoryId").value = decodeURIComponent(id);
-        }
-    };
+            if (name) {
+            document.getElementById("deleteCategoryName").value = decodeURIComponent(name);
+            }
+        };
 
-    document.getElementById('deleteForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+        // Handle the delete form submission
+        document.getElementById('deleteForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        const id = document.getElementById('deleteCategoryId').value;
+            const categoryName = document.getElementById('deleteCategoryName').value.trim();
 
-        if (!id) {
-            document.getElementById('message').innerText = "No category ID provided.";
+            if (!categoryName) {
+            document.getElementById('message').innerText = "No category name provided.";
             return;
-        }
+            }
 
-        fetch('/categories/delete', {
+            fetch('http://localhost:8080/DeleteCategory', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `id=${encodeURIComponent(id)}`
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Server error");
+            body: JSON.stringify({ name: categoryName }) // Send name to match backend
+            })
+            .then(response => response.text())
+            .then(data => {
+            if (data === "true") {
+                document.getElementById('message').innerText = "Category deleted successfully.";
+            } else {
+                document.getElementById('message').innerText = "Category not found or already deleted.";
             }
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById('message').innerText = data;
-            // Optional: redirect or clear field
-            // window.location.href = "PMViewService.html"; 
-        })
-        .catch(error => {
-            document.getElementById('message').innerText = "Delete failed.";
+            })
+            .catch(error => {
             console.error('Error:', error);
+            document.getElementById('message').innerText = "Delete failed due to an error.";
+            });
         });
-    });
-</script>
+        </script>
 
     <!--
     <script>

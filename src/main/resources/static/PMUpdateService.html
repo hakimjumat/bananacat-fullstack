@@ -198,42 +198,34 @@
     document.getElementById('updateForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const name = document.getElementById('categoryName').value;
-        const description = document.getElementById('categoryDescription').value;
+        const name = document.getElementById('categoryName').value.trim();
+        const description = document.getElementById('categoryDescription').value.trim();
 
-        // Get categoryId from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const categoryId = urlParams.get('id'); // Retrieve the ID from URL params
-
-        if (!categoryId) {
-            document.getElementById('message').innerText = "Category ID is missing!";
-            return;
-        }
-
-        // Ensure both name and description are filled in
         if (!name || !description) {
             document.getElementById('message').innerText = "Both fields are required. Update failed.";
             return;
         }
 
-        // Sending the data to the server with categoryId, name, and description
-        fetch('/categories/update', {
+        // Send JSON to the correct backend endpoint
+        fetch('http://localhost:8080/UpdateCategory', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: new URLSearchParams({
-                id: categoryId,  // Include the category ID
+            body: JSON.stringify({
                 name: name,
                 description: description
             })
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to update");
+            return response.text();
+        })
         .then(data => {
-            document.getElementById('message').innerText = data; // Display the success message
+            document.getElementById('message').innerText = "Category updated successfully!";
         })
         .catch(error => {
-            document.getElementById('message').innerText = "Update failed.";
+            document.getElementById('message').innerText = "Update failed. Please try again.";
             console.error('Error:', error);
         });
     });
@@ -241,18 +233,15 @@
     // This function populates the form fields if URL params are passed
     window.onload = function () {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
         const name = params.get("name");
         const description = params.get("description");
 
-        if (id && name && description) {
+        if (name && description) {
             document.getElementById('categoryName').value = decodeURIComponent(name);
             document.getElementById('categoryDescription').value = decodeURIComponent(description);
-        } else {
-            //document.getElementById('message').innerText = "Missing parameters.";
         }
     };
-    </script>
+</script>
 
 </body>
 </html>

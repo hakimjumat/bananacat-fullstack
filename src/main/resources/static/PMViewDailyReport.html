@@ -229,43 +229,54 @@
     </table>
   </div>
     <script>
-      async function fetchReport() {
-        const email = document.getElementById("reportEmail").value;
-        const date = document.getElementById("reportDate").value;
+  async function fetchReport() {
+    const email = document.getElementById("reportEmail").value;
+    const date = document.getElementById("reportDate").value;
 
-        if (!email || !date) {
-          alert("Please enter both email and date.");
-          return;
-        }
+    if (!email || !date) {
+      alert("Please enter both email and date.");
+      return;
+    }
 
-        try {
-          const response = await fetch(`/api/report/daily?email=${encodeURIComponent(email)}&date=${date}`);
-          const data = await response.json();
+    try {
+      const response = await fetch('/DailyReport', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          CLemail: email,
+          date: date
+        })
+      });
 
-          const tableBody = document.getElementById("reportTableBody");
-          tableBody.innerHTML = "";
+      const data = await response.json();
 
-          if (data.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="4">No data found for the selected email and date.</td></tr>';
-            return;
-          }
+      const tableBody = document.getElementById("reportTableBody");
+      tableBody.innerHTML = "";
 
-          data.forEach(row => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${row.cleanerName}</td>
-              <td>${row.totalJobs}</td>
-              <td>$${row.totalEarnings.toFixed(2)}</td>
-              <td>${row.customerRatings.toFixed(1)} ★</td>
-            `;
-            tableBody.appendChild(tr);
-          });
-        } catch (error) {
-          alert("Failed to fetch report data.");
-          console.error(error);
-        }
+      if (!Array.isArray(data) || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">No data found for the selected email and date.</td></tr>';
+        return;
       }
-    </script>
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.CLemail}</td>
+          <td>${row.serviceName}</td>
+          <td>$${parseFloat(row.price).toFixed(2)}</td>
+          <td>${row.rating != null ? row.rating + ' ★' : 'No rating'}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    } catch (error) {
+      alert("Failed to fetch report data.");
+      console.error(error);
+    }
+  }
+</script>
+
 
 </body>
 </html>
