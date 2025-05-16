@@ -184,8 +184,8 @@
     <p><strong>Name:</strong> <span id="cleanerName"></span></p>
     <p><strong>Phone Number:</strong> <span id="cleanerPhone"></span></p>
     <p><strong>Email:</strong> <span id="cleanerEmail"></span></p>
-    <p><strong>Rates:</strong> <span id="cleanerRates"></span></p>
-    <p><strong>Time of availability:</strong> <span id="cleanerAvailability"></span></p>
+    <!-- <p><strong>Rates:</strong> <span id="cleanerRates"></span></p>
+    <p><strong>Time of availability:</strong> <span id="cleanerAvailability"></span></p> -->
   </div>
 </div>
 
@@ -197,6 +197,8 @@
     <h3 id="serviceNameDetail"></h3>
     <p id="serviceDescriptionDetail"></p>
     <p id="servicePriceDetail"></p>
+    <p id="serviceViewsDetail"></p>
+    <p id ="serviceLocation"></p>
 
     <div class="action-buttons1">
       <button class="btn btn-action" id="editServiceBtn">Update</button>
@@ -204,68 +206,88 @@
     </div>
   </div>
 
-  <script>
-    async function fetchCleanerInfo() {
-    try {
-      const response = await fetch('/api/cleaner/1'); // Change ID dynamically if needed
-      if (!response.ok) throw new Error("Cleaner not found");
+<script>
+  // 1. Retrieve and parse the user object from localStorage
+  document.addEventListener('DOMContentLoaded', function () {
+    // Use a consistent key for localStorage
+    const storedUser = localStorage.getItem("loggedinUser");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
 
-      const cleaner = await response.json();
-      document.getElementById("cleanerName").textContent = cleaner.name;
-      document.getElementById("cleanerPhone").textContent = cleaner.phoneNumber;
-      document.getElementById("cleanerEmail").textContent = cleaner.email;
-      document.getElementById("cleanerRates").textContent = cleaner.rates;
-      document.getElementById("cleanerAvailability").textContent = cleaner.availability;
-    } catch (error) {
-      console.error("Error fetching cleaner info:", error);
+      // Fill in elements with user details
+      document.getElementById("cleanerName").textContent = user.firstname + " " + user.lastname;
+      document.getElementById("cleanerPhone").textContent = user.phonenumber;
+      document.getElementById("cleanerEmail").textContent = user.email;
+      // Add more fields as needed
     }
-  }
 
-  fetchCleanerInfo();
+    async function fetchCleanerServices() {
+      // Use the same key as above
+      const storedUser = localStorage.getItem("loggedinUser");
+      if (!storedUser) return;
+      const user = JSON.parse(storedUser);
+      console.log(JSON.stringify({email : user.email}));
+      try {
+        const response = await fetch('/ViewCleaningServiceList', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({email : user.email})
+        });
+        if (!response.ok) throw new Error("Could not fetch services");
 
-    const services = [
-      { id: 1, name: "Weekly Home Cleaning", description: "Clean your home weekly", price: "$50", views: 54 },
-      { id: 2, name: "Office Cleaning", description: "Clean office spaces", price: "$80", views: 37 },
-      { id: 3, name: "Window Washing", description: "Clean windows inside and out", price: "$30", views: 12 }
-    ];
+        const services = await response.json();
+        console.log(services);
 
-    const container = document.getElementById("serviceList");
-    const serviceDetailContainer = document.getElementById("serviceDetail");
+        const container = document.getElementById("serviceList");
+        container.innerHTML = ""; // Clear previous content
 
-    if (services.length === 0) {
-      container.innerHTML = '<div class="no-services">No services have been created yet.</div>';
-    } else {
-      services.forEach(service => {
-        const div = document.createElement("div");
-        div.className = "service-item";
-        div.innerHTML = `
-          <div class="service-name">${service.name}</div>
-          <div class="view-count">Views: ${service.views}</div>
-        `;
-        div.addEventListener("click", () => showServiceDetail(service));
-        container.appendChild(div);
-      });
+        if (services.length === 0) {
+          container.innerHTML = '<div class="no-services">No services have been created yet.</div>';
+        } else {
+          services.forEach(service => {
+            const div = document.createElement("div");
+            div.className = "service-item";
+            div.innerHTML = `
+              <div class="service-name">${service.serviceName}</div>
+              <div class="view-count">Views: ${service.numberOfView}</div>
+            `;
+            div.addEventListener("click", () => showServiceDetail(service));
+            localStorage.setItem("selectedService", JSON.stringify(service));
+            container.appendChild(div);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
     }
+
+    fetchCleanerServices();
 
     function showServiceDetail(service) {
-      document.getElementById("serviceNameDetail").innerText = service.name;
-      document.getElementById("serviceDescriptionDetail").innerText = service.description;
-      document.getElementById("servicePriceDetail").innerText = `Price: ${service.price}`;
+      document.getElementById("serviceNameDetail").innerText = service.serviceName || "";
+      document.getElementById("serviceDescriptionDetail").innerText = service.tag ||"";
+      document.getElementById("servicePriceDetail").innerText = `Price: ${service.price || ""}`;
+      document.getElementById("serviceViewsDetail").innerText = `Views: ${service.numberOfView ?? ""}`;
+      document.getElementById("serviceLocation").innerText = service.location ? `Location: ${service.location}` : "";
       document.getElementById("serviceList").style.display = "none"; // Hide the list
+      // Declare serviceDetailContainer properly
+      const serviceDetailContainer = document.getElementById("serviceDetail");
       serviceDetailContainer.style.display = "block"; // Show the detail section
     }
 
     // Handle Edit Service (previously Update)
     document.getElementById("editServiceBtn").addEventListener("click", () => {
-      window.location.href = 'UpdateServiceCleaner.html'; 
+      
+      window.location.href = 'UpdateServiceCleaner.html';
     });
 
     // Handle Disable Service (previously Deactivate)
     document.getElementById("disableServiceBtn").addEventListener("click", () => {
-        window.location.href = 'DeactivateCleaningService.html'; 
+      
+      window.location.href = 'DeactivateCleaningService.html';
     });
-    
-  </script>
+  });
+</script>
 
 </body>
 </html>

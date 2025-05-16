@@ -179,13 +179,18 @@
     <h2>Update Service</h2>
     <form id="updateServiceForm">
       <label for="serviceName">Service Name</label>
-      <input type="text" id="serviceName" name="serviceName" value="Weekly Home Cleaning" required />
+      <input type="text" id="serviceName" name="serviceName"  required />
 
       <label for="serviceDescription">Description</label>
-      <textarea id="serviceDescription" name="serviceDescription" required>Regular weekly cleaning for homes including dusting, mopping, kitchen and bathrooms.</textarea>
+      <textarea id="serviceDescription" name="serviceDescription" required></textarea>
 
-      <label for="servicePrice">Price</label>
-      <input type="text" id="servicePrice" name="servicePrice" value="$50 per session" required />
+      <label for="servicePrice">Price / Session</label>
+      <input type="text" id="servicePrice" name="servicePrice"required />
+
+      <label for="serviceLocation">Location</label>
+      <input type="text" id="serviceLocation" name="serviceLocation" required />
+
+      
       <br/><br/>
       <button type="submit" class="btn">Save Changes</button>
     </form>
@@ -241,17 +246,62 @@
 </footer>
 
   <script>
-    const form = document.getElementById('updateServiceForm');
-    
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Here you would send the updated info to your server
-      alert('Service details updated successfully!');
-      
-      // Redirect back to services list
-      window.location.href = 'ViewServiceCleaner.html';
-    });
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. Populate form fields from localStorage
+  const storedService = localStorage.getItem("selectedService");
+  console.log(storedService);
+  let service = {};
+  if (storedService) {
+    service = JSON.parse(storedService);
+    document.getElementById("serviceName").value = service.serviceName;
+    document.getElementById("serviceDescription").value = service.tag || "";
+    document.getElementById("servicePrice").value = service.price ?? "";
+    document.getElementById("serviceLocation").value = service.location || "";
+  }
+
+  // 2. Handle form submission
+  const form = document.getElementById('updateServiceForm');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Update fields from form
+    service.serviceName = document.getElementById("serviceName").value.trim();
+    service.tag = document.getElementById("serviceDescription").value.trim();
+    service.price = parseFloat(document.getElementById("servicePrice").value);
+    service.location = document.getElementById("serviceLocation").value.trim();
+
+    const payload = {
+    id: service.id,
+    email: service.email,
+    serviceName: service.serviceName,
+    tag: service.tag,
+    price: service.price,
+    location: service.location,
+    NumberOfView: service.numberOfView
+    };
+
+    // Send updated service to backend
+    try {
+      const response = await fetch("http://localhost:8080/UpdateCleaningService", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const serviceUpdated = await response.json();
+        console.log(serviceUpdated);
+
+        alert('Service details updated successfully!');
+        window.location.href = 'ViewServiceCleaner.html';
+      } else {
+        alert('Failed to update service.');
+      }
+    } catch (err) {
+      alert('Error updating service: ' + err);
+    }
+  });
+});
   </script>
 
 </body>

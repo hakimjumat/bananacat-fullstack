@@ -26,6 +26,22 @@ public class CleaningServiceEntity {
     public Long getId() {
         return id;
     }
+    public String getServiceName() {
+    return serviceName;
+    }
+    
+    public String getTag() {
+        return tag;
+    }
+    public BigDecimal getPrice() {
+        return price;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public Integer getNumberOfView() {
+        return NumberOfView;
+    }
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
@@ -41,12 +57,24 @@ public class CleaningServiceEntity {
         this.price = price;
     }
 
+    public void setDefaultNumberofView(){
+        this.NumberOfView = 0;
+    }
+
+    public String getEmail() {
+    return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public boolean CreateCleaningService(CleaningServiceRepository CSRepository) {
         
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             return false;
         }
+        this.setDefaultNumberofView();
         CSRepository.save(this);
         return true;
     }
