@@ -155,6 +155,38 @@
     .availability-btn:hover {
       background-color: #e68900;
     }
+
+    .service-list {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .service-item {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+      width: 100%;
+      text-align: center;
+    }
+    .service-item:last-child {
+      border-bottom: none;
+    }
+    .service-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .no-services {
+      text-align: center;
+      color: #888;
+      font-size: 18px;
+      padding: 40px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -178,24 +210,29 @@
         <button class="btn" onclick="window.location.href='UpdateHO.html'" style="margin-left: 400px;">Account Information</button>
   </div>
 
-  <h1>Search Shortlisted Cleaners</h1>
+  <h1>Search Shortlisted Services</h1>
 
   <!-- Search Bar -->
   <div class="search-container">
-    <input type="text" id="searchQuery" placeholder="Search by service name">
+    <input type="text" id="searchQuery" placeholder="Search by service name..">
     <button onclick="searchShortlistedCleaners()">Search</button>
   </div>
 
   <!-- Search Results -->
   <div id="results" class="cleaner-list"></div>
+  <div id="shortlistContainer" class="service-list"></div>
 
   <script>
   function searchShortlistedCleaners() {
     const query = document.getElementById('searchQuery').value.trim();
     const resultsDiv = document.getElementById('results');
+    const shortlistDiv = document.getElementById('shortlistContainer');
     resultsDiv.innerHTML = '';
+    shortlistDiv.innerHTML = '';
 
-    const HOemail = sessionStorage.getItem('HOemail'); 
+    // Get HOemail from loggedinUser in localStorage
+    const homeowner = JSON.parse(localStorage.getItem("loggedinUser") || "{}");
+    const HOemail = homeowner.email;
     if (!HOemail) {
       resultsDiv.innerHTML = '<div>No HOemail found. Please log in.</div>';
       return;
@@ -206,7 +243,7 @@
       return;
     }
 
-    fetch('http://localhost:8080/SearchShortlist', {
+    fetch('/ViewShortlist', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -218,32 +255,30 @@
       return response.json();
     })
     .then(data => {
+      shortlistDiv.innerHTML = '';
       if (!Array.isArray(data) || data.length === 0) {
-        resultsDiv.innerHTML = '<div>No shortlisted cleaners found matching your search.</div>';
+        shortlistDiv.innerHTML = '<div class="no-services">No shortlisted services found.</div>';
         return;
       }
 
-      data.forEach(cleaner => {
-        const cleanerItem = document.createElement('div');
-        cleanerItem.className = 'cleaner-item';
-        cleanerItem.innerHTML = `
-          <div class="cleaner-info">
-            <h4>${cleaner.name}</h4>
-            <p><strong>Cleaner Email:</strong> ${cleaner.CLemail}</p>
+      data.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "service-item";
+        div.innerHTML = `
+          <div class="service-name">${item.name || "N/A"}</div>
+          <div class="service-info">
+            <span><strong>Cleaner Email:</strong> ${item.CLemail || "N/A"}</span>
           </div>
-          <a href="ViewShortlistsHO.html?name=${encodeURIComponent(cleaner.name)}&email=${encodeURIComponent(cleaner.CLemail)}"
-            class="availability-btn">View Details</a>
         `;
-        resultsDiv.appendChild(cleanerItem);
+        shortlistDiv.appendChild(div);
       });
     })
     .catch(error => {
+      shortlistDiv.innerHTML = '<div class="no-services">Error fetching data. Please try again later.</div>';
       console.error('Error:', error);
-      resultsDiv.innerHTML = '<div>Error fetching data. Please try again later.</div>';
     });
   }
-
-</script>
+  </script>
 
 </body>
 </html>

@@ -169,11 +169,10 @@
         <p>Phone Number:</p>
         <p>Email:</p>
         <p>Ratings:</p>
-        <p>Time of availability:</p>
       </div>
 
       <div class="service-box">
-        <h3>Weekly Home Cleaning</h3>
+        <h3></h3>
         <p>Rates:</p>
         <button class="btn" style="margin-top: 20px">
           Save Cleaning Services to Shortlist
@@ -182,39 +181,71 @@
     </div>
 
     <script>
-      // Simulated cleaner data
-      const cleaner = {
-        name: "John Doe",
-        phone: "(123) 456-7890",
-        email: "johndoe@example.com",
-        ratings: "4.8 / 5",
-        availability: "Mon - Fri, 9am - 5pm",
-        serviceRate: "$25/hour",
-      };
-
-      // Populate profile section
       window.onload = function () {
+        // Get data from localStorage
+        const cleaner = JSON.parse(localStorage.getItem("cleanerData") || "{}");
+        const service = JSON.parse(localStorage.getItem("selectedService") || "{}");
+        const homeowner = JSON.parse(localStorage.getItem("loggedinUser") || "{}");
+
+        // Populate profile section
         const profileBox = document.querySelector(".profile-box");
         const profileInfo = `
-        <p><strong>Name:</strong> ${cleaner.name}</p>
-        <p><strong>Phone Number:</strong> ${cleaner.phone}</p>
-        <p><strong>Email:</strong> ${cleaner.email}</p>
-        <p><strong>Ratings:</strong> ${cleaner.ratings}</p>
-        <p><strong>Time of availability:</strong> ${cleaner.availability}</p>
-      `;
+          <p><strong>Name:</strong> ${cleaner.firstname || cleaner.name || "N/A"} ${cleaner.lastname || ""}</p>
+          <p><strong>Phone Number:</strong> ${cleaner.phonenumber || cleaner.phone || "N/A"}</p>
+          <p><strong>Email:</strong> ${cleaner.email || "N/A"}</p>
+          <p><strong>Ratings:</strong> ${cleaner.ratings || cleaner.rating || "N/A"}</p>
+        `;
         profileBox.innerHTML = profileInfo;
 
-        // Populate rate in service box
-        const rateParagraph = document.querySelector(".service-box p");
-        rateParagraph.innerText = `Rates: ${cleaner.serviceRate}`;
-      };
+        // Populate service box
+        const serviceBox = document.querySelector(".service-box");
+        const serviceName = service.serviceName || service.name || "N/A";
+        const serviceRate = service.price || service.hourlyRate || service.serviceRate || "N/A";
+        const serviceBoxContent = `
+          <h3>${serviceName}</h3>
+          <p>Rates: ${serviceRate}</p>
+          <button class="btn" style="margin-top: 20px" id="saveShortlistBtn">
+            Save Cleaning Services to Shortlist
+          </button>
+        `;
+        serviceBox.innerHTML = serviceBoxContent;
 
-      // Save to shortlist
-      const saveButton = document.querySelector(".service-box button");
-      saveButton.addEventListener("click", () => {
-        console.log(`Service by ${cleaner.name} added to shortlist.`);
-        alert("Service saved to shortlist!");
-      });
+        // Save to shortlist button handler
+        document.getElementById("saveShortlistBtn").addEventListener("click", async () => {
+          const cleaner = JSON.parse(localStorage.getItem("cleanerData") || "{}");
+          const service = JSON.parse(localStorage.getItem("selectedService") || "{}");
+          const homeowner = JSON.parse(localStorage.getItem("loggedinUser") || "{}");
+
+          // Prepare the payload for your backend (adjust keys as needed)
+          const payload = {
+            CLemail: cleaner.email,
+            HOemail: homeowner.email,
+            name: service.serviceName,
+            
+            // Add more fields if your shortlistEntity requires them
+          };
+
+          console.log("Payload to save:", JSON.stringify(payload));
+
+          try {
+            const response = await fetch("/SaveShortlist", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result === true) {
+              alert("Service saved to shortlist!");
+              window.location.href = "HomeOwnerDashboard.html";
+            } else {
+              alert("Failed to save service to shortlist.");
+            }
+          } catch (err) {
+            alert("Error saving to shortlist.");
+            console.error(err);
+          }
+        });
+      };
     </script>
   </body>
 </html>

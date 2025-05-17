@@ -53,6 +53,10 @@ public class UserAccountEntity {
     public String getAddress() {
         return address;
     }
+
+    public Integer getRatings() {
+        return ratings;
+    }
    
 
     public void setEmail(String email) {

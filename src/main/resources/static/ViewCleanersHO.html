@@ -18,7 +18,6 @@
       font-size: 24px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
     }
     .header img {
       width: 50px;
@@ -33,13 +32,12 @@
     }
     .action-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
       margin-top: 20px;
     }
 
     .btn {
-      flex: 1 1 150px;
+      flex: 1 1 220px;
       background: #007bff;
       color: white;
       padding: 15px;
@@ -152,6 +150,92 @@
       background: #1e7e34;
     }
 
+    .cleaner-info {
+      max-width: 800px;
+      margin: 0 auto 20px;
+    }
+
+    .service-list {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    .service-item {
+      border-bottom: 1px solid #eee;
+      padding: 20px 0;
+    }
+
+    .service-item:last-child {
+      border-bottom: none;
+    }
+
+    .service-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .view-count {
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .no-services {
+      text-align: center;
+      color: #888;
+      font-size: 18px;
+      padding: 40px;
+    }
+
+    .service-detail {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+      display: none; /* Initially hidden */
+    }
+
+    .service-detail h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .service-detail p {
+      color: #666;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .action-buttons1 {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      justify-content: center; /* Center buttons horizontally */
+    }
+
+    .btn-action {
+      background: #007bff;
+      width: 300px; /* Fixed width for the buttons */
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn-action:hover {
+      background: #0056b3;
+    }
+
   </style>
 </head>
 <body>
@@ -175,55 +259,140 @@
         </div>
         <button class="btn" onclick="window.location.href='UpdateHO.html'" style="margin-left: 400px;">Account Information</button>
   </div>
+  <div class="cleaner-info" id="cleanerInfo">
 
-  <div class="container">
-    <div class="cleaner-grid" id="cleanerGrid">
-      <!-- Cleaner cards will be injected here -->
+  <div class="section">
+    <h2>Cleaner Information</h2>
+    <p><strong>Name:</strong> <span id="cleanerName"></span></p>
+    <p><strong>Phone Number:</strong> <span id="cleanerPhone"></span></p>
+    <p><strong>Email:</strong> <span id="cleanerEmail"></span></p>
+   <p><strong>Ratings:</strong> <span id="cleanerRates"></span></p>
+  </div>
+</div>
+
+  <div class="service-list" id="serviceList">
+    <!-- JS injects service items here -->
+  </div>
+
+  <div class="service-detail" id="serviceDetail" style="display:none;">
+    <h3 id="serviceNameDetail"></h3>
+    <p id="serviceDescriptionDetail"></p>
+    <p id="servicePriceDetail"></p>
+    <p id="serviceViewsDetail"></p>
+    <p id="serviceLocation"></p>
+    <div class="action-buttons1" id="shortlistBtnWrapper">
+      <button class="btn btn-action" id="shortlistServiceBtn">Save Cleaning Services to Shortlist</button>
+      <button class="btn btn-action" id="backToListBtn" style="background:#888;">Back to List</button>
     </div>
   </div>
 
   <script>
-    const apiUrl = 'https://your-backend-url.com/api/cleaners'; // Replace with your actual API
+document.addEventListener('DOMContentLoaded', function () {
+  // Display cleaner info from localStorage
+  const storedUser = localStorage.getItem("cleanerData");
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    document.getElementById("cleanerName").textContent = user.firstname + " " + user.lastname;
+    document.getElementById("cleanerPhone").textContent = user.phonenumber;
+    document.getElementById("cleanerEmail").textContent = user.email;
+    document.getElementById("cleanerRates").textContent = user.ratings;
+  }
 
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        const grid = document.getElementById('cleanerGrid');
-        grid.innerHTML = '';
+  // Fetch and display services
+  async function fetchCleanerServices() {
+    const storedUser = localStorage.getItem("cleanerData");
+    if (!storedUser) return;
+    const user = JSON.parse(storedUser);
 
-        data.forEach(cleaner => {
-          const card = document.createElement('div');
-          card.className = 'cleaner-card';
-          const servicesHTML = cleaner.services.map(service => `<div class="service">${service}</div>`).join('');
-
-          card.innerHTML = `
-            <img src="${cleaner.image}" alt="${cleaner.name}">
-            <h3>${cleaner.name}</h3>
-            <p><strong>Email:</strong> ${cleaner.email}</p>
-            <p><strong>Phone:</strong> ${cleaner.phone}</p>
-            <p><strong>Rates:</strong> ${cleaner.rates}</p>
-            <p><strong>Available:</strong> ${cleaner.availability}</p>
-            <div><strong>Services:</strong></div>
-            ${servicesHTML}
-            <div class="cleaner-buttons">
-              <button><a href="SaveCleanersHO.html" style="text-decoration: none;">Save Cleaner</a></button>
-              <button>View Cleaner History</button>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Failed to load cleaners:', error);
-        document.getElementById('cleanerGrid').innerHTML = '<p>Unable to load cleaner data. Please try again later.</p>';
+    try {
+      const response = await fetch("/ViewCleaningServiceList", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email})
       });
 
-    function generateStars(rating) {
-      const filled = '★'.repeat(Math.floor(rating));
-      const empty = '☆'.repeat(5 - Math.floor(rating));
-      return filled + empty;
+      if (!response.ok) throw new Error("Could not fetch services");
+
+      const services = await response.json();
+      const container = document.getElementById("serviceList");
+      container.innerHTML = "";
+
+      if (services.length === 0) {
+        container.innerHTML = '<div class="no-services">No services have been created yet.</div>';
+      } else {
+        for (const service of services) {
+          const div = document.createElement("div");
+          div.className = "service-item";
+          div.innerHTML = `<div class="service-name">${service.serviceName}</div>`;
+          div.addEventListener("click", async () => {
+            try {
+              const response = await fetch("/viewCleaningServiceForHomeOwner", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email: service.email,
+                  serviceName: service.serviceName
+                })
+              });
+              if (!response.ok) throw new Error("Failed to fetch service detail");
+              const updatedService = await response.json();
+              localStorage.setItem("selectedService", JSON.stringify(updatedService));
+              showServiceDetail(updatedService);
+            } catch (err) {
+              alert("Error loading service details.");
+              console.error(err);
+            }
+          });
+          container.appendChild(div);
+        }
+        // Add the "View Cleaner History" button after the last service
+        const btnWrapper = document.createElement("div");
+        btnWrapper.style.display = "flex";
+        btnWrapper.style.justifyContent = "center";
+        btnWrapper.style.width = "100%";
+        btnWrapper.style.marginTop = "30px";
+
+        const historyBtn = document.createElement("button");
+        historyBtn.className = "btn";
+        historyBtn.textContent = "View Cleaner History";
+        historyBtn.onclick = function() {
+          window.location.href = "HOViewCleanerHistory.html";
+        };
+
+        btnWrapper.appendChild(historyBtn);
+        container.appendChild(btnWrapper);
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
     }
-  </script>
+  }
+
+  fetchCleanerServices();
+
+  function showServiceDetail(service) {
+    document.getElementById("serviceNameDetail").innerText = service.serviceName || "";
+    document.getElementById("serviceDescriptionDetail").innerText = service.tag || "";
+    document.getElementById("servicePriceDetail").innerText = `Price: ${service.price || ""}`;
+    document.getElementById("serviceViewsDetail").innerText = `Views: ${service.numberOfView ?? ""}`;
+    document.getElementById("serviceLocation").innerText = service.location ? `Location: ${service.location}` : "";
+    document.getElementById("serviceList").style.display = "none";
+    document.getElementById("serviceDetail").style.display = "block";
+  }
+
+  
+
+  document.getElementById("backToListBtn").addEventListener("click", () => {
+    document.getElementById("serviceDetail").style.display = "none";
+    fetchCleanerServices(); // re-fetch and re-render the list and button
+    document.getElementById("serviceList").style.display = "block";
+  });
+
+  document.getElementById("shortlistServiceBtn").addEventListener("click", () => {
+  window.location.href = "SaveCleanersHO.html";
+});
+});
+</script>
 
 </body>
 </html>
+

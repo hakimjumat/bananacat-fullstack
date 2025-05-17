@@ -144,10 +144,11 @@
 
   <script>
   window.onload = async function () {
-    const cleanerEmail = sessionStorage.getItem("cleanerEmail"); // or hardcode: "cleaner@example.com"
+    const cleaner = localStorage.getItem("cleanerData");
+    cleanerEmail = JSON.parse(cleaner).email;
 
     if (!cleanerEmail) {
-      alert("Cleaner email not found in sessionStorage.");
+      alert("Cleaner email not found.");
       return;
     }
 

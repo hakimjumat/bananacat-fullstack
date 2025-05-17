@@ -209,7 +209,7 @@
       const cleaners = await response.json();
 
       console.log(cleaners);
-      
+      localStorage.setItem("cleanerData", JSON.stringify(cleaners));
 
       if (!cleaners || cleaners.email === undefined) {
         resultsDiv.innerHTML = '<div class="no-results">No cleaners found matching your search.</div>';
@@ -222,7 +222,7 @@
       item.innerHTML = `
         <h4>${cleaner.firstname} ${cleaner.lastname}</h4>
         <p><strong>Email:</strong> ${cleaner.email}</p>
-        <a href="ViewServicCleanerHO.html?name=${encodeURIComponent(cleaner.firstname + " " + cleaner.lastname)}&email=${encodeURIComponent(cleaner.email)}&service=${encodeURIComponent(cleaner.service || 'N/A')}&location=${encodeURIComponent(cleaner.address || 'N/A')}&rating=${cleaner.rating || 'N/A'}&date=${encodeURIComponent(cleaner.date || '')}&duration=${encodeURIComponent(cleaner.duration || '')}&hourlyRate=${encodeURIComponent(cleaner.hourlyRate || '')}&review=${encodeURIComponent(cleaner.review || '')}"
+        <a href="ViewCleanersHO.html?name=${encodeURIComponent(cleaner.firstname + " " + cleaner.lastname)}&email=${encodeURIComponent(cleaner.email)}&service=${encodeURIComponent(cleaner.service || 'N/A')}&location=${encodeURIComponent(cleaner.address || 'N/A')}&rating=${cleaner.rating || 'N/A'}&date=${encodeURIComponent(cleaner.date || '')}&duration=${encodeURIComponent(cleaner.duration || '')}&hourlyRate=${encodeURIComponent(cleaner.hourlyRate || '')}&review=${encodeURIComponent(cleaner.review || '')}"
           style="display:inline-block;margin-top:10px;padding:10px 15px;background-color:#007bff;color:white;border-radius:5px;text-decoration:none;">
           View Details
         </a>

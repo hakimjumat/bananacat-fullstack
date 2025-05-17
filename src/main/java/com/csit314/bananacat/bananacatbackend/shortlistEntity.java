@@ -33,7 +33,17 @@ public class shortlistEntity {
         return name;
     }
 
-    
+    public void setHOemail(String HOemail) {
+        this.HOemail = HOemail;
+    }
+
+    public void setCLemail(String CLemail) {
+        this.CLemail = CLemail;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     //User story #24
     public boolean SaveShortlist() {
