@@ -249,10 +249,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   // 1. Populate form fields from localStorage
   const storedService = localStorage.getItem("selectedService");
-  console.log(storedService);
-  let service = {};
+  
   if (storedService) {
     service = JSON.parse(storedService);
+    console.log(service);
     document.getElementById("serviceName").value = service.serviceName;
     document.getElementById("serviceDescription").value = service.tag || "";
     document.getElementById("servicePrice").value = service.price ?? "";
@@ -270,6 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
     service.price = parseFloat(document.getElementById("servicePrice").value);
     service.location = document.getElementById("serviceLocation").value.trim();
 
+    console.log(service);
+
     const payload = {
     id: service.id,
     email: service.email,
@@ -277,9 +279,9 @@ document.addEventListener('DOMContentLoaded', function () {
     tag: service.tag,
     price: service.price,
     location: service.location,
-    NumberOfView: service.numberOfView
+    numberOfView: service.numberOfView
     };
-
+    console.log(JSON.stringify(payload));
     // Send updated service to backend
     try {
       const response = await fetch("http://localhost:8080/UpdateCleaningService", {
@@ -290,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (response.ok) {
         const serviceUpdated = await response.json();
+        localStorage.setItem("selectedService", JSON.stringify(serviceUpdated));
         console.log(serviceUpdated);
 
         alert('Service details updated successfully!');

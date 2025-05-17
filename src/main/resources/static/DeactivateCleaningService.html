@@ -120,12 +120,46 @@
   </div>
 
   <script>
-    function deactivateService() {
-      // Here you would actually send a request to deactivate in real app
-      alert('Service has been deactivated successfully!');
-      window.location.href = 'ViewServiceCleaner.html';
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. Retrieve selectedService from localStorage
+  const storedService = localStorage.getItem("selectedService");
+  let service = {};
+  if (storedService) {
+    try {
+      service = JSON.parse(storedService);
+      // 2. Display the service name in the container
+      document.querySelector('.container p strong').textContent = service.serviceName || "Unknown Service";
+    } catch (e) {
+      alert("Corrupted service data. Please re-select the service.");
+      window.location.href = "ViewServiceCleaner.html";
+      return;
     }
-  </script>
+  }
+
+  // 3. Deactivate logic
+  window.deactivateService = async function() {
+    if (!service.id) {
+      alert("No service selected.");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:8080/DeleteCleaningService", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(service)
+      });
+      if (response.ok) {
+        alert('Service has been deactivated successfully!');
+        window.location.href = 'ViewServiceCleaner.html';
+      } else {
+        alert('Failed to deactivate service.');
+      }
+    } catch (err) {
+      alert('Error deactivating service: ' + err);
+    }
+  }
+});
+</script>
 
 </body>
 </html>

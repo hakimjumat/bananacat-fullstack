@@ -112,23 +112,18 @@ public class CleaningServiceEntity {
 
     @Transactional
     public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
-        Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
+        Optional<CleaningServiceEntity> CSoptional = CSRepository.findById(this.id);
         if (CSoptional.isPresent()) {
             CleaningServiceEntity org = CSoptional.get();
-            if (serviceName != null) {
-                org.setServiceName(this.serviceName);
-            }
-            if (tag != null) {
-                org.setTag(this.tag);
-            }
-
-            if (price != null) {
-                org.setPrice(this.price);
-            }
-
-            if (location != null) {
-                org.setLocation(this.location);
-            }
+            
+            org.setServiceName(this.serviceName);
+        
+            org.setTag(this.tag);
+        
+            org.setPrice(this.price);
+        
+            org.setLocation(this.location);
+            
             CSRepository.save(org);
             return ResponseEntity.ok(org);
         } else {

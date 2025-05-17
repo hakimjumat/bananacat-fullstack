@@ -271,10 +271,7 @@
     <div class="form-side">
       <h1>Create Cleaning Service</h1>
       <form id="serviceForm">
-        <div class="form-group">
-          <label for="name">Service Name</label>
-          <input type="text" id="name" name="name" required>
-        </div>
+        
 
         <div class="form-group">
           <label for="email">Email</label>
@@ -287,22 +284,26 @@
         </div>
 
         <div class="form-group">
+          <label for="name">Service Name</label>
+          <input type="text" id="serviceName" name="serviceName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Tag</label>
+          <input type="text" id="tag" name="tag" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rates">Price / Session ($)</label>
+          <input type="float" id="price" name="price" min="0" required>
+        </div>
+
+        <div class="form-group">
           <label for="location">Location</label>
           <input type="text" id="location" name="location" required>
         </div>
 
-        <div class="form-group">
-          <label for="rates">Rates ($)</label>
-          <input type="number" id="rates" name="rates" min="0" required>
-        </div>
-
-        <div class="form-group">
-          <label for="category">Category</label>
-          <select id="category" name="category" required>
-            <option value="">Select a category</option>
-            <!-- Options will be populated dynamically -->
-          </select>
-        </div>
+        
 
         <button type="submit" class="btn">Create Service</button>
         <div id="message"></div>
@@ -313,46 +314,54 @@
   <br/> <br/>
 
   <script>
-    document.getElementById("serviceForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  // Autofill email and phone from loggedinUser
+  const storedUser = localStorage.getItem("loggedinUser");
+  if (storedUser) {
+    try {
+      const user = JSON.parse(storedUser);
+      document.getElementById("email").value = user.email || "";
+      document.getElementById("phone").value = user.phonenumber || "";
+    } catch (e) {
+      console.error("Invalid user data in localStorage");
+    }
+  }
 
-      const email = document.getElementById("email").value.trim();
-      const start = new Date(document.getElementById("start").value);
-      const end = new Date(document.getElementById("end").value);
+  
 
-      if (!email.includes('@')) {
-        alert("Email format is invalid.");
-        return;
+  // Handle form submission
+  document.getElementById("serviceForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // Build payload
+    const payload = {
+      email: document.getElementById("email").value.trim(),
+      serviceName: document.getElementById("serviceName").value.trim(),
+      tag: document.getElementById("tag").value.trim(),
+      price: parseFloat(document.getElementById("price").value),
+      location: document.getElementById("location").value.trim()
+    };
+
+    // Optional: Validate fields here
+
+    try {
+      const response = await fetch("/CreateCleaningService", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        document.getElementById("message").innerText = "Service created successfully!";
+        window.location.href = "ViewServiceCleaner.html"; // Redirect to view services
+      } else {
+        document.getElementById("message").innerText = "Failed to create service.";
       }
-
-      if (end <= start) {
-        alert("End time must be after start time.");
-        return;
-      }
-
-      document.getElementById("message").innerText = "Service created successfully!";
-      this.reset();
-    });
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch("/api/categories")
-        .then(response => {
-          if (!response.ok) throw new Error("Failed to fetch categories");
-          return response.json();
-        })
-        .then(categories => {
-          const categorySelect = document.getElementById("category");
-          categories.forEach(cat => {
-            const option = document.createElement("option");
-            option.value = cat.id;
-            option.textContent = cat.name;
-            categorySelect.appendChild(option);
-          });
-        })
-        .catch(error => {
-          console.error("Error loading categories:", error);
-          alert("Could not load categories. Please try again later.");
-        });
-    });
+    } catch (err) {
+      document.getElementById("message").innerText = "Error: " + err;
+    }
+  });
+});
   </script>
 </body>
 </html>

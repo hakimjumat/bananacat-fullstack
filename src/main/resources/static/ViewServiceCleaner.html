@@ -198,8 +198,8 @@
     <p id="serviceDescriptionDetail"></p>
     <p id="servicePriceDetail"></p>
     <p id="serviceViewsDetail"></p>
-    <p id ="serviceLocation"></p>
-
+    <p id="serviceLocation"></p>
+    <button class="btn btn-action" id="backToListBtn" style="background:#888;">Back to List</button>
     <div class="action-buttons1">
       <button class="btn btn-action" id="editServiceBtn">Update</button>
       <button class="btn btn-action" id="disableServiceBtn">Delete</button>
@@ -207,6 +207,7 @@
   </div>
 
 <script>
+  localStorage.removeItem("selectedService"); // Clear selectedService on page load
   // 1. Retrieve and parse the user object from localStorage
   document.addEventListener('DOMContentLoaded', function () {
     // Use a consistent key for localStorage
@@ -251,8 +252,10 @@
               <div class="service-name">${service.serviceName}</div>
               <div class="view-count">Views: ${service.numberOfView}</div>
             `;
-            div.addEventListener("click", () => showServiceDetail(service));
-            localStorage.setItem("selectedService", JSON.stringify(service));
+            div.addEventListener("click", () => {
+              localStorage.setItem("selectedService", JSON.stringify(service)); // <-- GOOD: only runs when clicked
+              showServiceDetail(service);
+            });
             container.appendChild(div);
           });
         }
@@ -285,6 +288,12 @@
     document.getElementById("disableServiceBtn").addEventListener("click", () => {
       
       window.location.href = 'DeactivateCleaningService.html';
+    });
+
+    // Handle Back to List button
+    document.getElementById("backToListBtn").addEventListener("click", () => {
+      document.getElementById("serviceDetail").style.display = "none"; // Hide detail
+      document.getElementById("serviceList").style.display = "block"; // Show list
     });
   });
 </script>

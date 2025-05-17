@@ -14,7 +14,7 @@ public class UpdateCleaningServiceController {
     }
 
     @PostMapping("/UpdateCleaningService")
-    public ResponseEntity<?> postMethodName(@RequestBody CleaningServiceEntity CSEntity) {
+    public ResponseEntity<?> UpdateCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
         return CSEntity.UpdateCleaningService(CSRepository);
     }
     
