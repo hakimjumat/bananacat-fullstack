@@ -205,8 +205,8 @@
   <div class="container">
     <h2>Search Cleaning History</h2>
     <div class="form-group">
-      <label for="serviceType">Enter Service Type</label>
-      <input type="text" id="serviceType" placeholder="Type of service..." />
+      <label for="serviceName">Enter Service Name</label>
+      <input type="text" id="serviceName" placeholder="Name of service..." />
     </div>
     <button onclick="searchHistory()">Search</button>
 
@@ -226,85 +226,7 @@
   </div>
 
   <script>
-    const cleaningHistory = [
-      { id: 1, type: "mattress cleaning", date: "2025-03-12", location: "123 Maple Street", description: "A detailed mattress cleaning service.", price: "$50" },
-      { id: 2, type: "carpet cleaning", date: "2025-02-05", location: "456 Oak Avenue", description: "A professional carpet cleaning service.", price: "$80" },
-      { id: 3, type: "deep cleaning", date: "2025-01-20", location: "789 Pine Road", description: "A comprehensive deep cleaning for homes.", price: "$120" }
-    ];
-
-    function searchHistory() {
-      const input = document.getElementById('serviceType').value.trim().toLowerCase();
-      const resultsDiv = document.getElementById('results');
-      resultsDiv.innerHTML = '';
-
-      if (input === '') {
-        resultsDiv.innerHTML = '<div class="no-results">Please enter a service type.</div>';
-        return;
-      }
-
-      const matched = cleaningHistory.filter(service => service.type.toLowerCase().includes(input));
-
-      if (matched.length === 0) {
-        resultsDiv.innerHTML = '<div class="no-results">No past services found for "' + input + '".</div>';
-        return;
-      }
-
-      matched.forEach(service => {
-        const item = document.createElement('div');
-        item.className = 'result-item';
-        item.innerHTML = `
-          <div class="service-link" onclick="showServiceDetail(${service.id})">
-            <strong>Type:</strong> ${service.type}<br>
-            <strong>Date:</strong> ${service.date}<br>
-            <strong>Location:</strong> ${service.location}
-          </div>
-        `;
-        resultsDiv.appendChild(item);
-      });
-    }
-
-    function showServiceDetail(serviceId) {
-      // Hide the search bar and results list
-      //document.getElementById('serviceType').style.display = 'none';
-
-    // Hide the results
-    document.getElementById('results').style.display = 'none';
-
-    // Hide the form group (label + input)
-    //document.querySelector('.form-group').style.display = 'none';
-
-    // Hide the h2 element
-    //document.querySelector('h2').style.display = 'none';
-
-    // Hide the search button (assuming it's the button with onclick="searchHistory()")
-    //const searchButton = document.querySelector('button[onclick="searchHistory()"]');
-    //if (searchButton) {
-      //searchButton.style.display = 'none';
-    //}
-
-      const service = cleaningHistory.find(s => s.id === serviceId);
-
-      if (service) {
-        document.getElementById('serviceNameDetail').innerText = service.type;
-        document.getElementById('serviceDescriptionDetail').innerText = service.description;
-        document.getElementById('servicePriceDetail').innerText = `Price: ${service.price}`;
-        
-        // Show the service detail section
-        document.getElementById('serviceDetail').style.display = 'block';
-
-        // Handle edit and deactivate buttons
-        document.getElementById('editServiceBtn').onclick = () => {
-          window.location.href = 'UpdateServiceCleaner.html'; 
-        };
-        document.getElementById('disableServiceBtn').onclick = () => {
-          window.location.href = 'DeactivateCleaningService.html'; 
-        };
-      }
-    }
-    window.onload = function() {
-      document.getElementById('serviceType').value = ''; 
-    };
-
+    
   </script>
 </body>
 </html>

@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Account</title>
+  <title>User Profile</title>
   <style>
-    /* Reusable styles from the Create Account page */
-    * { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background: #50505e;
-      color: white;
+      padding: 0;
+    }
+
+    body {
+      background-color: #4a5a5c;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     /* Navigation Bar */
@@ -25,6 +30,7 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
+
     .nav-container {
       display: flex;
       align-items: center;
@@ -32,33 +38,38 @@
       padding: 10px 30px;
       flex-wrap: wrap;
     }
+
     .nav-left img {
-      height: 80px;
-      width: 100px;
+      height: 60px;
       object-fit: contain;
     }
+
     .nav-center {
       display: flex;
       align-items: center;
       gap: 20px;
+      flex-wrap: wrap;
     }
+
     .nav-center a {
       text-decoration: none;
       color: white;
       font-size: 1rem;
       padding: 10px 0;
       border-radius: 8px;
-      width: 120px;
+      width: 180px;
       text-align: center;
       display: inline-block;
-      background-color: transparent;
     }
+
     .nav-center a:hover {
-      background-color:  #5380c9;
+      background-color: #5380c9;
     }
+
     .dropdown {
       position: relative;
     }
+
     .dropdown-content {
       display: none;
       position: absolute;
@@ -69,26 +80,30 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
       z-index: 999;
     }
+
     .dropdown-content a {
       display: block;
       padding: 10px 15px;
       text-decoration: none;
       color: #333;
       font-size: 0.9em;
-      width: 120px;
-      text-align: center;
     }
+
     .dropdown-content a:hover {
       background-color: #5380c9;
+      color: white;
     }
+
     .dropdown:hover .dropdown-content {
       display: block;
     }
+
     .nav-right {
       display: flex;
       align-items: center;
       gap: 15px;
     }
+
     .search-box input {
       height: 35px;
       width: 200px;
@@ -97,6 +112,7 @@
       font-size: 0.9em;
       border: 1px solid #ccc;
     }
+
     .logout-btn {
       text-decoration: none;
       color: #333;
@@ -106,49 +122,124 @@
       font-size: 0.9em;
       background-color: #f2f2f2;
     }
+
     .logout-btn:hover {
       background-color: #ddd;
     }
 
-    /* Main Container for Viewing Accounts */
-    .view-container {
-      margin: 120px auto 40px;
+    .profile-container {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-radius: 10px;
       width: 90%;
       max-width: 1000px;
-      background-color: #2e2e38;
-      padding: 20px;
-      border-radius: 10px;
-      overflow-x: auto;
-    }
-    .view-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #1f1f27;
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #444;
-      text-align: left;
-      font-size: 0.9em;
-    }
-    th {
-      background-color: #5380c9;
-    }
-    tr:nth-child(even) {
-      background-color: #2a2a35;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+      margin: 120px auto 40px auto; 
     }
 
-    /* Footer Styles */
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ddd;
+    }
+
+    .upload-btn {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 2px 6px;
+      font-size: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .form-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 16px;
+      color: black;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 40px; /* Adjust spacing as needed */
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+
+    .buttons button {
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .save-btn {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    #image-upload {
+      display: none;
+    }
+
     footer.site-footer {
       background-color: #333;
       color: #f0f0f0;
       padding: 30px 20px;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
+
     .footer-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -156,32 +247,38 @@
       flex-wrap: wrap;
       justify-content: space-between;
     }
+
     .footer-section {
       flex: 1;
       min-width: 220px;
       margin: 10px;
     }
+
     .footer-section h4 {
       margin-bottom: 15px;
       font-size: 1.1rem;
       border-bottom: 1px solid #555;
       padding-bottom: 5px;
     }
+
     .footer-section ul {
       list-style: none;
       padding: 0;
-      margin: 0;
     }
+
     .footer-section ul li {
       margin: 8px 0;
     }
+
     .footer-section ul li a {
       color: #bbb;
       text-decoration: none;
     }
+
     .footer-section ul li a:hover {
       color: #fff;
     }
+
     .footer-bottom {
       text-align: center;
       margin-top: 30px;
@@ -190,51 +287,17 @@
       font-size: 0.8rem;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
-      .nav-container {
-        padding: 10px 15px;
+      .form-section {
+        grid-template-columns: 1fr;
       }
-      .nav-left img {
-        height: 60px;
-        width: 80px;
-      }
-      .nav-center a {
-        width: auto;
-        padding: 8px;
-      }
-      .search-box input {
-        width: 150px;
-      }
-      .view-container {
-        margin: 100px 10px 40px;
-        padding: 15px;
-      }
-      th, td {
-        padding: 8px;
-        font-size: 0.8em;
-      }
-      .footer-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .footer-section {
-        margin: 10px 0;
-        text-align: center;
-      }
-    }
-    
-    @media (max-width: 480px) {
       .nav-container {
         flex-direction: column;
+        align-items: flex-start;
       }
-      .nav-center {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .search-box input {
-        width: 100%;
-        margin-top: 5px;
+      .buttons {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
   </style>
@@ -250,20 +313,19 @@
       <div class="nav-center">
         <a href="UserAdminHome.html">Home</a>
         <div class="dropdown">
-          <a href="#">View ▾</a>
+          <a href="#">Role ▾</a>
           <div class="dropdown-content">
-            <a href="UaSearchUserAccount.html">View Account</a>
-            <a href="UserProfile.html">View Profile</a>
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
           </div>
         </div>
         <div class="dropdown">
-          <a href="#">Create ▾</a>
+          <a href="#">User ▾</a>
           <div class="dropdown-content">
-            <a href="UaCreateUserAccount.html">Create Account</a>
-            <a href="UserProfileCreate.html">Create Profile</a>
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
           </div>
         </div>
-        
       </div>
       <div class="nav-right">
         
@@ -272,153 +334,119 @@
     </div>
   </nav>
   
-  <!-- Main Container for Viewing User Accounts -->
-  <div class="view-container">
-    <h2>User Account</h2>
-    <table id="userTable">
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Address</th>
-          <th>Role</th>
-        </tr>
-      </thead>
-      
-      <tbody id="tableBody">
-        
-      </tbody>
-      
-    </table>
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <div class="header">
+       <!--  <div class="avatar-wrapper">
+        <img src="images/userprofile.png" alt="Avatar" class="avatar" id="profile-pic" />
+        <label for="image-upload" class="upload-btn">Edit</label>
+        <input type="file" id="image-upload" accept="image/*">
+      </div>-->
+    </div>
+
+    <h2>User Account Details</h2>
+    <form id="profile-form">
+      <div class="form-section">
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" value="Andrew" />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" value="Walker" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" value="555-237-2384" />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <input type="text" id="role" value="HomeOwner" />
+        </div>
+      </div>
+
+      <div class="form-group" id="email-group" style="margin-top: 20px;">
+        <label for="email">Email</label>
+        <input type="email" id="email" value="andrew@email.com" />
+      </div>
+
+      <div class="form-group" id="address-group" style="margin-top: 20px;"> 
+        <label for="address">Address</label>
+        <input type="text" id="address" value="123 Main Street" style="width: 100%;" />
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="create" data-tab="create" style="width: 300px; height: 50px; border-radius: 15px; background-color: lightblue;">
+          <a href="UaUpdateUserAccount.html" style="text-decoration: none; color: black;">Update</a>
+        </button>
+        <button type="button" class="cancel" data-tab="view" style="width: 300px; height: 50px; border-radius: 15px; background-color: lightblue;">
+          <a href="UaSuspendUserAccount.html" style="text-decoration: none; color: black;">Delete</a>
+        </button>
+      </div>
+
+    </form>
   </div>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <!-- Branding & Mission -->
-      <div class="footer-section">
-        <h4>CleanerMatch</h4>
-        <p style="text-align: justify;">Your trusted platform for connecting freelance home cleaners with homeowners.
-         Our mission is to bring reliability and quality to every cleaning service.</p>
-      </div>
-      
-      <!-- Quick Links -->
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="faq.html">FAQs</a></li>
-          <li><a href="terms.html">Terms & Conditions</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-        </ul>
-      </div>
-      
-      <!-- For Users -->
-      <div class="footer-section">
-        <h4>For Users</h4>
-        <ul>
-          <li><a href="cleaners.html">For Cleaners</a></li>
-          <li><a href="homeowners.html">For Home Owners</a></li>
-          <li><a href="admin.html">For Admin</a></li>
-          <li><a href="management.html">Platform Management</a></li>
-        </ul>
-      </div>
-      
-      <!-- Social Media -->
-      <div class="footer-section">
-        <h4>Follow Us</h4>
-        <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2025 C2CBananaCat. All Rights Reserved.
-    </div>
-  </footer>
-
   <script>
-    // On page load, fetch user accounts from the backend and populate the table.
-    window.addEventListener("load", async function () {
-      const tableBody = document.getElementById("tableBody");
-      tableBody.innerHTML = ""; // Clear the table body
+  const roleSpan = document.getElementById('role');
+  const addressGroup = document.getElementById('address-group');
+  const form = document.getElementById('profile-form');
+  const firstNameInput = document.getElementById('first-name');
+  const lastNameInput = document.getElementById('last-name');
+  const phoneInput = document.getElementById('phone');
+  const emailInput = document.getElementById('email');
+  const addressInput = document.getElementById('address');
 
-      try {
-        // Make an API call to fetch the user account list
-        const response = await fetch("http://localhost:8080/view", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({}) // Send an empty object as the request body
-        });
+  // 1. Retrieve selectedUser from localStorage
+  const storedUser = localStorage.getItem("selectedUser");
+  let selectedUser = {};
+  if (storedUser) {
+    try {
+      selectedUser = JSON.parse(storedUser);
+    } catch (e) {
+      alert("Corrupted user data. Please re-select the user.");
+      window.location.href = "UaSearchUserAccount.html";
+    }
+  }
 
-        if (response.ok) {
-          const userAccounts = await response.json(); // Parse the JSON response
+  // 2. Send selectedUser to backend and get user details
+  async function fetchAndDisplayUser() {
+    try {
+      const response = await fetch("http://localhost:8080/SearchUserAccount", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selectedUser)
+      });
+      if (!response.ok) throw new Error("Failed to fetch user data");
+      const user = await response.json();
 
-          // Check if there are any user accounts
-          if (userAccounts.length > 0) {
-            userAccounts.forEach((user) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
-                <td>${user.firstname}</td>
-                <td>${user.lastname}</td>
-                <td>${user.email}</td>
-                <td>${user.phonenumber || "-"}</td>
-                <td>${user.address || "-"}</td>
-                <td>${user.userprofile.toUpperCase()}</td>
-                <td>
-                  <button class="update-btn" data-email="${user.email}">Update</button>
-                  <button class="suspend-btn" data-email="${user.email}">Suspend</button>
-                </td>
-              `;
-              tableBody.appendChild(row);
-            });
+      // 3. Save retrieved user to localStorage
+      localStorage.setItem("selectedUser", JSON.stringify(user));
 
-            // Add event listeners for Update and Suspend buttons
-            document.querySelectorAll(".update-btn").forEach((button) => {
-              button.addEventListener("click", function () {
-                const email = this.getAttribute("data-email");
-                const selectedUser = userAccounts.find((user) => user.email === email);
-                localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
-                window.location.href = "UaUpdateUserAccount.html";
-              });
-            });
+      // 4. Prefill input boxes and disable them
+      firstNameInput.value = user.firstname || '';
+      lastNameInput.value = user.lastname || '';
+      phoneInput.value = user.phonenumber || '';
+      emailInput.value = user.email || '';
+      addressInput.value = user.address || '';
+      roleSpan.value = user.userprofile || 'Unknown';
 
-            document.querySelectorAll(".suspend-btn").forEach((button) => {
-              button.addEventListener("click", async function () {
-                const email = this.getAttribute("data-email");
-                const selectedUser = userAccounts.find((user) => user.email === email);
-                localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
-                window.location.href = "UaSuspendUserAccount.html";
-              });
-            });
-          } else {
-            // If no accounts were found, show a message
-            const row = document.createElement("tr");
-            row.innerHTML = `<td colspan="7" style="text-align: center;">No user accounts found.</td>`;
-            tableBody.appendChild(row);
-          }
-        } else {
-          console.error("Failed to fetch user accounts:", response.status);
-          const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="7" style="text-align: center;">Failed to load user accounts.</td>`;
-          tableBody.appendChild(row);
-        }
-      } catch (error) {
-        console.error("Error fetching user accounts:", error);
-        const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="7" style="text-align: center;">An error occurred while loading user accounts.</td>`;
-        tableBody.appendChild(row);
-      }
-    });
-  </script>
+      firstNameInput.disabled = true;
+      lastNameInput.disabled = true;
+      phoneInput.disabled = true;
+      emailInput.disabled = true;
+      addressInput.disabled = true;
+
+      // Show/hide address field depending on role
+      addressGroup.style.display = (user.userprofile === 'HOMEOWNER') ? 'block' : 'none';
+    } catch (error) {
+      alert("Could not load user data.");
+      console.error(error);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", fetchAndDisplayUser);
+</script>
 
 </body>
 </html>

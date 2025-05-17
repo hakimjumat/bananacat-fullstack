@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Search User Accounts</title>
+  <title>Search User Profile</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
       margin: 0;
-      padding-top: 100px;
+      padding: 0;
+      background: #f9f9fb;
     }
 
     nav.navigation {
@@ -32,24 +32,26 @@
     }
 
     .nav-left img {
-      height: 60px;
-      width: auto;
+      height: 80px;
+      width: 100px;
+      object-fit: contain;
     }
 
     .nav-center {
       display: flex;
       align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
+      gap: 50px;
     }
 
     .nav-center a {
       text-decoration: none;
       color: white;
-      font-size: 0.95rem;
-      padding: 8px 12px;
+      font-size: 1rem;
+      padding: 10px 0;
       border-radius: 8px;
+      width: 180px;
+      text-align: center;
+      display: inline-block;
       background-color: transparent;
     }
 
@@ -78,11 +80,12 @@
       text-decoration: none;
       color: #333;
       font-size: 0.9em;
+      width: 180px;
+      text-align: center;
     }
 
     .dropdown-content a:hover {
       background-color: #5380c9;
-      color: white;
     }
 
     .dropdown:hover .dropdown-content {
@@ -92,7 +95,7 @@
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
 
     .logout-btn {
@@ -101,137 +104,55 @@
       padding: 8px 15px;
       border: 1px solid #ccc;
       border-radius: 20px;
-      background-color: #f2f2f2;
       font-size: 0.9em;
+      background-color: #f2f2f2;
     }
 
     .logout-btn:hover {
       background-color: #ddd;
     }
 
-    h1 {
+    .container {
+      max-width: 800px;
+      margin: 160px auto 40px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 40px 30px;
       text-align: center;
+    }
+
+    h2 {
       margin-bottom: 20px;
     }
 
-    .search-box {
-      text-align: center;
-      margin: 20px 10px;
-    }
-
-    .search-box input {
+    input[type="text"] {
       padding: 10px;
-      width: 90%;
+      width: 60%;
       max-width: 400px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+      font-size: 14px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      margin-bottom: 20px;
     }
 
-    .searchdetails {
-      width: 95%;
-      max-width: 1000px;
-      margin: auto;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .searchdetails th, .searchdetails td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-      font-size: 0.9em;
-    }
-
-    .searchdetails th {
-      background-color: #4b4b4b;
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #5380c9;
       color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    .searchdetails tr:hover {
-      background-color: #f1f1f1;
+    button:hover {
+      background-color: #406ab0;
     }
 
-    .searchdetails td[colspan] {
-      text-align: center;
-      color: gray;
-      font-style: italic;
-    }
-
-    footer.site-footer {
-      background-color: #333;
-      color: #f0f0f0;
-      padding: 30px 20px;
-      font-size: 1rem;
-      margin-top: 100px;
-      width: 100%;
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .footer-section {
-      flex: 1 1 220px;
-      margin: 10px;
-    }
-
-    .footer-section h4 {
-      margin-bottom: 15px;
-      font-size: 1.1rem;
-      border-bottom: 1px solid #555;
-      padding-bottom: 5px;
-    }
-
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-section ul li {
-      margin: 8px 0;
-    }
-
-    .footer-section ul li a {
-      color: #bbb;
-      text-decoration: none;
-    }
-
-    .footer-section ul li a:hover {
-      color: #fff;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 30px;
-      border-top: 1px solid #555;
-      padding-top: 15px;
-      font-size: 0.8rem;
-    }
-
-    @media (max-width: 768px) {
-      .nav-container {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .nav-center, .nav-right {
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .searchdetails th, .searchdetails td {
-        padding: 8px;
-        font-size: 0.75em;
-      }
-      .footer-section {
-        text-align: center;
-      }
+    .error {
+      color: red;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -245,173 +166,79 @@
       <div class="nav-center">
         <a href="UserAdminHome.html">Home</a>
         <div class="dropdown">
-          <a href="#">View ▾</a>
+          <a href="#">Role ▾</a>
           <div class="dropdown-content">
-            <a href="UaSearchUserAccount.html">View Account</a>
-            <a href="UserProfile.html">View Profile</a>
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
           </div>
         </div>
         <div class="dropdown">
-          <a href="#">Create ▾</a>
+          <a href="#">User ▾</a>
           <div class="dropdown-content">
-            <a href="UaCreateUserAccount.html">Create Account</a>
-            <a href="UserProfileCreate.html">Create Profile</a>
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
           </div>
         </div>
-        
       </div>
       <div class="nav-right">
-        
         <a class="logout-btn" href="logout.html">Log out</a>
       </div>
     </div>
   </nav>
-  
-  <h1>View / Search User Accounts</h1>
 
-  <div class="search-box">
-    <input type="text" placeholder="Search by name or email..." id="searchInput" />
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Search User Account</h2>
+    <input type="text" id="searchInput" placeholder="Enter a user email..." />
+    
+    <button onclick="searchRole()">Search</button>
+    <div class="error" id="errorMsg"></div>
   </div>
 
-  <table class="searchdetails">
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>Role</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody">
-      <!-- Dynamic content -->
-    </tbody>
-  </table>
-
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-section">
-        <h4>CleanerMatch</h4>
-        <p>Your trusted platform for connecting freelance home cleaners with homeowners.</p>
-      </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="faq.html">FAQs</a></li>
-          <li><a href="terms.html">Terms & Conditions</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>For Users</h4>
-        <ul>
-          <li><a href="cleaners.html">For Cleaners</a></li>
-          <li><a href="homeowners.html">For Home Owners</a></li>
-          <li><a href="admin.html">For Admin</a></li>
-          <li><a href="management.html">Platform Management</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Follow Us</h4>
-        <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2025 C2CBananaCat. All Rights Reserved.
-    </div>
-  </footer>
-
   <script>
-    const tableBody = document.getElementById("tableBody");
-    const searchInput = document.getElementById("searchInput");
-    let allUsers = [];
+    async function doSearchRole() {
+      const input = document.getElementById("searchInput").value.trim();
+      const error = document.getElementById("errorMsg");
 
-    async function fetchUsers() {
+      if (!input) {
+        error.textContent = "Account not recognized. Try valid email.";
+      }
+
       try {
-        // Make an API call to fetch the user account list
-        const response = await fetch("http://localhost:8080/view", {
+        const response = await fetch("http://localhost:8080/SearchUserAccount", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({}) // Send an empty object as the request body
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: input })
         });
-        if (!response.ok) throw new Error("Failed to fetch users");
 
         if (response.ok) {
-          // Parse the JSON response
-          allUsers = await response.json();
-          renderTable(allUsers);
+          const searchResult = await response.json();
+          localStorage.setItem("selectedUser", JSON.stringify(searchResult));
+          window.location.href = "UaViewUserAccount.html";
+        } else {
+          
+          const errorMessage = await response.text();
+          error.textContent = `Error: ${errorMessage}`;
+          error.style.color = "red";
         }
-      } catch (error) {
-        tableBody.innerHTML = `<tr><td colspan="6">Error loading user accounts.</td></tr>`;
-        console.error("Error:", error);
+      } catch (err) {
+        console.error("Error searching account:", err);
+        error.textContent = "An error occurred while searching for profile.";
+        error.style.color = "red";
       }
     }
 
-    function renderTable(users) {
-      tableBody.innerHTML = "";
-      if (users.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="6">No user accounts found.</td></tr>`;
-        return;
-      }
-      users.forEach(user => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${user.firstname}</td>
-          <td>${user.lastname}</td>
-          <td>${user.email}</td>
-          <td>${user.phonenumber}</td>
-          <td>${user.address || "-"}</td>
-          <td>${user.userprofile}</td>
-          <td>
-            <button class="update-btn" data-email="${user.email}">Update</button>
-            <button class="suspend-btn" data-email="${user.email}">Suspend</button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-      // Add event listeners for Update and Suspend buttons
-      document.querySelectorAll(".update-btn").forEach((button) => {
-                button.addEventListener("click", function () {
-                  const email = this.getAttribute("data-email");
-                  const selectedUser = allUsers.find((user) => user.email === email);
-                  localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
-                  window.location.href = "UaUpdateUserAccount.html";
-                });
-              });
-
-      document.querySelectorAll(".suspend-btn").forEach((button) => {
-        button.addEventListener("click", async function () {
-          const email = this.getAttribute("data-email");
-          const selectedUser = allUsers.find((user) => user.email === email);
-          localStorage.setItem("selectedUser", JSON.stringify(selectedUser));
-          window.location.href = "UaSuspendUserAccount.html";
-        });
-      });
+    // Button click
+    function searchRole() {
+      doSearchRole();
     }
 
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.trim().toLowerCase();
-      const filtered = allUsers.filter(user =>
-        user.firstname.toLowerCase().includes(query) ||
-        user.lastname.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query)
-      );
-      renderTable(filtered);
+    // Enter key
+    document.getElementById("searchInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        doSearchRole();
+      }
     });
-
-    
-
-    window.addEventListener("load", fetchUsers);
   </script>
 </body>
 </html>

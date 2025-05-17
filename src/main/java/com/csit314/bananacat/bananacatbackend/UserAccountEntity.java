@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 
 @Entity
@@ -25,7 +27,6 @@ public class UserAccountEntity {
     private String lastname;
     private Integer phonenumber;
     private String address;
-    
     private Integer ratings; //1 to 5, manual insert through psql, for display only
     
     public String getEmail() {
@@ -207,22 +208,23 @@ public class UserAccountEntity {
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.ok(this.email);
+            UserAccountEntity result = userOptional.get();
+            return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.ok("User not found");
         }
     }
 
     public ResponseEntity<?> ViewUserAccount(UserAccountRepository usersrepository) {
-        return ResponseEntity.ok(usersrepository.findAll());
-        // Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
+        // return ResponseEntity.ok(usersrepository.findAll());
+        Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
-        // if (userOptional.isPresent()) {
-        //     UserAccountEntity result = userOptional.get();
-        //     return ResponseEntity.ok(result);
-        // } else {
-        //     return ResponseEntity.ok("User not found");
-        // }
+        if (userOptional.isPresent()) {
+            UserAccountEntity result = userOptional.get();
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.ok("User not found");
+        }
     }
 
     //user story #26

@@ -196,48 +196,47 @@
   </div>
 
   <script>
-    function searchRole() {
+    async function doSearchRole() {
       const role = document.getElementById("searchInput").value.trim().toUpperCase();
       const error = document.getElementById("errorMsg");
 
-      if (role) {
-        return role;
-      } else {
+      if (!role) {
         error.textContent = "Role not recognized. Try 'Home Owner', 'Cleaner', or 'Platform Management'.";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8080/searchP", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: role })
+        });
+
+        if (response.ok) {
+          const searchResult = await response.json();
+          localStorage.setItem("selectedProfile", JSON.stringify(searchResult));
+          window.location.href = "UserProfileView.html";
+        } else {
+          const errorMessage = await response.text();
+          error.textContent = `Error: ${errorMessage}`;
+          error.style.color = "red";
+        }
+      } catch (err) {
+        console.error("Error searching profile:", err);
+        error.textContent = "An error occurred while searching for profile.";
+        error.style.color = "red";
       }
     }
 
-    // Optional: Allow Enter key to trigger search
-    document.getElementById("searchInput").addEventListener("keydown", async function(e) {
-      const error = document.getElementById("errorMsg");
+    // Button click
+    function searchRole() {
+      doSearchRole();
+    }
+
+    // Enter key
+    document.getElementById("searchInput").addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
-        inputRole = searchRole();
-        try {
-          const response = await fetch("http://localhost:8080/searchP", {
-            method: "POST", // Use the correct HTTP method
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({name : inputRole})
-          });
-
-          if (response.ok) {
-            console.log("Form submitted with payload:",{name : inputRole});
-            console.log(JSON.stringify({name: inputRole}));
-            const searchResult = await response.json();
-            localStorage.setItem("selectedProfile", JSON.stringify(searchResult));
-            window.location.href = "UserProfileView.html"; 
-          } else {
-            const errorMessage = await response.text();
-            error.textContent = `Error: ${errorMessage}`;
-            error.style.color = "red";
-          }
-        } catch (err) {
-          console.error("Error searching profile:", err);
-          error.textContent = "An error occurred while searching for profile.";
-          error.style.color = "red";
-        }
-
+        doSearchRole();
       }
     });
   </script>

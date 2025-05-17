@@ -284,23 +284,21 @@
       <div class="nav-center">
         <a href="UserAdminHome.html">Home</a>
         <div class="dropdown">
-          <a href="#">View ▾</a>
+          <a href="#">Role ▾</a>
           <div class="dropdown-content">
-            <a href="UaSearchUserAccount.html">View Account</a>
-            <a href="UserProfile.html">View Profile</a>
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
           </div>
         </div>
         <div class="dropdown">
-          <a href="#">Create ▾</a>
+          <a href="#">User ▾</a>
           <div class="dropdown-content">
-            <a href="UaCreateUserAccount.html">Create Account</a>
-            <a href="UserProfileCreate.html">Create Profile</a>
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
           </div>
         </div>
-        
       </div>
       <div class="nav-right">
-        
         <a class="logout-btn" href="logout.html">Log out</a>
       </div>
     </div>
@@ -342,19 +340,12 @@
 
       <div class="form-group">
         <label for="role">Role</label>
-        <select id="userprofile">
-          <option value="homeowner">Home Owner</option>
-          <option value="cleaner">Cleaner</option>
-          <option value="admin">Platform Manager</option>
-        </select>
+        <input type="text" id="userprofile" disabled/> 
       </div>
 
-      <div class="form-group">
+       <div class="form-group">
         <label for="status">Account Status</label>
-        <select id="status">
-          <option value="active">Active</option>
-          <option value="suspended">Suspended</option>
-        </select>
+        <input type="text" id="status" disabled/> 
       </div>
 
       <div class="buttons">
@@ -481,6 +472,7 @@
           console.log("Raw response text:", userText);
           message.textContent = "User account updated successfully!";
           message.style.color = "green";
+          window.location.href = "UaViewUserAccount.html";
         } else {
           const error = await response.text();
           message.textContent = `Error: ${error}`;

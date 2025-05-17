@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cleaner History View One</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #cce4ff;
+      padding: 20px;
+      border-bottom: 2px solid #999;
+    }
+
+    .header a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .detail-item {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .value {
+      margin-left: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div> <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" /></div>
+    <div>Cleaner Search History</div>
+    <div><a href="CleanerDashboard.html">Back to Dashboard</a></div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="btn" onclick="window.location.href='CreateServiceCleaner.html'">Create New Services</button>
+    <button class="btn" onclick="window.location.href='CleanerSearchHistory.html'">Search Cleaning History</button>
+    <button class="btn" onclick="window.location.href='ViewServiceCleaner.html'">View Services</button>
+  </div>
+
+  <!-- Cleaning History View -->
+  <div class="container">
+    <h2>Cleaning History</h2>
+
+    <div class="detail-item"><span class="label">Home Owner Name:</span><span class="value" id="homeOwnerName"></span></div>
+    <div class="detail-item"><span class="label">Date:</span><span class="value" id="date"></span></div>
+    <div class="detail-item"><span class="label">Duration:</span><span class="value" id="duration"></span></div>
+    <div class="detail-item"><span class="label">Hourly rates:</span><span class="value" id="hourlyRates"></span></div>
+    <div class="detail-item"><span class="label">Review:</span><span class="value" id="review"></span></div>
+    <div class="detail-item"><span class="label">Services provided:</span><span class="value" id="servicesProvided"></span></div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      const serviceData = JSON.parse(sessionStorage.getItem('selectedService'));
+
+      if (serviceData) {
+        // You can replace these hardcoded values with actual dynamic values as needed
+        document.getElementById('homeOwnerName').innerText = "John Doe"; // Replace if needed
+        document.getElementById('date').innerText = serviceData.date;
+        document.getElementById('duration').innerText = "2 hours"; // Optional: Add dynamic duration
+        document.getElementById('hourlyRates').innerText = serviceData.price;
+        document.getElementById('review').innerText = "Excellent service!"; // Optional: Add real review
+        document.getElementById('servicesProvided').innerText = serviceData.type;
+      } else {
+        document.querySelector('.container').innerHTML = "<h2>No Service Data Found</h2>";
+      }
+    };
+    
+  </script>
+
+</body>
+</html>
