@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <title>Search Service Category</title>
     <style>
-      html, body {
+        html, body {
             height: 100%;
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
         }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 40px;
-        background: lightblue;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        font-size: 1.5em;
+        .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: lightblue;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      font-size: 1.5em;
     }
 
     .header h1 {
@@ -141,6 +141,31 @@
             text-align: center;
             margin-top: 10px;
         }
+        .result-block {
+    background: #f1f7ff;
+    border: 1px solid #b3c6e7;
+    border-radius: 8px;
+    padding: 18px 24px;
+    margin: 18px auto;
+    max-width: 400px;
+    box-shadow: 0 2px 8px rgba(82, 125, 244, 0.08);
+    font-size: 1.1em;
+    color: #222;
+}
+.result-block button {
+    margin-left: 10px;
+    background-color: #527df4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.result-block button:hover {
+    background-color: #405bb5;
+}
     </style>
 </head>
 <body>
@@ -178,46 +203,64 @@
 </div>
 
 <script>
-    document.getElementById('searchForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+let allCategories = [];
 
-        const term = document.getElementById('searchTerm').value;
-
-        fetch('/SearchCategory', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name: term }) // Send name as JSON
-        })
-        .then(response => response.json())
-        .then(data => {
-            const resultDiv = document.getElementById('result');
-
-            // Handle "not found" text response from backend
-            if (typeof data === 'string' && data === 'not found') {
-                resultDiv.innerText = 'Category not found.';
-            }
-            // Handle valid object response
-            else if (data && data.id) {
-                resultDiv.innerHTML = `
-                    Found: ID = ${data.id}, Name = ${data.name}<br>
-                    <button id="viewButton">View</button>
-                `;
-
-                document.getElementById('viewButton').onclick = () => {
-                    window.location.href = `PMViewService.html?id=${data.id}&name=${encodeURIComponent(data.name)}&description=${encodeURIComponent(data.description)}`;
-                };
-            } else {
-                resultDiv.innerText = 'Unexpected response.';
-            }
-        })
-        .catch(error => {
-            document.getElementById('result').innerText = "Search failed.";
-            console.error('Error:', error);
-        });
+function renderCategoryList(categories) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+    if (!Array.isArray(categories) || categories.length === 0) {
+        resultDiv.innerHTML = '<div style="text-align:center; color:#888;">No categories found.</div>';
+        return;
+    }
+    categories.forEach(cat => {
+        const div = document.createElement('div');
+        div.className = 'service-item';
+        div.style.cursor = 'pointer';
+        div.style.padding = '15px';
+        div.style.margin = '10px 0';
+        div.style.border = '1px solid #eee';
+        div.style.borderRadius = '8px';
+        div.style.background = '#f5f7fa';
+        div.innerHTML = `<strong>${cat.name}</strong><br><span style="color:#555;">${cat.description || ''}</span>`;
+        div.onclick = function() {
+    // Pass name and description as URL parameters
+    window.location.href = `PMViewService.html?name=${encodeURIComponent(cat.name)}&description=${encodeURIComponent(cat.description || cat.Description || '')}`;
+    };
+    resultDiv.appendChild(div);
     });
-</script>
+}
 
+// Fetch all categories on page load
+window.onload = function() {
+    fetch('/ViewCategoryList', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}) // send empty object if not filtering
+    })
+    .then(response => response.json())
+    .then(data => {
+        allCategories = Array.isArray(data) ? data : [];
+        renderCategoryList(allCategories);
+    })
+    .catch(error => {
+        document.getElementById('result').innerText = "Failed to load categories.";
+        console.error('Error:', error);
+    });
+};
+
+// Filter categories on search
+document.getElementById('searchForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const term = document.getElementById('searchTerm').value.trim().toLowerCase();
+    if (!term) {
+        renderCategoryList(allCategories);
+        return;
+    }
+    const filtered = allCategories.filter(cat =>
+        (cat.name || '').toLowerCase().includes(term)
+    );
+    renderCategoryList(filtered);
+});
+</script>
 </body>
 </html>

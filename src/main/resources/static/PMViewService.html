@@ -248,7 +248,7 @@
   </div>
 
   <div id="listContainer" class="container">
-    <div class="title" style="text-align: center;">Service Categories</div>
+    <div class="title">View Service Category</div>
     <ul id="categoryList" class="category-list"></ul>
     <p id="errorMessage" class="error"></p>
   </div>
@@ -266,7 +266,7 @@
     <div class="card-actions">
       <button class="btn update-btn" onclick="updateCategory(selectedCategoryId, selectedCategoryName, selectedCategoryDescription)">Update</button>
       <button class="btn delete-btn" onclick="deleteCategory()">Delete</button>
-      <button class="btn back-btn" onclick="goBack()">Back</button>
+      <button class="btn back-btn" onclick="goBack()">Cancel</button>
     </div>
   </div>
 </div>
@@ -298,36 +298,42 @@
     }
 
     async function loadCategories() {
-        const categoryNames = ['Cleaning', 'Plumbing', 'Electrical', 'Gardening', 'Pest Control']; // Replace or generate dynamically
         const list = document.getElementById('categoryList');
         list.innerHTML = '';
 
-        for (const name of categoryNames) {
-            const category = await fetchCategoryByName(name);
-            if (category) {
+        // Fetch all categories from backend
+        const response = await fetch('/ViewCategoryList', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const categories = await response.json();
+
+        if (Array.isArray(categories) && categories.length > 0) {
+            categories.forEach(category => {
+                const description = category.description || category.Description || '';
                 const item = document.createElement('li');
                 item.className = 'category-item';
                 item.innerHTML = `
                     <div class="category-name">${category.name}</div>
-                    <div class="category-description">${category.description}</div>
+                    <div class="category-description">${description}</div>
                 `;
-                item.onclick = () => viewCategory(category);
+                item.onclick = () => viewCategory({ ...category, description: description });
                 list.appendChild(item);
-            }
+            });
+        } else {
+            list.innerHTML = '<li>No categories found.</li>';
         }
 
         // Auto-view if data passed via URL
-        const id = getQueryParam('id');
         const name = getQueryParam('name');
         const description = getQueryParam('description');
-
-        if (id && name && description) {
-            viewCategory({ id: parseInt(id), name, description });
+        if (name && description) {
+            viewCategory({ name, description });
         }
     }
 
     function viewCategory(category) {
-        selectedCategoryId = category.id;
+        selectedCategoryId = category.name; // Use name as ID
         selectedCategoryName = category.name;
         selectedCategoryDescription = category.description;
 
@@ -338,22 +344,22 @@
         document.getElementById('listContainer').style.display = 'none';
     }
 
+    function updateCategory(id, name, description) {
+        window.location.href = `PMUpdateService.html?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`;
+    }
+
+    function deleteCategory() {
+    if (!selectedCategoryId) return;
+        // Use 'name' as the parameter for consistency
+        window.location.href = `PMDeleteService.html?name=${encodeURIComponent(selectedCategoryId)}`;
+    }
+
     function goBack() {
         document.getElementById('listContainer').style.display = 'block';
         document.getElementById('serviceDetails').style.display = 'none';
     }
 
-    function updateCategory(id, name, description) {
-        window.location.href = `PMUpdateService.html?id=${id}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`;
-    }
-
-    function deleteCategory() {
-        if (!selectedCategoryId) return;
-        window.location.href = `PMDeleteService.html?id=${selectedCategoryName}`;
-    }
-
     loadCategories();
 </script>
-
 </body>
 </html>

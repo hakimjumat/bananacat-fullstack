@@ -169,92 +169,55 @@
 
     <div class="container">
         <form id="deleteForm">
-            <label for="deleteCategoryName">Category Name:</label>
-            <input type="text" id="deleteCategoryName" required />
+            <h2>Delete Category</h2>
+            <label for="deleteCategoryId">Category Name:</label>
+            <input type="text" id="deleteCategoryName" name="name" required readonly>
+
             <button type="submit">Delete Category</button>
         </form>
-            <div id="message"></div>
 
+        <div id="message"></div>
     </div>
-
+    
     <script>
         // Autofill the category name from the URL parameter `name`
         window.onload = function () {
             const params = new URLSearchParams(window.location.search);
-            const name = params.get("name"); // use 'name' instead of 'id'
-
-            if (name) {
-            document.getElementById("deleteCategoryName").value = decodeURIComponent(name);
-            }
+            const name = params.get("name");
+        document.getElementById("deleteCategoryName").value = decodeURIComponent(name);
         };
 
-        // Handle the delete form submission
         document.getElementById('deleteForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const categoryName = document.getElementById('deleteCategoryName').value.trim();
 
             if (!categoryName) {
-            document.getElementById('message').innerText = "No category name provided.";
-            return;
+                document.getElementById('message').innerText = "No category name provided.";
+                return;
             }
 
             fetch('http://localhost:8080/DeleteCategory', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: categoryName }) // Send name to match backend
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: categoryName }) 
             })
             .then(response => response.text())
             .then(data => {
-            if (data === "true") {
-                document.getElementById('message').innerText = "Category deleted successfully.";
-            } else {
-                document.getElementById('message').innerText = "Category not found or already deleted.";
-            }
+                if (data === "true") {
+                    document.getElementById('message').innerText = "Category deleted successfully.";
+                } else {
+                    document.getElementById('message').innerText = "Category not found or already deleted.";
+                }
             })
             .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('message').innerText = "Delete failed due to an error.";
+                console.error('Error:', error);
+                document.getElementById('message').innerText = "Delete failed due to an error.";
             });
         });
         </script>
 
-    <!--
-    <script>
-    window.onload = function () {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");  
-
-        if (id) {
-            document.getElementById("deleteCategoryId").value = decodeURIComponent(id);
-        }
-    };
-
-    document.getElementById('deleteForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const id = document.getElementById('deleteCategoryId').value;
-
-        fetch('/categories/delete', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({ id })
-        })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('message').innerText = data;
-        })
-        .catch(error => {
-            document.getElementById('message').innerText = "Delete failed.";
-            console.error('Error:', error);
-        });
-    });
-</script>
-
-    -->
 </body>
 </html>
