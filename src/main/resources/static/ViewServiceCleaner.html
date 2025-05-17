@@ -223,41 +223,74 @@
     }
 
     async function fetchCleanerServices() {
-      // Use the same key as above
       const storedUser = localStorage.getItem("loggedinUser");
       if (!storedUser) return;
       const user = JSON.parse(storedUser);
-      console.log(JSON.stringify({email : user.email}));
+
       try {
         const response = await fetch('/ViewCleaningServiceList', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({email : user.email})
+          body: JSON.stringify({ email: user.email })
         });
+
         if (!response.ok) throw new Error("Could not fetch services");
 
         const services = await response.json();
-        console.log(services);
-
         const container = document.getElementById("serviceList");
-        container.innerHTML = ""; // Clear previous content
+        container.innerHTML = "";
 
         if (services.length === 0) {
           container.innerHTML = '<div class="no-services">No services have been created yet.</div>';
         } else {
-          services.forEach(service => {
+          for (const service of services) {
+            // Fetch number of shortlist for this service
+            let shortlistCount = 0;
+            try {
+              const shortlistResponse = await fetch('/NumberofShortlist', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ CLemail: user.email, name: service.serviceName })
+              });
+              if (shortlistResponse.ok) {
+                shortlistCount = await shortlistResponse.json();
+              }
+            } catch (e) {
+              console.error("Error fetching shortlist count:", e);
+            }
+
             const div = document.createElement("div");
             div.className = "service-item";
             div.innerHTML = `
               <div class="service-name">${service.serviceName}</div>
               <div class="view-count">Views: ${service.numberOfView}</div>
+              <div class="view-count">Shortlisted: ${shortlistCount}</div>
             `;
-            div.addEventListener("click", () => {
-              localStorage.setItem("selectedService", JSON.stringify(service)); // <-- GOOD: only runs when clicked
+            div.addEventListener("click", async () => {
+              // Save the selected service
+              localStorage.setItem("selectedService", JSON.stringify(service));
+
+              // Fetch the shortlist object for this service
+              let shortlistObj = null;
+              try {
+                const shortlistResponse = await fetch('/GetShortlistObject', { // <-- Adjust endpoint as needed
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ CLemail: user.email, name: service.serviceName })
+                });
+                if (shortlistResponse.ok) {
+                  shortlistObj = await shortlistResponse.json();
+                  localStorage.setItem("selectedShortlist", JSON.stringify(shortlistObj));
+                }
+              } catch (e) {
+                console.error("Error fetching shortlist object:", e);
+                localStorage.removeItem("selectedShortlist");
+              }
+
               showServiceDetail(service);
             });
             container.appendChild(div);
-          });
+          }
         }
       } catch (error) {
         console.error("Error fetching services:", error);

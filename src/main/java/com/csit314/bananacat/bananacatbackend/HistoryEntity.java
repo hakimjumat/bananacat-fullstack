@@ -25,10 +25,21 @@ public class HistoryEntity {
     private String review;
     private String duration;
 
+    public Long getId() { return id; }
+    public String getCLemail() { return CLemail; }
+    public String getHOemail() { return HOemail; }
+    public LocalDate getDate() { return date; }
+    public String getServiceName() { return serviceName; }
+    public Integer getPrice() { return price; }
+    public Integer getRating() { return rating; }
+    public String getReview() { return review; }
+    public String getDuration() { return duration; }
+    public void setCLemail(String CLemail) { this.CLemail = CLemail; }
+
     //User Story #92
     public ResponseEntity<?> ViewHistoryListForCleaner() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
-        List<HistoryEntity> result = Hrepository.findByCLemail(this.CLemail);
+        List<HistoryEntity> result = Hrepository.findAll();
         return ResponseEntity.ok(result);
     }
 

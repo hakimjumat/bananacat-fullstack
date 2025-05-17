@@ -17,6 +17,24 @@ public class shortlistEntity {
     private String CLemail;
     private String name;//name of cleaning service
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getHOemail() {
+        return HOemail;
+    }
+
+    public String getCLemail() {
+        return CLemail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    
+
     //User story #24
     public boolean SaveShortlist() {
         shortlistRepository slRepository = shortlistRepositoryInjector.repo;
@@ -56,4 +74,6 @@ public class shortlistEntity {
         int result = slRepository.CountByEmailAndName(this.CLemail, this.name);
         return ResponseEntity.ok(result);
     }
+
+    
 }

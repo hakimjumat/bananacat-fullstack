@@ -208,7 +208,14 @@
       <label for="serviceName">Enter Service Name</label>
       <input type="text" id="serviceName" placeholder="Name of service..." />
     </div>
-    <button onclick="searchHistory()">Search</button>
+    <div class="search-box">
+      <label class="search-label" for="sortOrder">Sort by Date:</label>
+      <select id="sortOrder" class="search-input" onchange="filterServices()">
+        <option value="desc">Newest to Oldest</option>
+        <option value="asc">Oldest to Newest</option>
+      </select>
+    </div>
+
 
     <div id="results" class="results"></div>
   </div>
@@ -226,7 +233,99 @@
   </div>
 
   <script>
-    
+document.addEventListener("DOMContentLoaded", async function() {
+  const resultsDiv = document.getElementById("results");
+  const detailDiv = document.getElementById("serviceDetail");
+  const serviceNameInput = document.getElementById("serviceName");
+  const sortOrderInput = document.getElementById("sortOrder");
+
+  // 1. Get logged-in user's email from localStorage
+  const storedUser = localStorage.getItem("loggedinUser");
+  let email = "";
+  if (storedUser) {
+    try {
+      const user = JSON.parse(storedUser);
+      email = user.email || "";
+    } catch (e) {
+      alert("Corrupted user data. Please log in again.");
+      window.location.href = "Ualogin.html";
+      return;
+    }
+  } else {
+    alert("No logged in user found. Please log in.");
+    window.location.href = "UaLogin.html";
+    return;
+  }
+
+  // 2. Fetch all history objects from backend
+  let allData = [];
+  try {
+    const response = await fetch("http://localhost:8080/ViewHistoryListForCleaner", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch history list");
+    allData = await response.json();
+  } catch (err) {
+    resultsDiv.innerHTML = "<div class='no-results'>Error fetching history.</div>";
+    console.error(err);
+    return;
+  }
+
+  // 3. Filter, sort, and display results
+  function filterAndDisplay() {
+    const serviceName = serviceNameInput.value.trim().toLowerCase();
+    const sortOrder = sortOrderInput.value; // "asc" or "desc"
+    let filtered = allData.filter(item =>
+      (item.clemail || item.CLemail || "").toLowerCase() === email.toLowerCase() &&
+      (serviceName === "" || (item.serviceName || "").toLowerCase().includes(serviceName))
+    );
+
+    // Sort the filtered results
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+
+    if (!filtered.length) {
+      resultsDiv.innerHTML = "<div class='no-results'>No history found.</div>";
+    } else {
+      resultsDiv.innerHTML = filtered.map((item, idx) => `
+        <div class="result-item" data-idx="${idx}">
+          <strong>Cleaner Email:</strong> ${item.clemail || item.CLemail || ""}<br>
+          <strong>Date:</strong> ${item.date || ""}<br>
+          <strong>Service Name:</strong> ${item.serviceName || ""}<br>
+        </div>
+      `).join('');
+
+      // Add click listeners to each result
+      document.querySelectorAll('.result-item').forEach((el, idx) => {
+        el.addEventListener('click', () => {
+          localStorage.setItem("selectedHistory", JSON.stringify(filtered[idx]));
+          window.location.href = "CleanerHistoryViewOne.html";
+        });
+      });
+    }
+  }
+
+  // 4. Listen for input changes to filter results
+  serviceNameInput.addEventListener("input", filterAndDisplay);
+  sortOrderInput.addEventListener("change", filterAndDisplay); // Re-filter on sort order change
+
+  // Initial display
+  filterAndDisplay();
+
+  // Show detail view for a selected object
+  function showServiceDetail(item) {
+    document.getElementById("serviceNameDetail").innerText = item.serviceName || "";
+    document.getElementById("serviceDescriptionDetail").innerText = "Cleaner Email: " + (item.clemail || item.CLemail || "");
+    document.getElementById("servicePriceDetail").innerText = "Date: " + (item.date || "");
+    detailDiv.style.display = "block";
+  }
+});
   </script>
 </body>
 </html>
