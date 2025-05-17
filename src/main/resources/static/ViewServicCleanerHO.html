@@ -2,128 +2,289 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cleaner Service Details</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Cleaners</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f7f9fc;
-      color: #333;
+      background: #f2f4f8;
       margin: 0;
       padding: 0;
     }
-
     .header {
       background: #a6b9ee;
+      color: #333;
       padding: 20px 40px;
       font-size: 24px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+    .header img {
+      width: 50px;
+      height: 50px;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
     }
 
-    .header a {
-      text-decoration: none;
-      color: blue;
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
       font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 300px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-left: 200px;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
 
     .container {
-      max-width: 800px;
-      margin: 50px auto;
-      background: white;
+      display: flex;
+      justify-content: center;
       padding: 30px;
+    }
+
+    .cleaner-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+
+    .cleaner-card {
+      background-color: white;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
       text-align: center;
-      color: #333;
     }
 
-    .info-row {
-      margin-bottom: 20px;
+    .cleaner-card:hover {
+      transform: translateY(-5px);
     }
 
-    .info-row strong {
-      display: inline-block;
-      width: 160px;
-      font-weight: 600;
+    .cleaner-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
     }
 
-    .btn-back {
-      display: block;
-      margin: 30px auto 0;
-      padding: 12px 24px;
-      background-color: #007bff;
+    .cleaner-card h3 {
+      margin: 10px 0 5px 0;
+    }
+
+    .rating {
+      color: #f39c12;
+      margin-bottom: 10px;
+    }
+
+    .service {
+      background: #e8f0fe;
+      margin: 5px auto;
+      padding: 8px;
+      border-radius: 6px;
+      width: 80%;
+    }
+
+    .cleaner-buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .cleaner-buttons button {
+      padding: 10px 20px;
+      background: #28a745;
       color: white;
       border: none;
       border-radius: 6px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
       cursor: pointer;
     }
 
-    .btn-back:hover {
-      background-color: #0056b3;
+    .cleaner-buttons button:hover {
+      background: #1e7e34;
     }
+
   </style>
 </head>
 <body>
 
   <div class="header">
-    <div>Home Owner View History</div>
-    <a href="SearchCleanersHO.html">Back to Search</a>
+    <img src="images/bananacat.png" alt="Banana Cat" />
+    <div>View Cleaners</div>
+    <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+  </div>
+
+  <div class="section">
+        <div class="action-buttons">
+          <div class="dropdown">
+            <button class="btn" style="width: 300px; margin-left: 200px;">
+                <a href="" style="text-decoration: none; color: white;">Search ▾</a></button>
+            <div class="dropdown-content">
+              <a href="SearchCleanersHO.html" style="text-decoration: none; color: white;">Search Cleaners</a>
+              <a href="SearchShortlistsHO.html" style="text-decoration: none; color: white;">Search Shortlists</a>
+              <a href="SearchHistoryHO.html" style="text-decoration: none; color: white;">Search History</a>
+            </div>
+        </div>
+        <button class="btn" onclick="window.location.href='UpdateHO.html'" style="margin-left: 400px;">Account Information</button>
   </div>
 
   <div class="container">
-    <h2>Cleaner Service Details</h2>
-
-    <div class="info-row">
-      <strong>Cleaner Name:</strong> <span id="cleanerName">Loading...</span>
+    <div class="cleaner-grid" id="cleanerGrid">
+      <!-- Cleaner cards will be injected here -->
     </div>
-
-    <div class="info-row">
-      <strong>Service Provided:</strong> <span id="cleanerService">Loading...</span>
-    </div>
-
-    <div class="info-row">
-      <strong>Date:</strong> <span id="cleaningDate">April 15, 2025</span>
-    </div>
-
-    <div class="info-row">
-      <strong>Duration:</strong> <span id="cleaningDuration">2 hours</span>
-    </div>
-
-    <div class="info-row">
-      <strong>Hourly Rates:</strong> <span id="hourlyRate">$30/hour</span>
-    </div>
-
-    <div class="info-row">
-      <strong>Review:</strong>
-      <span id="cleanerReview">Very professional and thorough cleaning. Would recommend!</span>
-    </div>
-
-    <a class="btn-back" href="HomeOwnerDashboard.html">Back to Dashboard</a>
   </div>
 
   <script>
-  // Get query parameters
-  const params = new URLSearchParams(window.location.search);
+  localStorage.removeItem("selectedService"); 
 
-  // Assign data to the relevant HTML elements
-  document.getElementById("cleanerName").textContent = params.get("name") || "N/A";
-  document.getElementById("cleanerEmail").textContent = params.get("email") || "N/A";
-  document.getElementById("cleanerService").textContent = params.get("service") || "N/A";
-  document.getElementById("cleanerLocation").textContent = params.get("location") || "N/A";
-  document.getElementById("cleanerRating").textContent = `${params.get("rating") || "N/A"} ★`;
-  document.getElementById("cleanerDate").textContent = params.get("date") || "N/A";
-  document.getElementById("cleanerDuration").textContent = params.get("duration") || "N/A";
-  document.getElementById("cleanerHourlyRate").textContent = params.get("hourlyRate") || "N/A";
-  document.getElementById("cleanerReview").textContent = params.get("review") || "N/A";
+  document.addEventListener('DOMContentLoaded', function () {
+    const storedUser = localStorage.getItem("loggedinUser");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      document.getElementById("cleanerName").textContent = user.firstname + " " + user.lastname;
+      document.getElementById("cleanerPhone").textContent = user.phonenumber;
+      document.getElementById("cleanerEmail").textContent = user.email;
+    }
+
+    async function fetchCleanerServices() {
+      const storedUser = localStorage.getItem("loggedinUser");
+      if (!storedUser) return;
+      const user = JSON.parse(storedUser);
+
+      try {
+        const response = await fetch('/ViewCleaningServiceList', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email })
+        });
+
+        if (!response.ok) throw new Error("Could not fetch services");
+
+        const services = await response.json();
+        const container = document.getElementById("serviceList");
+        container.innerHTML = "";
+
+        if (services.length === 0) {
+          container.innerHTML = '<div class="no-services">No services have been created yet.</div>';
+        } else {
+          for (const service of services) {
+            let shortlistCount = 0;
+            try {
+              const shortlistResponse = await fetch('/NumberofShortlist', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ CLemail: user.email, name: service.serviceName })
+              });
+              if (shortlistResponse.ok) {
+                shortlistCount = await shortlistResponse.json();
+              }
+            } catch (e) {
+              console.error("Error fetching shortlist count:", e);
+            }
+
+            const div = document.createElement("div");
+            div.className = "service-item";
+            div.innerHTML = `
+              <div class="service-name">${service.serviceName}</div>
+              <div class="view-count">Views: ${service.numberOfView}</div>
+              <div class="view-count">Shortlisted: ${shortlistCount}</div>
+            `;
+
+            div.addEventListener("click", async () => {
+              localStorage.setItem("selectedService", JSON.stringify(service));
+
+              try {
+                const shortlistResponse = await fetch('/GetShortlistObject', {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ CLemail: user.email, name: service.serviceName })
+                });
+                if (shortlistResponse.ok) {
+                  const shortlistObj = await shortlistResponse.json();
+                  localStorage.setItem("selectedShortlist", JSON.stringify(shortlistObj));
+                }
+              } catch (e) {
+                console.error("Error fetching shortlist object:", e);
+                localStorage.removeItem("selectedShortlist");
+              }
+
+              // Redirect to SaveCleanersHO.html
+              window.location.href = `SaveCleanersHO.html?email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(service.serviceName)}`;
+            });
+
+            container.appendChild(div);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    }
+
+    fetchCleanerServices();
+
+    // View Cleaner's History button logic
+    document.getElementById("viewHistoryBtn").addEventListener("click", () => {
+      const user = JSON.parse(localStorage.getItem("loggedinUser"));
+      if (!user) return;
+
+      window.location.href = `HOViewCleanerHistory.html?email=${encodeURIComponent(user.email)}`;
+    });
+
+    // Optional: Hide detail and show list again
+    document.getElementById("backToListBtn").addEventListener("click", () => {
+      document.getElementById("serviceDetail").style.display = "none";
+      document.getElementById("serviceList").style.display = "block";
+    });
+  });
 </script>
-
 
 </body>
 </html>

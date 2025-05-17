@@ -155,6 +155,7 @@
 </head>
 <body>
     <div class="header">
+      <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
         <div>Search Cleaners</div>
         <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
       </div>
@@ -174,11 +175,11 @@
   </div>
 
   <div class="container">
-    <h2>Search for New Cleaners</h2>
+    <h2>Search for Cleaners</h2>
 
     <!-- Search Bar -->
     <div class="search-container">
-      <input type="text" id="searchQuery" placeholder="Enter cleaner ..." />
+      <input type="text" id="searchQuery" placeholder="Enter cleaner email ..." />
       <button onclick="searchCleaners()">Search</button>
     </div>
 
@@ -186,90 +187,53 @@
     <div id="results" class="results"></div>
   </div>
 
-  <script>
-    const cleanersData = [
-      {
-        name: "John Doe",
-        email: "john@example.com",
-        service: "Mattress Cleaning",
-        location: "123 Maple Street",
-        rating: 4.8,
-        date: "2025-05-14",  // Example date
-        duration: "2 hours",  // Example duration
-        hourlyRate: "$50/hour",  // Example hourly rate
-        review: "Great service, very thorough!"  // Example review
-      },
-      {
-        name: "Jane Smith",
-        email: "jane@example.com",
-        service: "Carpet Cleaning",
-        location: "456 Oak Avenue",
-        rating: 4.2,
-        date: "2025-05-16", 
-        duration: "3 hours",  
-        hourlyRate: "$40/hour",  // Example hourly rate
-        review: "Good job but took longer than expected."  // Example review
-      },
-      {
-        name: "Alice Brown",
-        email: "alice@example.com",
-        service: "Window Cleaning",
-        location: "789 Pine Road",
-        rating: 3.9,
-        date: "2025-05-17",  // Example date
-        duration: "1.5 hours",  // Example duration
-        hourlyRate: "$30/hour",  
-        review: "Did an okay job, could improve." 
-      },
-      {
-        name: "Bob Johnson",
-        email: "bob@example.com",
-        service: "Deep Cleaning",
-        location: "101 Birch Lane",
-        rating: 4.7,
-        date: "2025-05-18", 
-        duration: "4 hours",  
-        hourlyRate: "$60/hour",  
-        review: "Amazing service! Very detailed work."
-      }
-    ];
+<script>
+  async function searchCleaners() {
+    const query = document.getElementById('searchQuery').value.trim().toLowerCase();
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
 
-    // Function to search cleaners based on the input
-    function searchCleaners() {
-      const query = document.getElementById('searchQuery').value.trim().toLowerCase();
-      const resultsDiv = document.getElementById('results');
-      resultsDiv.innerHTML = '';
+    if (!query) {
+      resultsDiv.innerHTML = '<div class="no-results">Please enter a search term.</div>';
+      return;
+    }
 
-      // Filter data based on search query
-      const filteredCleaners = cleanersData.filter(cleaner => {
-        return (
-          cleaner.name.toLowerCase().includes(query) ||
-          cleaner.service.toLowerCase().includes(query)
-        );
+    try {
+      const response = await fetch("http://localhost:8080/SearchCleaner", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email : query }) 
       });
+      console.log (JSON.stringify({ email : query }));
+    
+      const cleaners = await response.json();
 
-      // If no results
-      if (filteredCleaners.length === 0) {
+      console.log(cleaners);
+      
+
+      if (!cleaners || cleaners.email === undefined) {
         resultsDiv.innerHTML = '<div class="no-results">No cleaners found matching your search.</div>';
         return;
       }
 
-      // Display filtered results
-      filteredCleaners.forEach(cleaner => {
-        const item = document.createElement('div');
-        item.className = 'cleaner-item';
-        item.innerHTML = `
-          <h4>${cleaner.name}</h4>
-          <p><strong>Email:</strong> ${cleaner.email}</p>
-          <a href="ViewServicCleanerHO.html?name=${encodeURIComponent(cleaner.name)}&email=${encodeURIComponent(cleaner.email)}&service=${encodeURIComponent(cleaner.service)}&location=${encodeURIComponent(cleaner.location)}&rating=${cleaner.rating}&date=${encodeURIComponent(cleaner.date)}&duration=${encodeURIComponent(cleaner.duration)}&hourlyRate=${encodeURIComponent(cleaner.hourlyRate)}&review=${encodeURIComponent(cleaner.review)}"
-            style="display:inline-block;margin-top:10px;padding:10px 15px;background-color:#007bff;color:white;border-radius:5px;text-decoration:none;">
-            View Details
-          </a>
-        `;
-        resultsDiv.appendChild(item);
-      });
+      const cleaner = cleaners; // since it's a single object
+      const item = document.createElement('div');
+      item.className = 'cleaner-item';
+      item.innerHTML = `
+        <h4>${cleaner.firstname} ${cleaner.lastname}</h4>
+        <p><strong>Email:</strong> ${cleaner.email}</p>
+        <a href="ViewServicCleanerHO.html?name=${encodeURIComponent(cleaner.firstname + " " + cleaner.lastname)}&email=${encodeURIComponent(cleaner.email)}&service=${encodeURIComponent(cleaner.service || 'N/A')}&location=${encodeURIComponent(cleaner.address || 'N/A')}&rating=${cleaner.rating || 'N/A'}&date=${encodeURIComponent(cleaner.date || '')}&duration=${encodeURIComponent(cleaner.duration || '')}&hourlyRate=${encodeURIComponent(cleaner.hourlyRate || '')}&review=${encodeURIComponent(cleaner.review || '')}"
+          style="display:inline-block;margin-top:10px;padding:10px 15px;background-color:#007bff;color:white;border-radius:5px;text-decoration:none;">
+          View Details
+        </a>
+      `;
+      resultsDiv.appendChild(item);
+    } catch (error) {
+      console.error("Error searching cleaners:", error);
+      resultsDiv.innerHTML = '<div class="no-results">Error searching cleaners.</div>';
     }
-  </script>
+  }
+</script>
 
 </body>
 </html>

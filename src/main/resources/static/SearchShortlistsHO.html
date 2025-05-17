@@ -195,39 +195,54 @@
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '';
 
-    if (!query) {
-      resultsDiv.innerHTML = '<div>No search term provided. Please enter a search term.</div>';
+    const HOemail = sessionStorage.getItem('HOemail'); 
+    if (!HOemail) {
+      resultsDiv.innerHTML = '<div>No HOemail found. Please log in.</div>';
       return;
     }
 
-    // Fetch the data from the API
-    fetch(`http://localhost:5000/api/shortlisted-cleaners?query=${encodeURIComponent(query)}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.length === 0) {
-          resultsDiv.innerHTML = '<div>No shortlisted cleaners found matching your search.</div>';
-          return;
-        }
+    if (!query) {
+      resultsDiv.innerHTML = '<div>No search term provided. Please enter a service name.</div>';
+      return;
+    }
 
-        // Loop through the cleaners and display their info
-        data.forEach(cleaner => {
-          const cleanerItem = document.createElement('div');
-          cleanerItem.className = 'cleaner-item';
-          cleanerItem.innerHTML = `
+    fetch('http://localhost:8080/SearchShortlist', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ HOemail: HOemail, name: query })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Failed to fetch");
+      return response.json();
+    })
+    .then(data => {
+      if (!Array.isArray(data) || data.length === 0) {
+        resultsDiv.innerHTML = '<div>No shortlisted cleaners found matching your search.</div>';
+        return;
+      }
+
+      data.forEach(cleaner => {
+        const cleanerItem = document.createElement('div');
+        cleanerItem.className = 'cleaner-item';
+        cleanerItem.innerHTML = `
+          <div class="cleaner-info">
             <h4>${cleaner.name}</h4>
-            <p><strong>Email:</strong> ${cleaner.email}</p>
-            <a href="ViewServicCleanerHO.html?name=${encodeURIComponent(cleaner.name)}&email=${encodeURIComponent(cleaner.email)}&service=${encodeURIComponent(cleaner.service)}&location=${encodeURIComponent(cleaner.location)}&rating=${encodeURIComponent(cleaner.rating)}&date=${encodeURIComponent(cleaner.date)}&duration=${encodeURIComponent(cleaner.duration)}&hourlyRate=${encodeURIComponent(cleaner.hourlyRate)}&review=${encodeURIComponent(cleaner.review)}"
-              style="display:inline-block;margin-top:10px;padding:10px 15px;background-color:#007bff;color:white;border-radius:5px;text-decoration:none;">
-              View Details
-            </a>
-          `;
-          resultsDiv.appendChild(cleanerItem);
-        });
-      })
-      .catch(error => {
-        resultsDiv.innerHTML = '<div>Error fetching data. Please try again later.</div>';
+            <p><strong>Cleaner Email:</strong> ${cleaner.CLemail}</p>
+          </div>
+          <a href="ViewShortlistsHO.html?name=${encodeURIComponent(cleaner.name)}&email=${encodeURIComponent(cleaner.CLemail)}"
+            class="availability-btn">View Details</a>
+        `;
+        resultsDiv.appendChild(cleanerItem);
       });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      resultsDiv.innerHTML = '<div>Error fetching data. Please try again later.</div>';
+    });
   }
+
 </script>
 
 </body>

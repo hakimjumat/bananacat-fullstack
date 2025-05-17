@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HomeOwner View Cleaner's History</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background: #a6b9ee;
+      color: #333;
+      padding: 20px 40px;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1 1 150px;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #007bff;
+      min-width: 300px;
+      top: 100%;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-left: 200px;
+    }
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 16px;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #0056b3;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .detail-item {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .value {
+      margin-left: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+      <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
+        <div>Search Cleaners</div>
+        <a href="HomeOwnerDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
+      </div>
+
+    <div class="section">
+        <div class="action-buttons">
+          <div class="dropdown">
+            <button class="btn" style="width: 300px; margin-left: 200px;">
+                <a href="" style="text-decoration: none; color: white;">Search ▾</a></button>
+            <div class="dropdown-content">
+              <a href="SearchCleanersHO.html" style="text-decoration: none; color: white;">Search Cleaners</a>
+              <a href="SearchShortlistsHO.html" style="text-decoration: none; color: white;">Search Shortlists</a>
+              <a href="SearchHistoryHO.html" style="text-decoration: none; color: white;">Search History</a>
+            </div>
+        </div>
+        <button class="btn" onclick="window.location.href='UpdateHO.html'" style="margin-left: 400px;">Account Information</button>
+  </div>
+
+  <!-- Cleaning History View -->
+  <div class="container" id="historyContainer">
+    <h2>Cleaning History</h2>
+  </div>
+
+  <script>
+  window.onload = async function () {
+    const cleanerEmail = sessionStorage.getItem("cleanerEmail"); // or hardcode: "cleaner@example.com"
+
+    if (!cleanerEmail) {
+      alert("Cleaner email not found in sessionStorage.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/ViewHistoryListForCleaner", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ CLemail: cleanerEmail }) 
+      });
+
+      const data = await response.json();
+      const container = document.getElementById("historyContainer");
+
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = "<h2>No History Found</h2>";
+        return;
+      }
+
+      container.innerHTML = "<h2>Cleaning History</h2>"; 
+
+      data.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.classList.add("detail-item");
+        div.innerHTML = `
+          <hr />
+          <div><strong>Record #${index + 1}</strong></div>
+          <div><span class="label">Home Owner Name:</span> <span class="value">${item.homeOwnerName || 'N/A'}</span></div>
+          <div><span class="label">Date:</span> <span class="value">${item.date || 'N/A'}</span></div>
+          <div><span class="label">Duration:</span> <span class="value">${item.duration || 'N/A'}</span></div>
+          <div><span class="label">Hourly Rates:</span> <span class="value">${item.price || 'N/A'}</span></div>
+          <div><span class="label">Review:</span> <span class="value">${item.review || 'N/A'}</span></div>
+          <div><span class="label">Services Provided:</span> <span class="value">${item.type || 'N/A'}</span></div>
+        `;
+        container.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error fetching cleaner history:", error);
+      document.getElementById("historyContainer").innerHTML = "<h2>Error loading data</h2>";
+    }
+  };
+</script>
+
+</body>
+</html>
