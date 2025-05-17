@@ -128,6 +128,21 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
+    input[type="email"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      width: 300px;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     button {
       background-color: #007bff;
@@ -200,89 +215,94 @@
   <div class="report-container">
     <h1>Weekly Cleaner Performance Report</h1>
     <div class="input-group">
-      <input type="week" id="reportWeek">
+      <input type="email" id="reportEmail" placeholder="Enter cleaner's email">
+      <input type="date" id="reportDate">
       <button onclick="fetchWeeklyReport()">Generate Report</button>
     </div>
     <table>
       <thead>
         <tr>
-          <th>Cleaner Name</th>
-          <th>Service Type</th>
-          <th>Servicing Hour</th>
+          <th>Cleaner Email</th>
           <th>Date</th>
         </tr>
       </thead>
-      <tbody id="reportTableBody"></tbody>
+      <tbody>
+        <tr>
+          <td><span id="email"></span></td>
+          <td><span id="date"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>Service Name</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="report"></tbody>
     </table>
   </div>
-
+  </div>
+  
   <script>
-    async function fetchWeeklyReport() {
-      const email = document.getElementById("reportEmail").value;
-      const endDateInput = document.getElementById("reportEndDate").value; // User inputs the end date
+  async function fetchWeeklyReport() {
+    const email = document.getElementById("reportEmail").value;
+    const endDateInput = document.getElementById("reportDate").value;
 
-      if (!email || !endDateInput) {
-          alert("Please enter both email and end date.");
-          return;
-      }
+    if (!email || !endDateInput) {
+        alert("Please enter both email and end date.");
+        return;
+    }
 
-      // Parse the end date from the input
-      const endDate = new Date(endDateInput);
-      
-      // Get the start date (Monday) of the week based on the end date
-      const startDate = getWeekStartDate(endDate);
+    const endDate = new Date(endDateInput);
 
-      try {
-          const response = await fetch('/WeeklyReport', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  CLemail: email,
-                  startDate: startDate.toISOString().split('T')[0], // Format as YYYY-MM-DD
-                  endDate: endDate.toISOString().split('T')[0]      // Format as YYYY-MM-DD
-              })
-          });
+    try {
+        const response = await fetch('/WeeklyReport', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clEmail: email, // <-- match backend property
+                date: endDate.toISOString().split('T')[0]
+            })
+        });
 
-          const data = await response.json();
-          const tableBody = document.getElementById("reportTableBody");
-          tableBody.innerHTML = "";
+        const data = await response.json();
+        const tableBody = document.getElementById("report");
+        tableBody.innerHTML = "";
 
-          // Handle empty response
-          if (!Array.isArray(data) || data.length === 0) {
-              tableBody.innerHTML = '<tr><td colspan="4">No data found for the selected week.</td></tr>';
-              return;
-          }
+        // Filter by email input (case-insensitive)
+        const filtered = Array.isArray(data)
+          ? data.filter(row => (row.clEmail || "").toLowerCase() === email.toLowerCase())
+          : [];
 
-          // Populate the table with the response data
-          data.forEach(row => {
-              const tr = document.createElement("tr");
-              tr.innerHTML = `
-                  <td>${row.serviceName}</td>
-                  <td>${row.date}</td>
-                  <td>$${parseFloat(row.price).toFixed(2)}</td>
-                  <td>${row.rating != null ? row.rating + ' ★' : 'No rating'}</td>
-              `;
-              tableBody.appendChild(tr);
-          });
-      } catch (error) {
-          alert("Failed to load report.");
-          console.error(error);
-      }
-  }
+        document.getElementById("email").textContent = email;
+        document.getElementById("date").textContent = endDateInput;
 
-  // Returns the start (Monday) date of the week based on the given end date
-  function getWeekStartDate(endDate) {
-      const date = new Date(endDate);
-      const dayOfWeek = date.getDay();
-      
-      // Calculate the difference between Sunday and the input date
-      const diff = date.getDate() - dayOfWeek + (dayOfWeek == 0 ? -6 : 1); // Adjust for Sunday
-      const startDate = new Date(date.setDate(diff));
-      
-      return startDate;
-  }
+        if (filtered.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="3">No data found for the selected week.</td></tr>';
+            return;
+        }
 
-</script>
+        filtered.forEach((row, idx) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${idx + 1}</td>
+                <td>${row.serviceName}</td>
+                <td>${row.date}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
 
+        document.getElementById("email").textContent = email;
+        document.getElementById("date").textContent = endDateInput;
+    } catch (error) {
+        alert("Failed to load report.");
+        console.error(error);
+    }
+}
+  </script>
 </body>
 </html>

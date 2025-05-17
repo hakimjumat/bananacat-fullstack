@@ -5,6 +5,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.*;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Table;
 @Entity
 @Table (name = "shortlist")
@@ -13,8 +16,13 @@ public class shortlistEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @JsonProperty("hoEmail")
     private String HOemail;
+
+    @JsonProperty("clEmail")
     private String CLemail;
+    
     private String name;//name of cleaning service
 
     public Long getId() {

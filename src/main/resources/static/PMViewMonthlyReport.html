@@ -1,240 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monthly Cleaner Earnings Report</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f4f8;
-      margin: 0;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: lightblue;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      font-size: 1.5em;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monthly Cleaner Earnings Report</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: lightblue;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        font-size: 1.5em;
+      }
 
-    .header h1 {
-      font-size:2em;
-      color: #527df4;
-    }
-    .logout-btn {
-      text-decoration: none;
-      color: #333;
-      padding: 8px 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 1.2em;
-      background-color: #7580fa;
-    }
-    .logout-btn:hover {
-      background-color: #6f7ba2;
-    }
-    
-    .section {
-      background: white;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-    }
+      .header h1 {
+        font-size: 2em;
+        color: #527df4;
+      }
+      .logout-btn {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 1.2em;
+        background-color: #7580fa;
+      }
+      .logout-btn:hover {
+        background-color: #6f7ba2;
+      }
 
-    .section h2 {
-      margin-top: 0;
-      color: #333;
-      font-size: 28px;
-      font-weight: 600;
-    }
+      .section {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
 
-    .action-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 20px;
-    }
+      .section h2 {
+        margin-top: 0;
+        color: #333;
+        font-size: 28px;
+        font-weight: 600;
+      }
 
-    .btn {
-      flex: 1 1 150px;
-      background: #007bff;
-      color: white;
-      padding: 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      font-size: 16px;
-      transition: background 0.3s ease;
-    }
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+      }
 
-    .btn:hover {
-      background: #0056b3;
-    }
-    .dropdown {
-      position: relative;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #007bff;
-      min-width: 350px;
-      top: 100%;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .dropdown-content a {
-      color: #333;
-      padding: 10px 16px;
-      display: block;
-    }
-    .dropdown-content a:hover {
-      background-color: #0056b3;
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .report-container {
-      max-width: 900px;
-      margin: auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+      .btn {
+        flex: 1 1 150px;
+        background: #007bff;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 16px;
+        transition: background 0.3s ease;
+      }
 
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 30px;
-    }
+      .btn:hover {
+        background: #0056b3;
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #007bff;
+        min-width: 350px;
+        top: 100%;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .dropdown-content a {
+        color: #333;
+        padding: 10px 16px;
+        display: block;
+      }
+      .dropdown-content a:hover {
+        background-color: #0056b3;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .report-container {
+        max-width: 900px;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    .input-group {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
 
-    input[type="month"], button {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+      input[type="email"],
+      input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        width: 300px;
+      }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+      .input-group {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+      input[type="date"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+      }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+      input[type="month"],
+      button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
 
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-    th {
-      background-color: #f0f2f5;
-      color: #2c3e50;
-    }
+      button:hover {
+        background-color: #0056b3;
+      }
 
-    tbody tr:hover {
-      background-color: #f9f9f9;
-    }
-
-    @media (max-width: 600px) {
-      input, button {
+      table {
         width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
       }
 
-      th, td {
-        font-size: 14px;
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
       }
-    }
-  </style>
 
-</head>
-<body>
-  <div class="header">
-    <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
-    <div>View Monthly Report</div>
-    <a href="PMDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
-  </div>
-  <div class="section">
-        <div class="action-buttons">
-          <button class="btn" onclick="window.location.href='PMCreateService.html'">Create</button>
-          <button class="btn" onclick="window.location.href='PMSearchService.html'"> Search</button>
-          <div class="dropdown">
-            <button class="btn" style="width: 350px;">
-                <a href="" style="text-decoration: none; color: white;">Generate ▾</a></button>
-            <div class="dropdown-content">
-              <a href="PMViewDailyReport.html" style="text-decoration: none; color: white;">Daily Report</a>
-              <a href="PMViewWeeklyReport.html" style="text-decoration: none; color: white;">Weekly Report</a>
-              <a href="PMViewMonthlyReport.html" style="text-decoration: none; color: white;">Monthly Report</a>
-            </div>
-        </div>
-        </div>
-  </div>
+      th {
+        background-color: #f0f2f5;
+        color: #2c3e50;
+      }
 
-  <div class="report-container">
-    <h1>Monthly Cleaner Earnings Report</h1>
-    <div class="input-group">
-      <input type="month" id="reportMonth">
-      <button onclick="fetchMonthlyReport()">Generate Report</button>
+      tbody tr:hover {
+        background-color: #f9f9f9;
+      }
+
+      @media (max-width: 600px) {
+        input,
+        button {
+          width: 100%;
+        }
+
+        th,
+        td {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        src="images/bananacat.png"
+        alt="Banana Cat"
+        width="50px; height: 25px;"
+      />
+      <div>View Monthly Report</div>
+      <a href="PMDashboard.html" style="color: blue; text-decoration: none"
+        >Back to Dashboard</a
+      >
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Cleaner Name</th>
-          <th>Service Type</th>
-          <th>Servicing Hour</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="reportTableBody"></tbody>
-    </table>
-  </div>
+    <div class="section">
+      <div class="action-buttons">
+        <button
+          class="btn"
+          onclick="window.location.href='PMCreateService.html'"
+        >
+          Create
+        </button>
+        <button
+          class="btn"
+          onclick="window.location.href='PMSearchService.html'"
+        >
+          Search
+        </button>
+        <div class="dropdown">
+          <button class="btn" style="width: 350px">
+            <a href="" style="text-decoration: none; color: white"
+              >Generate ▾</a
+            >
+          </button>
+          <div class="dropdown-content">
+            <a
+              href="PMViewDailyReport.html"
+              style="text-decoration: none; color: white"
+              >Daily Report</a
+            >
+            <a
+              href="PMViewWeeklyReport.html"
+              style="text-decoration: none; color: white"
+              >Weekly Report</a
+            >
+            <a
+              href="PMViewMonthlyReport.html"
+              style="text-decoration: none; color: white"
+              >Monthly Report</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <script>
-    async function fetchMonthlyReport() {
-    const month = document.getElementById("reportMonth").value;
-      if (!month) {
+    <div class="report-container">
+      <h1>Monthly Cleaner Earnings Report</h1>
+      <div class="input-group">
+        <input
+          type="email"
+          id="reportEmail"
+          placeholder="Enter cleaner's email"
+        />
+        <input type="month" id="reportMonth" placeholder="Select Month" />
+        <button onclick="fetchReport()">Generate Report</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Cleaner's Email</th>
+            <th>Month</th>
+            <th>Total Earnings</th>
+            <th>Total Number of Services</th>
+          </tr>
+        </thead>
+        <tbody id="reportTableBody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      async function fetchMonthlyReport() {
+        const month = document.getElementById("reportMonth").value;
+        if (!month) {
           alert("Please select a month.");
           return;
-      }
+        }
 
-      // Split the month input (in the form of "YYYY-MM")
-      const [year, monthNum] = month.split("-");
+        // Split the month input (in the form of "YYYY-MM")
+        const [year, monthNum] = month.split("-");
 
-      try {
+        try {
           // Send the year and month to the backend using POST
-          const response = await fetch('/MonthlyReport', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  year: year,  // Send the year to the backend
-                  month: monthNum  // Send the month number to the backend
-              })
+          const response = await fetch("/MonthlyReport", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              year: year, // Send the year to the backend
+              month: monthNum, // Send the month number to the backend
+            }),
           });
 
           const data = await response.json();
@@ -245,8 +300,9 @@
 
           // If no data is found
           if (!data || Object.keys(data).length === 0) {
-              tableBody.innerHTML = '<tr><td colspan="3">No data found for the selected month.</td></tr>';
-              return;
+            tableBody.innerHTML =
+              '<tr><td colspan="3">No data found for the selected month.</td></tr>';
+            return;
           }
 
           // Display the results
@@ -257,13 +313,11 @@
               <td>$${parseFloat(data["Total Earnings"]).toFixed(2)}</td>
           `;
           tableBody.appendChild(tr);
-          
-      } catch (error) {
+        } catch (error) {
           alert("Failed to load report.");
           console.error(error);
+        }
       }
-  }
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>

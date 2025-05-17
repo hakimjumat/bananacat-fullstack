@@ -2,7 +2,12 @@ package com.csit314.bananacat.bananacatbackend;
 
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,12 +16,21 @@ import jakarta.persistence.Table;
 @Table(name = "category")
 public class CategoryEntity {
     @Id
-    String name;
-    String Description;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public void setDescription(String description) {
-        Description = description;
-    }
+    private String name;
+    private String description;
+
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     //User Story #34
     public boolean CreateCategory() {
@@ -52,7 +66,7 @@ public class CategoryEntity {
         Optional<CategoryEntity> result = cRepository.findByName(this.name);
         if (result.isPresent()) {
             CategoryEntity org = result.get();
-            org.setDescription(this.Description);
+            org.setDescription(this.description);
             cRepository.save(org);
             return ResponseEntity.ok(org);
         } else {

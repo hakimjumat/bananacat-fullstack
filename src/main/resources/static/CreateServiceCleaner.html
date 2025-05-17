@@ -272,6 +272,10 @@
       <h1>Create Cleaning Service</h1>
       <form id="serviceForm">
         
+        <div class="form-group">
+          <label for="name">Service Name</label>
+          <input type="text" id="serviceName" name="serviceName" required>
+        </div>
 
         <div class="form-group">
           <label for="email">Email</label>
@@ -279,31 +283,23 @@
         </div>
 
         <div class="form-group">
-          <label for="phone">Contact Phone Number</label>
-          <input type="tel" id="phone" name="phone" disabled>
-        </div>
-
-        <div class="form-group">
-          <label for="name">Service Name</label>
-          <input type="text" id="serviceName" name="serviceName" required>
-        </div>
-
-        <div class="form-group">
-          <label for="location">Tag</label>
-          <input type="text" id="tag" name="tag" required>
-        </div>
-
-        <div class="form-group">
-          <label for="rates">Price / Session ($)</label>
-          <input type="float" id="price" name="price" min="0" required>
-        </div>
-
         <div class="form-group">
           <label for="location">Location</label>
           <input type="text" id="location" name="location" required>
         </div>
 
-        
+        <div class="form-group">
+          <label for="rates">Rates ($)</label>
+          <input type="number" id="rates" name="rates" min="0" step= 0.01 required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
 
         <button type="submit" class="btn">Create Service</button>
         <div id="message"></div>
@@ -315,19 +311,29 @@
 
   <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // Autofill email and phone from loggedinUser
-  const storedUser = localStorage.getItem("loggedinUser");
-  if (storedUser) {
-    try {
-      const user = JSON.parse(storedUser);
-      document.getElementById("email").value = user.email || "";
-      document.getElementById("phone").value = user.phonenumber || "";
-    } catch (e) {
-      console.error("Invalid user data in localStorage");
+  // Fetch categories and populate dropdown
+  fetch('/ViewCategoryList', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}) // or [] if your backend expects an array
+  })
+  .then(response => response.json())
+  .then(data => {
+    const categorySelect = document.getElementById("category");
+    if (Array.isArray(data)) {
+      data.forEach(cat => {
+        if (cat.name) {
+          const option = document.createElement("option");
+          option.value = cat.name;
+          option.textContent = cat.name;
+          categorySelect.appendChild(option);
+        }
+      });
     }
-  }
-
-  
+  })
+  .catch(err => {
+    console.error("Failed to load categories:", err);
+  });
 
   // Handle form submission
   document.getElementById("serviceForm").addEventListener("submit", async function (e) {
@@ -337,12 +343,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const payload = {
       email: document.getElementById("email").value.trim(),
       serviceName: document.getElementById("serviceName").value.trim(),
-      tag: document.getElementById("tag").value.trim(),
-      price: parseFloat(document.getElementById("price").value),
+      category: document.getElementById("category").value,
+      price: parseFloat(document.getElementById("rates").value),
       location: document.getElementById("location").value.trim()
     };
-
-    // Optional: Validate fields here
 
     try {
       const response = await fetch("/CreateCleaningService", {
@@ -353,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         document.getElementById("message").innerText = "Service created successfully!";
-        window.location.href = "ViewServiceCleaner.html"; // Redirect to view services
+        window.location.href = "ViewServiceCleaner.html";
       } else {
         document.getElementById("message").innerText = "Failed to create service.";
       }

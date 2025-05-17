@@ -3,6 +3,9 @@ package com.csit314.bananacat.bananacatbackend;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,7 +19,9 @@ public class HistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+     @JsonProperty("clEmail")
     private String CLemail;
+     @JsonProperty("hoEmail")
     private String HOemail;
     private LocalDate date;
     private String serviceName; //match with cleaning service service name
