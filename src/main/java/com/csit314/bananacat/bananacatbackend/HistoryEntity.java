@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -18,11 +19,16 @@ import java.util.*;
 public class HistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Long id;
+
      @JsonProperty("clEmail")
     private String CLemail;
+
      @JsonProperty("hoEmail")
     private String HOemail;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
     private String serviceName; //match with cleaning service service name
     private Integer price;
