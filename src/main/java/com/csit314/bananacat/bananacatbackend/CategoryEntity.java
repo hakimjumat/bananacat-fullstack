@@ -1,9 +1,8 @@
 package com.csit314.bananacat.bananacatbackend;
 
 import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.http.ResponseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -79,7 +78,7 @@ public class CategoryEntity {
         CategoryRepository cRepository = CategoryRepositoryInjector.repo;
         Optional<CategoryEntity> result = cRepository.findByName(this.name);
         if (result.isPresent()) {
-            cRepository.deleteById(this.name);
+            cRepository.deleteById(result.get().getId());
             return true;
         } else {
             return false;
