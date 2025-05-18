@@ -214,8 +214,8 @@
   <div class="report-container">
     <h1>Monthly Cleaner Earnings Report</h1>
     <div class="input-group">
-      <input type="email" id="reportEmail" placeholder="Enter cleaner's email">
-      <input type="month" id="reportMonth" placeholder="Select Month">
+      <input type="email" id="reportEmail" placeholder="Enter email and select date and year">
+      <input type="date" id="reportDate" />
       <button onclick="fetchMonthlyReport()">Generate Report</button>
     </div>
     <table>
@@ -234,18 +234,19 @@
   <script>
     async function fetchMonthlyReport() {
     const email = document.getElementById("reportEmail").value;
-    const month = document.getElementById("reportMonth").value;
-    if (!email || !month) {
+    const monthday = document.getElementById("reportDate").value;
+    if (!email || !monthday) {
         alert("Please enter both email and month.");
         return;
     }
-    const date = month + "-01"; // <-- Ensure full date is sent!
+    // const date = month + "-01"; // <-- Ensure full date is sent!
     try {
         const response = await fetch('/MonthlyReport', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                date: date
+                date: monthday,
+                clEmail: email
             })
         });
 
@@ -260,7 +261,7 @@
         const tr = document.createElement("tr");
         tr.innerHTML =
             "<td>" + email + "</td>" +
-            "<td>" + month + "</td>" +
+            "<td>" + monthday + "</td>" +
             "<td>$" + parseFloat(data["Total Earnings"]).toFixed(2) + "</td>" +
             "<td>" + data["Total Service"] + "</td>";
         tableBody.appendChild(tr);

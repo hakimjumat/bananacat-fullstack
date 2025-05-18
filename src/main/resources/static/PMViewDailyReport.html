@@ -267,6 +267,7 @@
       async function fetchReport() {
         const email = document.getElementById("reportEmail").value;
         const date = document.getElementById("reportDate").value;
+        console.log(email, date);
 
         if (!email || !date) {
           alert("Please enter both email and date.");

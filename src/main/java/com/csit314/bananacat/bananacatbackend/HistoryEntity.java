@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import org.springframework.http.ResponseEntity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -14,12 +13,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.util.*;
 
+
 @Entity
 @Table(name = "history")
 public class HistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+
     private Long id;
 
      @JsonProperty("clEmail")
@@ -28,7 +28,6 @@ public class HistoryEntity {
      @JsonProperty("hoEmail")
     private String HOemail;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
     private String serviceName; //match with cleaning service service name
     private Integer price;
@@ -85,17 +84,21 @@ public class HistoryEntity {
     }
 
     //monthly report, watchout when json send over the data, makesure the the date includes the day as well so that the json can be accepted by the entity, can be any day, as long as the month is correct. ONLY APPLIES TO MONTHLY REPORT
+  
     public ResponseEntity<?> MonthlyReport() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
         YearMonth target = YearMonth.from(this.date);
         LocalDate start = target.atDay(1);
         LocalDate end = target.atEndOfMonth();
-        Object[] result = Hrepository.getMonthlyStats(start, end);
+        // Get the projection object from the repository
+        MonthlyStatsProjection stats = Hrepository.getMonthlyStats(start, end, this.CLemail);
 
-        Integer TotalEarnings = ((Number) result[0]).intValue();
-        Long TotalService = ((Number) result[1]).longValue();
+        // Safely extract values (handle possible nulls)
+        Integer TotalEarnings = stats.getTotalPrice() != null ? stats.getTotalPrice() : 0;
+        Long TotalService = stats.getCount() != null ? stats.getCount() : 0L;
 
-        Map<String, Object> Fresult= new HashMap<>();
+        // Prepare the result map
+        Map<String, Object> Fresult = new HashMap<>();
         Fresult.put("Total Service", TotalService);
         Fresult.put("Total Earnings", TotalEarnings);
         return ResponseEntity.ok(Fresult);

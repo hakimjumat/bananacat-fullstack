@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Fetch categories and populate the dropdown
-  fetch('/ViewCategoryList', {
+  fetch('/categorydropdownlist', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({}) // or [] if your backend expects an array

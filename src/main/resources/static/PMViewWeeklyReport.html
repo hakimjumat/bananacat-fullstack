@@ -258,7 +258,8 @@
     }
 
     const endDate = new Date(endDateInput);
-
+    console.log("End Date:", endDate);
+    console.log(endDate.toISOString().split('T')[0]);
     try {
         const response = await fetch('/WeeklyReport', {
             method: 'POST',
