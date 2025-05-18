@@ -49,7 +49,7 @@ public class HistoryEntity {
     //User Story #92
     public ResponseEntity<?> ViewHistoryListForCleaner() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
-        List<HistoryEntity> result = Hrepository.findAll();
+        List<HistoryEntity> result = Hrepository.findByCLemail(this.CLemail);
         return ResponseEntity.ok(result);
     }
 

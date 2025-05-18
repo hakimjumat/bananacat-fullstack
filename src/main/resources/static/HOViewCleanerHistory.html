@@ -146,6 +146,7 @@
   window.onload = async function () {
     const cleaner = localStorage.getItem("cleanerData");
     cleanerEmail = JSON.parse(cleaner).email;
+    cleanerName = JSON.parse(cleaner).firstname;
 
     if (!cleanerEmail) {
       alert("Cleaner email not found.");
@@ -156,7 +157,7 @@
       const response = await fetch("http://localhost:8080/ViewHistoryListForCleaner", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ CLemail: cleanerEmail }) 
+        body: JSON.stringify({ clEmail: cleanerEmail }) 
       });
 
       const data = await response.json();
@@ -170,17 +171,18 @@
       container.innerHTML = "<h2>Cleaning History</h2>"; 
 
       data.forEach((item, index) => {
+
         const div = document.createElement("div");
         div.classList.add("detail-item");
         div.innerHTML = `
           <hr />
           <div><strong>Record #${index + 1}</strong></div>
-          <div><span class="label">Home Owner Name:</span> <span class="value">${item.homeOwnerName || 'N/A'}</span></div>
+          <div><span class="label">Cleaner Name:</span> <span class="value">${cleanerName || 'N/A'}</span></div>
           <div><span class="label">Date:</span> <span class="value">${item.date || 'N/A'}</span></div>
           <div><span class="label">Duration:</span> <span class="value">${item.duration || 'N/A'}</span></div>
           <div><span class="label">Hourly Rates:</span> <span class="value">${item.price || 'N/A'}</span></div>
           <div><span class="label">Review:</span> <span class="value">${item.review || 'N/A'}</span></div>
-          <div><span class="label">Services Provided:</span> <span class="value">${item.type || 'N/A'}</span></div>
+          <div><span class="label">Services Provided:</span> <span class="value">${item.serviceName || 'N/A'}</span></div>
         `;
         container.appendChild(div);
       });
