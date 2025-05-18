@@ -265,7 +265,7 @@
     </div>
     <div class="card-actions">
       <button class="btn update-btn" onclick="updateCategory(selectedCategoryId, selectedCategoryName, selectedCategoryDescription)">Update</button>
-      <button class="btn delete-btn" onclick="deleteCategory()">Delete</button>
+      <button class="btn delete-btn" onclick="deleteCategory(selectedCategoryId)">Delete</button>
       <button class="btn back-btn" onclick="goBack()">Cancel</button>
     </div>
   </div>
@@ -348,8 +348,8 @@
         window.location.href = `PMUpdateService.html?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`;
     }
 
-    function deleteCategory() {
-    if (!selectedCategoryId) return;
+    function deleteCategory(selectedCategoryId) {
+        if (!selectedCategoryId) return;
         // Use 'name' as the parameter for consistency
         window.location.href = `PMDeleteService.html?name=${encodeURIComponent(selectedCategoryId)}`;
     }

@@ -146,78 +146,96 @@
 </head>
 <body>
     <div class="header">
-        <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" />
+        <img src="images/bananacat.png" alt="Banana Cat" width="50" height="25" />
         <div>Delete Service Category</div>
         <a href="PMDashboard.html" style="color: blue; text-decoration: none;">Back to Dashboard</a>
     </div>
 
     <div class="section">
         <div class="action-buttons">
-          <button class="btn" onclick="window.location.href='PMCreateService.html'">Create</button>
-          <button class="btn" onclick="window.location.href='PMSearchService.html'"> Search</button>
-          <div class="dropdown">
-            <button class="btn" style="width: 350px;">
-                <a href="" style="text-decoration: none; color: white;">Generate ▾</a></button>
-            <div class="dropdown-content">
-              <a href="PMViewDailyReport.html" style="text-decoration: none; color: white;">Daily Report</a>
-              <a href="PMViewWeeklyReport.html" style="text-decoration: none; color: white;">Weekly Report</a>
-              <a href="PMViewMonthlyReport.html" style="text-decoration: none; color: white;">Monthly Report</a>
+            <button class="btn" onclick="window.location.href='PMCreateService.html'">Create</button>
+            <button class="btn" onclick="window.location.href='PMSearchService.html'">Search</button>
+            <div class="dropdown">
+                <button class="btn" style="width: 350px;">Generate ▾</button>
+                <div class="dropdown-content">
+                    <a href="PMViewDailyReport.html" style="text-decoration: none; color: white;">Daily Report</a>
+                    <a href="PMViewWeeklyReport.html" style="text-decoration: none; color: white;">Weekly Report</a>
+                    <a href="PMViewMonthlyReport.html" style="text-decoration: none; color: white;">Monthly Report</a>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 
     <div class="container">
         <form id="deleteForm">
             <h2>Delete Category</h2>
-            <label for="deleteCategoryId">Category Name:</label>
+            <label for="deleteCategoryName">Category Name:</label>
             <input type="text" id="deleteCategoryName" name="name" required readonly>
-
-            <button type="submit">Delete Category</button>
+            <button type="submit" class="btn delete-btn" id="deleteCategoryBtn">Delete</button>
         </form>
-
         <div id="message"></div>
     </div>
     
     <script>
-        // Autofill the category name from the URL parameter `name`
         window.onload = function () {
+            const nameInput = document.getElementById("deleteCategoryName");
+            const messageDiv = document.getElementById("message");
             const params = new URLSearchParams(window.location.search);
             const name = params.get("name");
-        document.getElementById("deleteCategoryName").value = decodeURIComponent(name);
+            if (nameInput && messageDiv) {
+                if (name) {
+                    nameInput.value = decodeURIComponent(name);
+                } else {
+                    nameInput.value = "";
+                    messageDiv.innerText = "No category name provided in URL.";
+                }
+            }
         };
 
         document.getElementById('deleteForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const categoryName = document.getElementById('deleteCategoryName').value.trim();
+            const nameInput = document.getElementById('deleteCategoryName');
+            const btn = document.getElementById('deleteCategoryBtn');
+            const messageDiv = document.getElementById('message');
+            const name = nameInput ? nameInput.value.trim() : "";
 
-            if (!categoryName) {
-                document.getElementById('message').innerText = "No category name provided.";
+            btn.disabled = true;
+
+            if (!name) {
+                messageDiv.innerText = "No category name provided.";
+                btn.disabled = false;
                 return;
             }
 
-            fetch('http://localhost:8080/DeleteCategory', {
-                method: 'POST',
+            if (!confirm("This will permanently delete this category. Are you sure?")) {
+                btn.disabled = false;
+                return;
+            }
+
+            fetch("http://localhost:8080/DeleteCategory", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ name: categoryName }) 
+                body: JSON.stringify({ name: name })
             })
-            .then(response => response.text())
-            .then(data => {
-                if (data === "true") {
-                    document.getElementById('message').innerText = "Category deleted successfully.";
+            .then(response => response.json())
+            .then(success => {
+                if (success === true) {
+                    messageDiv.innerText = "Category deleted successfully.";
+                    btn.disabled = true;
                 } else {
-                    document.getElementById('message').innerText = "Category not found or already deleted.";
+                    messageDiv.innerText = "Category not found or already deleted.";
+                    btn.disabled = false;
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('message').innerText = "Delete failed due to an error.";
+                console.error("Error deleting category:", error);
+                messageDiv.innerText = "Server error. Please try again later.";
+                btn.disabled = false;
             });
         });
-        </script>
-
+    </script>
 </body>
 </html>
