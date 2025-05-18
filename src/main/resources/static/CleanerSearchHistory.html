@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const response = await fetch("http://localhost:8080/ViewHistoryListForCleaner", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({})
+      body: JSON.stringify({clEmail: email})
     });
 
     if (!response.ok) throw new Error("Failed to fetch history list");
