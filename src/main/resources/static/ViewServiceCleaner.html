@@ -250,7 +250,7 @@
               const shortlistResponse = await fetch('/NumberofShortlist', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ CLemail: user.email, name: service.serviceName })
+                body: JSON.stringify({ clEmail: user.email, name: service.serviceName })
               });
               if (shortlistResponse.ok) {
                 shortlistCount = await shortlistResponse.json();
