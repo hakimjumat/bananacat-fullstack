@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cleaner History View One</title>
+  <style>
+     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .header {
+        background: #a6b9ee;
+        color: #333;
+        padding: 20px 40px;
+        font-size: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .section {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 100px;
+        margin-top: 20px;
+        justify-content: center;
+      }
+      .btn {
+        background: #007bff;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background: #0056b3;
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #007bff;
+        min-width: 250px;
+        top: 100%;
+        left: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        z-index: 999;
+      }
+      .dropdown-content a {
+        color: white;
+        padding: 10px 16px;
+        display: block;
+        text-decoration: none;
+      }
+      .dropdown-content a:hover {
+        background-color: #0056b3;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .detail-item {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .value {
+      margin-left: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div> <img src="images/bananacat.png" alt="Banana Cat" width="50px; height: 25px;" /></div>
+    <div>Cleaner's History</div>
+    <div><a href="CleanerDashboard.html">Back to Dashboard</a></div>
+  </div>
+
+  <div class="section">
+      <div class="action-buttons">
+        <div class="dropdown">
+          <button class="btn">Search ▾</button>
+          <div class="dropdown-content">
+            <a href="SearchCleanersHO.html">Search Cleaners</a>
+            <a href="SearchShortlistsHO.html">Search Shortlists</a>
+            <a href="SearchHistoryHO.html">Search History</a>
+          </div>
+        </div>
+        <button class="btn" onclick="window.location.href='UpdateHO.html'">
+          Account Information
+        </button>
+      </div>
+    </div>
+
+  <!-- Cleaning History View -->
+  <div class="container">
+    <h2>Cleaning History</h2>
+
+    <div class="detail-item"><span class="label">Cleaner Name:</span><span class="value" id="homeOwnerName"></span></div>
+    <div class="detail-item"><span class="label">Date:</span><span class="value" id="date"></span></div>
+    <div class="detail-item"><span class="label">Duration:</span><span class="value" id="duration"></span></div>
+    <div class="detail-item"><span class="label">Hourly rates:</span><span class="value" id="hourlyRates"></span></div>
+    <div class="detail-item"><span class="label">Review:</span><span class="value" id="review"></span></div>
+    <div class="detail-item"><span class="label">Services provided:</span><span class="value" id="servicesProvided"></span></div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      // Get the selected history object from localStorage
+      const serviceData = JSON.parse(localStorage.getItem('selectedHistory'));
+
+      if (serviceData) {
+        document.getElementById('homeOwnerName').innerText = serviceData.HOemail || serviceData.hoemail || "";
+        document.getElementById('date').innerText = serviceData.date || "";
+        document.getElementById('duration').innerText = serviceData.duration || "";
+        document.getElementById('hourlyRates').innerText = serviceData.price !== undefined ? serviceData.price : "";
+        document.getElementById('review').innerText = serviceData.review || "";
+        document.getElementById('servicesProvided').innerText = serviceData.serviceName || "";
+      } else {
+        document.querySelector('.container').innerHTML = "<h2>No Service Data Found</h2>";
+      }
+    };
+    
+  </script>
+
+</body>
+</html>
