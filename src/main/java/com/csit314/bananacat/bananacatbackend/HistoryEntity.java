@@ -56,7 +56,7 @@ public class HistoryEntity {
     //User Story #23
     public ResponseEntity<?> ViewHistoryListForHO() {
         HistoryRepository Hrepository = HistoryRepositoryInjector.repo;
-        List<HistoryEntity> result = Hrepository.findAll();
+        List<HistoryEntity> result = Hrepository.findByHOemail(this.HOemail);
         return ResponseEntity.ok(result);
     }
 

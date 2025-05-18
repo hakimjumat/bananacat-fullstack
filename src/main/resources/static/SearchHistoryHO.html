@@ -194,7 +194,7 @@
           const response = await fetch("http://localhost:8080/ViewHistoryListForHO", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ HOemail: hoEmail })
+            body: JSON.stringify({ hoEmail: hoEmail })
           });
           if (!response.ok) throw new Error("Failed to fetch history list");
           allServices = await response.json();
