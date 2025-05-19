@@ -5,7 +5,8 @@
 5.      Extract the project package containing the source code
 6.      Open the project in an IDE, preferably Visual Studio Code
 7.      Install PostgreSQL version 16.4
-8.      In \bananacat-fullstack\src\main\resources make sure to edit you application.properties file to setup your database. Change the username and password to fit 
+8.  ![image](https://github.com/user-attachments/assets/495a9e1d-0ef6-4f9e-a718-0a0d0485327a)
+9.      In \bananacat-fullstack\src\main\resources make sure to edit you application.properties file to setup your database. Change the username and password to fit 
          ![image](https://github.com/user-attachments/assets/495a9e1d-0ef6-4f9e-a718-0a0d0485327a)
         spring.application.name=bananacatbackend
         spring.datasource.url=jdbc:postgresql://localhost:5432/UserAccount --> Database name in psql.
