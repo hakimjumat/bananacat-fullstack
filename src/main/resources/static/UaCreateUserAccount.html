@@ -446,7 +446,7 @@ async function handleFormSubmit(e) {
     lastname: lname,
     status: "ACTIVE",
     phonenumber: parseInt(phone, 10),
-    address: userType === "homeowner" ? address : null // Address is optional for non-homeowners
+    address: userType.toLowerCase() === "homeowner" ? address : null // Address is optional for non-homeowners
   };
 
   try {
