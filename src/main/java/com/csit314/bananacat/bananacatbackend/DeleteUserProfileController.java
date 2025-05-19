@@ -8,16 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class DeleteUserProfileController {
 
-    private final UserProfileRepository profilerepository;
-    private final UserAccountRepository usersrepository;
-
-    public DeleteUserProfileController (UserProfileRepository profilerepository, UserAccountRepository usersrepository) {
-        this.profilerepository = profilerepository;
-        this.usersrepository = usersrepository;
-    }
-
     @PostMapping("/DeleteUserProfile") 
     public boolean DeleteUserProfile(@RequestBody UserProfileEntity deleteentity) {
-        return (deleteentity.DeleteUserProfile(profilerepository, usersrepository));
+        return (deleteentity.DeleteUserProfile());
     }
 }

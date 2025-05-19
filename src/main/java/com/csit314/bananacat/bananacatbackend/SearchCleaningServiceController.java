@@ -8,15 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class SearchCleaningServiceController {
-    private final CleaningServiceRepository CSRepository;
-
-    public SearchCleaningServiceController(CleaningServiceRepository CSRepository) {
-        this.CSRepository = CSRepository;
-    }
 
     @PostMapping("/SearchCleaningService")
     public ResponseEntity<?> SearchCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
-        return CSEntity.SearchCleaningService(CSRepository);
+        return CSEntity.SearchCleaningService();
     }
     
 }

@@ -8,15 +8,9 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class ViewUserProfileController {
 
-    private final UserProfileRepository profilerepository;
-
-    public ViewUserProfileController (UserProfileRepository profilerepository) {
-        this.profilerepository = profilerepository;
-    }
-
     @PostMapping("/viewP")
     public ResponseEntity<?> ViewUserProfile(@RequestBody UserProfileEntity viewProfile) {
-        return viewProfile.ViewUserProfile(profilerepository);
+        return viewProfile.ViewUserProfile();
     }
 }
 

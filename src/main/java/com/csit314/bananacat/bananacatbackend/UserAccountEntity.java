@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 
 @Entity
@@ -125,11 +123,9 @@ public class UserAccountEntity {
         }
     }
 
-    public boolean CreateUserAccount(UserAccountRepository usersrepository, PasswordEncoder passwordEncoder) {
+    public boolean CreateUserAccount(PasswordEncoder passwordEncoder) {
 
-        if (this.email == null || this.password == null || this.userprofile == null || this.firstname == null || this.lastname == null || this.phonenumber == null) {
-            return false;
-        }
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
 
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
@@ -149,11 +145,8 @@ public class UserAccountEntity {
     }
 
     @Transactional
-    public boolean SuspendUserAccount(UserAccountRepository usersrepository) {
-
-        if (this.email == null) {
-            return false;
-        }
+    public boolean SuspendUserAccount() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
 
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
@@ -170,10 +163,8 @@ public class UserAccountEntity {
     }
     
     @Transactional
-    public ResponseEntity<?> update(UserAccountRepository userrepository, PasswordEncoder passwordEncoder) {
-        // if (this.email == null || this.email.isBlank()) {
-        //     return ResponseEntity.badRequest().body("Email is required to update the user account.");
-        // }
+    public ResponseEntity<?> UpdateUserAccount(PasswordEncoder passwordEncoder) {
+        UserAccountRepository userrepository = UserAccountRepositoryInjector.repo;
         if ((this.phonenumber == null) || 
             (this.firstname != null && this.firstname.isBlank()) ||
             (this.address != null && this.address.isBlank()) || 
@@ -208,7 +199,8 @@ public class UserAccountEntity {
         }
     }
 
-    public ResponseEntity<?> SearchUserAccount(UserAccountRepository usersrepository) {
+    public ResponseEntity<?> SearchUserAccount() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
         if (userOptional.isPresent()) {
@@ -219,8 +211,8 @@ public class UserAccountEntity {
         }
     }
 
-    public ResponseEntity<?> ViewUserAccount(UserAccountRepository usersrepository) {
-        // return ResponseEntity.ok(usersrepository.findAll());
+    public ResponseEntity<?> ViewUserAccount() {
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserAccountEntity> userOptional = usersrepository.findByEmail(this.email);
 
         if (userOptional.isPresent()) {

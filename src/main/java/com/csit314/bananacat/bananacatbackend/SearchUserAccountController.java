@@ -9,14 +9,8 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class SearchUserAccountController {
 
-    private final UserAccountRepository usersrepository;
-
-    public SearchUserAccountController(UserAccountRepository usersrepository) {
-        this.usersrepository = usersrepository;
-    }
-
     @PostMapping("/SearchUserAccount")
     public ResponseEntity<?> SearchUserAccount(@RequestBody UserAccountEntity searchUser) {
-        return (searchUser.SearchUserAccount(usersrepository));
+        return (searchUser.SearchUserAccount());
     }
 }

@@ -35,11 +35,8 @@ public class UserProfileEntity {
 
 
 
-    public boolean CreateUserProfile(UserProfileRepository profilerepository) {
-        if (this.name == null) {
-            return false;
-        }
-
+    public boolean CreateUserProfile() {
+        UserProfileRepository profilerepository = UserProfileRepositoryInjector.repo;
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
         if (userOptional.isPresent()) {
             return false;
@@ -49,8 +46,8 @@ public class UserProfileEntity {
         return true;
     }
 
-    public ResponseEntity<?> ViewUserProfile(UserProfileRepository profileRepository) {
-        // return ResponseEntity.ok(profileRepository.findAll());
+    public ResponseEntity<?> ViewUserProfile() {
+        UserProfileRepository profileRepository = UserProfileRepositoryInjector.repo;
         Optional<UserProfileEntity> userOptional = profileRepository.findByNameIgnoreCase(this.name);
         if (userOptional.isPresent()) {
             UserProfileEntity result = userOptional.get();
@@ -61,7 +58,8 @@ public class UserProfileEntity {
     }
 
     @Transactional
-    public ResponseEntity<?> UpdateUserProfile(UserProfileRepository profilerepository) throws IllegalAccessException {
+    public ResponseEntity<?> UpdateUserProfile() throws IllegalAccessException {
+        UserProfileRepository profilerepository = UserProfileRepositoryInjector.repo;
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (!(userOptional.isPresent())) {
@@ -79,8 +77,9 @@ public class UserProfileEntity {
     }
 
     @Transactional
-    public boolean DeleteUserProfile(UserProfileRepository profilerepository, UserAccountRepository usersrepository) {
-
+    public boolean DeleteUserProfile() {
+        UserProfileRepository profilerepository = UserProfileRepositoryInjector.repo;
+        UserAccountRepository usersrepository = UserAccountRepositoryInjector.repo;
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (!(userOptional.isPresent())) {
@@ -91,7 +90,8 @@ public class UserProfileEntity {
         return true;
     }
 
-    public ResponseEntity<?> SearchUserProfile(UserProfileRepository profilerepository) {
+    public ResponseEntity<?> SearchUserProfile() {
+        UserProfileRepository profilerepository = UserProfileRepositoryInjector.repo;
         Optional<UserProfileEntity> userOptional = profilerepository.findByNameIgnoreCase(this.name);
 
         if (userOptional.isPresent()) {

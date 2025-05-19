@@ -8,15 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class ViewCleaningServiceForHomeOwnerController {
-        private final CleaningServiceRepository CSRepository;
-
-        public ViewCleaningServiceForHomeOwnerController(CleaningServiceRepository CSRepository) {
-            this.CSRepository = CSRepository;
-        }
 
         @PostMapping("/viewCleaningServiceForHomeOwner")
         public ResponseEntity<?> ViewCleaningServiceforHomeOwner(@RequestBody CleaningServiceEntity CSEntity) {
-            return CSEntity.ViewCleaningServiceforHomeOwner(CSRepository);
+            return CSEntity.ViewCleaningServiceforHomeOwner();
         }
         
 }

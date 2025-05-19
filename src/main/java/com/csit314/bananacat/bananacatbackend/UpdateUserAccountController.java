@@ -10,16 +10,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RestController
 public class UpdateUserAccountController {
 
-    private final UserAccountRepository usersrepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UpdateUserAccountController(UserAccountRepository usersrepository, PasswordEncoder passwordEncoder) {
-        this.usersrepository = usersrepository;
+    public UpdateUserAccountController(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> UpdateUserAccount(@RequestBody UserAccountEntity updatedUser) {
-        return updatedUser.update(usersrepository, passwordEncoder);
+        return updatedUser.UpdateUserAccount(passwordEncoder);
     }
 }

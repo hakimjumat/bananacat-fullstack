@@ -9,16 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 public class CreateUserAccountController {
 
-    private final UserAccountRepository usersrepository;
     private final PasswordEncoder passwordEncoder;
 
-    public CreateUserAccountController(UserAccountRepository usersrepository, PasswordEncoder passwordEncoder) {
-        this.usersrepository = usersrepository;
+    public CreateUserAccountController(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/api/create")
     public boolean CreateUserAccount(@RequestBody UserAccountEntity createaccount) {
-        return createaccount.CreateUserAccount(usersrepository, passwordEncoder); 
+        return createaccount.CreateUserAccount(passwordEncoder); 
     }
 }

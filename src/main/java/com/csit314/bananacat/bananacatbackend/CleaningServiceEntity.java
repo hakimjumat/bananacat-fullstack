@@ -68,8 +68,8 @@ public class CleaningServiceEntity {
         this.email = email;
     }
 
-    public boolean CreateCleaningService(CleaningServiceRepository CSRepository) {
-        
+    public boolean CreateCleaningService() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             return false;
@@ -80,7 +80,8 @@ public class CleaningServiceEntity {
     }
 
     //for viewing specific service, this method is for homeowner
-    public ResponseEntity<?> ViewCleaningServiceforHomeOwner(CleaningServiceRepository CSRepository) {
+    public ResponseEntity<?> ViewCleaningServiceforHomeOwner() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
 
         if (!(CSoptional.isPresent())) {
@@ -111,7 +112,8 @@ public class CleaningServiceEntity {
     }
 
     @Transactional
-    public ResponseEntity<?> UpdateCleaningService(CleaningServiceRepository CSRepository) {
+    public ResponseEntity<?> UpdateCleaningService() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findById(this.id);
         if (CSoptional.isPresent()) {
             CleaningServiceEntity org = CSoptional.get();
@@ -131,7 +133,8 @@ public class CleaningServiceEntity {
         }
     }
     @Transactional
-    public boolean DeleteCleaningService(CleaningServiceRepository CSRepository) {
+    public boolean DeleteCleaningService() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
         if (CSoptional.isPresent()) {
             CleaningServiceEntity CS = CSoptional.get();
@@ -141,7 +144,8 @@ public class CleaningServiceEntity {
             return false;
         }
     }
-    public ResponseEntity<?> SearchCleaningService(CleaningServiceRepository CSRepository) {
+    public ResponseEntity<?> SearchCleaningService() {
+        CleaningServiceRepository CSRepository = CleaningServiceRepositoryInjector.repo;
         Optional<CleaningServiceEntity> CSoptional = CSRepository.findByEmailAndServiceName(this.email, this.serviceName);
         if(CSoptional.isPresent()) {
             return ResponseEntity.ok(CSoptional.get());

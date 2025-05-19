@@ -7,15 +7,10 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 public class UpdateCleaningServiceController {
-    private final CleaningServiceRepository CSRepository;
-
-    public UpdateCleaningServiceController(CleaningServiceRepository CSRepository) {
-        this.CSRepository = CSRepository;
-    }
 
     @PostMapping("/UpdateCleaningService")
     public ResponseEntity<?> UpdateCleaningService(@RequestBody CleaningServiceEntity CSEntity) {
-        return CSEntity.UpdateCleaningService(CSRepository);
+        return CSEntity.UpdateCleaningService();
     }
     
 }

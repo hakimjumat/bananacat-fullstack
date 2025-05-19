@@ -6,15 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class SuspendUserAccountController {
-
-    private final UserAccountRepository usersrepository;
-
-    public SuspendUserAccountController(UserAccountRepository usersrepository) {
-        this.usersrepository = usersrepository;
-    }
-
+    
     @PostMapping("/suspend")
     public boolean SuspendUserAccount(@RequestBody UserAccountEntity suspendEntity) {
-        return (suspendEntity.SuspendUserAccount(usersrepository));
+        return (suspendEntity.SuspendUserAccount());
     }
 }

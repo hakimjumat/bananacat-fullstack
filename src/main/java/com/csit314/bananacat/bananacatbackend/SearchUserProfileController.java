@@ -7,15 +7,10 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 public class SearchUserProfileController {
-    private final UserProfileRepository profilerepository;
-
-    public SearchUserProfileController(UserProfileRepository profilerepository) {
-        this.profilerepository = profilerepository;
-    }
 
     @PostMapping("/searchP")
     public ResponseEntity<?> SearchUserProfile(@RequestBody UserProfileEntity searchentity) {
-        return (searchentity.SearchUserProfile(profilerepository));
+        return (searchentity.SearchUserProfile());
     }
     
 }
