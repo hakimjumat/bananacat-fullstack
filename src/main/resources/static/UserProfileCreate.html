@@ -13,15 +13,16 @@
       background-color: rgb(84, 101, 108);
     }
 
+    /* Navigation Bar */
     nav.navigation {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%; 
+      width: 100%;
       z-index: 1000;
-      background-color: rgba(70, 70, 70, 0.9);
-      backdrop-filter: blur(5px);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: rgb(70, 70, 70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
     .nav-container {
       display: flex;
@@ -29,32 +30,29 @@
       justify-content: space-between;
       padding: 10px 30px;
       flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 0 auto;
     }
     .nav-left img {
-      height: 60px;
-      width: auto;
+      height: 80px;
+      width: 100px;
       object-fit: contain;
-      display: block;
     }
     .nav-center {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 50px;
     }
     .nav-center a {
       text-decoration: none;
       color: white;
       font-size: 1rem;
-      padding: 10px 15px;
+      padding: 10px 0;
       border-radius: 8px;
+      width: 180px;
       text-align: center;
       display: inline-block;
       background-color: transparent;
-      transition: background-color 0.3s ease;
     }
-    .nav-center a:hover, .dropdown:hover > a {
+    .nav-center a:hover {
       background-color:  #5380c9;
     }
     .dropdown {
@@ -69,28 +67,48 @@
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
       z-index: 999;
-      min-width: 150px;
-      overflow: hidden;
     }
     .dropdown-content a {
       display: block;
-      padding: 12px 15px;
+      padding: 10px 15px;
       text-decoration: none;
       color: #333;
       font-size: 0.9em;
-      white-space: nowrap;
-      text-align: left;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      background-color: white;
-      width: auto;
+      width: 180px;
+      text-align: center;
     }
     .dropdown-content a:hover {
       background-color: #5380c9;
-      color: white;
     }
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .search-box input {
+      height: 35px;
+      width: 200px;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+    }
+    .logout-btn {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 0.9em;
+      background-color: #f2f2f2;
+    }
+    .logout-btn:hover {
+      background-color: #ddd;
+    }
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -433,30 +451,31 @@
 </head>
 <body>
   <header>
+<!-- Navigation Bar -->
   <nav class="navigation">
     <div class="nav-container">
       <div class="nav-left">
-        <img src="images/bananacat.png" alt="Banana Cat Logo" />
+        <img src="images/bananacat.png" alt="Banana Cat" />
       </div>
       <div class="nav-center">
         <a href="UserAdminHome.html">Home</a>
         <div class="dropdown">
-          <a href="#">View ▾</a>
+          <a href="#">Role ▾</a>
           <div class="dropdown-content">
-            <a href="UaSearchUserAccount.html">View Account</a>
-            <a href="UserProfile.html">View Profile</a>
+            <a href="UserProfileCreate.html">Create</a>
+            <a href="UserProfileSearch.html">Search</a>
           </div>
         </div>
         <div class="dropdown">
-          <a href="#">Create ▾</a>
+          <a href="#">User ▾</a>
           <div class="dropdown-content">
-            <a href="UaCreateUserAccount.html">Create Account</a>
-            <a href="UserProfileCreate.html">Create Profile</a>
+            <a href="UaCreateUserAccount.html">Create</a>
+            <a href="UaSearchUserAccount.html">Search</a>
           </div>
         </div>
-        
       </div>
       <div class="nav-right">
+        
         <a class="logout-btn" href="logout.html">Log out</a>
       </div>
     </div>
@@ -465,11 +484,10 @@
 
   <main class="container">
     <div class="box">
-      <h2>Update User Profile</h2>
+      <h2>Create User Profile</h2>
       <label for="roleName">Name of Role</label>
-      <input type="text" id="roleName" placeholder="Enter role name"/>
+      <input type="text" id="roleName" placeholder="Enter role name" required/>
 
-      
 
       <div id="create" class="tab-content">
         <table class="privileges-table">
@@ -539,56 +557,15 @@
           </tbody>
         </table>
 
-        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Update</button>
+        <button type="button" class="create" data-tab="create" style="width: 100px; height: 50px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Create</button>
         <button type="button" class="cancel" data-tab="view" style="width: 100px; height: 50px; margin-left: 590px; margin-top: 20px; border-radius: 15px; background-color: lightblue;">Cancel</button>
       </div>
 
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-section">
-        <h4>CleanerMatch</h4>
-        <p>Your trusted platform for connecting freelance home cleaners with homeowners. Our mission is to bring reliability and quality to every cleaning service.</p>
-      </div>
-
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="faq.html">FAQs</a></li>
-          <li><a href="terms.html">Terms & Conditions</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h4>For Users</h4>
-        <ul>
-          <li><a href="cleaners.html">For Cleaners</a></li>
-          <li><a href="homeowners.html">For Home Owners</a></li>
-          <li><a href="admin.html">For Admin</a></li>
-          <li><a href="management.html">Platform Management</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h4>Follow Us</h4>
-        <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="mailto:support@C2Cbananacat.com">Email Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 C2CBananaCat. All Rights Reserved.
-    </div>
-  </footer>
 
   <script>
+   
     document.addEventListener('DOMContentLoaded', function () {
   // 1. Map privilege fields to checkbox names (use the same mapping as your update page)
   const privilegeMap = [
